@@ -1,7 +1,7 @@
 # Личный проект «Дела в Порядке»
 
 * Студент: [Rustam Arkharov](https://up.htmlacademy.ru/php/8/user/794021).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Головахин](https://github.com/Doctrs).
 
 ---
 
