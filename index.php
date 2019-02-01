@@ -2,6 +2,13 @@
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 $show_complete_tasks_attribute = "checked";
+$project_categories = [
+    "Входящие",
+    "Учеба",
+    "Работа",
+    "Домашние дела",
+    "Авто"
+];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
