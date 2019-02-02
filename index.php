@@ -9,6 +9,45 @@ $project_categories = [
     "Домашние дела",
     "Авто"
 ];
+$tasks = [
+    [
+        "taskTitle" => "Собеседование в IT компании",
+        "dueDate" => "01.12.2019",
+        "categoryId" => 2,
+        "isDone" => FALSE,
+    ],
+    [
+        "taskTitle" => "Выполнить тестовое задание",
+        "dueDate" => "25.12.2019",
+        "categoryId" => 2,
+        "isDone" => FALSE,
+    ],
+    [
+        "taskTitle" => "Сделать задание первого раздела",
+        "dueDate" => "21.12.2019",
+        "categoryId" => 1,
+        "isDone" => TRUE,
+    ],
+    [
+        "taskTitle" => "Встреча с другом",
+        "dueDate" => "22.12.2019",
+        "categoryId" => 0,
+        "isDone" => FALSE,
+    ],
+    [
+        "taskTitle" => "Купить корм для кота",
+        "dueDate" => NULL,
+        "categoryId" => 3,
+        "isDone" => FALSE,
+    ],
+    [
+        "taskTitle" => "Заказать пиццу",
+        "dueDate" => NULL,
+        "categoryId" => 3,
+        "isDone" => FALSE,
+    ],
+];
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
