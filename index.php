@@ -2,6 +2,52 @@
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 $show_complete_tasks_attribute = "checked";
+$project_categories = [
+    "Входящие",
+    "Учеба",
+    "Работа",
+    "Домашние дела",
+    "Авто"
+];
+$tasks = [
+    [
+        "title" => "Собеседование в IT компании",
+        "dueDate" => "01.12.2019",
+        "categoryId" => 2,
+        "isDone" => FALSE,
+    ],
+    [
+        "title" => "Выполнить тестовое задание",
+        "dueDate" => "25.12.2019",
+        "categoryId" => 2,
+        "isDone" => FALSE,
+    ],
+    [
+        "title" => "Сделать задание первого раздела",
+        "dueDate" => "21.12.2019",
+        "categoryId" => 1,
+        "isDone" => TRUE,
+    ],
+    [
+        "title" => "Встреча с другом",
+        "dueDate" => "22.12.2019",
+        "categoryId" => 0,
+        "isDone" => FALSE,
+    ],
+    [
+        "title" => "Купить корм для кота",
+        "dueDate" => NULL,
+        "categoryId" => 3,
+        "isDone" => FALSE,
+    ],
+    [
+        "title" => "Заказать пиццу",
+        "dueDate" => NULL,
+        "categoryId" => 3,
+        "isDone" => FALSE,
+    ],
+];
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -47,10 +93,14 @@ $show_complete_tasks_attribute = "checked";
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Название проекта</a>
-                            <span class="main-navigation__list-item-count">0</span>
-                        </li>
+                        
+                        <?php foreach ($project_categories as $category): ?>
+                            <li class="main-navigation__list-item">
+                                <a class="main-navigation__list-item-link" href="#"><?php echo $category ?></a>
+                                <span class="main-navigation__list-item-count">0</span>
+                            </li>
+                        <?php endforeach; ?>
+
                     </ul>
                 </nav>
 
@@ -89,20 +139,24 @@ $show_complete_tasks_attribute = "checked";
                 </div>
 
                 <table class="tasks">
-                    <tr class="tasks__item task">
-                        <td class="task__select">
-                            <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text">Сделать главную страницу Дела в порядке</span>
-                            </label>
-                        </td>
+                    <?php foreach($tasks as $task): ?>
+                        <?php if (($show_complete_tasks || !$task["isDone"])): ?>
+                        <tr class="tasks__item task <?php echo ($task["isDone"] ? "task--completed" : "") ?>">
+                            <td class="task__select">
+                                <label class="checkbox task__checkbox">
+                                    <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                                    <span class="checkbox__text"><?php echo $task["title"] ?></span>
+                                </label>
+                            </td>
 
-                        <td class="task__file">
-                            <a class="download-link" href="#">Home.psd</a>
-                        </td>
+                            <td class="task__file">
+                                <a class="download-link" href="#">Home.psd</a>
+                            </td>
 
-                        <td class="task__date"></td>
-                    </tr>
+                            <td class="task__date"><?php echo $task["dueDate"] ?></td>
+                        </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
 
                     <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
                     <?php if ($show_complete_tasks === 1) : ?>
