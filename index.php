@@ -48,6 +48,18 @@ $tasks = [
     ],
 ];
 
+function getTasksCategoryCount($tasks, $categoryName, $categories)
+{
+    $count = 0;
+    foreach($tasks as $task) {
+        $thisTaskCategoryName = $categories[$task["categoryId"]];
+        if ($thisTaskCategoryName === $categoryName) {
+            $count++;
+        };
+    };
+    return $count;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -94,10 +106,12 @@ $tasks = [
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
                         
-                        <?php foreach ($project_categories as $category): ?>
+                        <?php foreach ($project_categories as $categoryName): ?>
                             <li class="main-navigation__list-item">
-                                <a class="main-navigation__list-item-link" href="#"><?php echo $category ?></a>
-                                <span class="main-navigation__list-item-count">0</span>
+                                <a class="main-navigation__list-item-link" href="#"><?php echo $categoryName ?></a>
+                                <span class="main-navigation__list-item-count">
+                                    <?php echo getTasksCategoryCount($tasks, $categoryName, $project_categories) ?>
+                                </span>
                             </li>
                         <?php endforeach; ?>
 
