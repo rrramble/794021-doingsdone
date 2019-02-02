@@ -11,37 +11,37 @@ $project_categories = [
 ];
 $tasks = [
     [
-        "taskTitle" => "Собеседование в IT компании",
+        "title" => "Собеседование в IT компании",
         "dueDate" => "01.12.2019",
         "categoryId" => 2,
         "isDone" => FALSE,
     ],
     [
-        "taskTitle" => "Выполнить тестовое задание",
+        "title" => "Выполнить тестовое задание",
         "dueDate" => "25.12.2019",
         "categoryId" => 2,
         "isDone" => FALSE,
     ],
     [
-        "taskTitle" => "Сделать задание первого раздела",
+        "title" => "Сделать задание первого раздела",
         "dueDate" => "21.12.2019",
         "categoryId" => 1,
         "isDone" => TRUE,
     ],
     [
-        "taskTitle" => "Встреча с другом",
+        "title" => "Встреча с другом",
         "dueDate" => "22.12.2019",
         "categoryId" => 0,
         "isDone" => FALSE,
     ],
     [
-        "taskTitle" => "Купить корм для кота",
+        "title" => "Купить корм для кота",
         "dueDate" => NULL,
         "categoryId" => 3,
         "isDone" => FALSE,
     ],
     [
-        "taskTitle" => "Заказать пиццу",
+        "title" => "Заказать пиццу",
         "dueDate" => NULL,
         "categoryId" => 3,
         "isDone" => FALSE,
@@ -145,7 +145,7 @@ $tasks = [
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
                                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                    <span class="checkbox__text"><?php echo $task["taskTitle"] ?></span>
+                                    <span class="checkbox__text"><?php echo $task["title"] ?></span>
                                 </label>
                             </td>
 
