@@ -48,7 +48,7 @@ $tasks = [
     ],
 ];
 
-function getTasksCount($tasks, $categoryName)
+function getTasksCategoryCount($tasks, $categoryName)
 {
     $count = 0;
     foreach($tasks as $task) {
@@ -110,7 +110,7 @@ function getTasksCount($tasks, $categoryName)
                         <?php foreach ($project_categories as $categoryName): ?>
                             <li class="main-navigation__list-item">
                                 <a class="main-navigation__list-item-link" href="#"><?php echo $categoryName ?></a>
-                                <span class="main-navigation__list-item-count"><?php echo getTasksCount($tasks, $categoryName) ?></span>
+                                <span class="main-navigation__list-item-count"><?php echo getTasksCategoryCount($tasks, $categoryName) ?></span>
                             </li>
                         <?php endforeach; ?>
 
