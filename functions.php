@@ -1,4 +1,4 @@
-<?php>
+<?php
 
 function include_template($name, $data)
 {
