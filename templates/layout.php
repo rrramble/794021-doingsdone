@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $data[$pageTitle]; ?></title>
+    <title><?= strip_tags($data["pageTitle"]); ?></title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/flatpickr.min.css">
@@ -44,9 +44,15 @@
                         
                         <?php foreach ($data["project_categories"] as $categoryName): ?>
                             <li class="main-navigation__list-item">
-                                <a class="main-navigation__list-item-link" href="#"><?php echo $categoryName ?></a>
+                                <a class="main-navigation__list-item-link" href="#">
+                                    <?= strip_tags($categoryName); ?>
+                                </a>
                                 <span class="main-navigation__list-item-count">
-                                    <?php echo getTasksCategoryCount($data["tasks"], $categoryName, $data["project_categories"]) ?>
+                                    <?= getTasksCategoryCount(
+                                        $data["tasks"],
+                                        $categoryName,
+                                        $data["project_categories"]);
+                                    ?>
                                 </span>
                             </li>
                         <?php endforeach; ?>
