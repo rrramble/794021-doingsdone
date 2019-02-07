@@ -64,7 +64,5 @@
             </tr>
         <?php endif; ?>
 
-
-
     </table>
 </main>

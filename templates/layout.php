@@ -1,78 +1,14 @@
-<?php
-// показывать или нет выполненные задачи
-$show_complete_tasks = rand(0, 1);
-$show_complete_tasks_attribute = "checked";
-$project_categories = [
-    "Входящие",
-    "Учеба",
-    "Работа",
-    "Домашние дела",
-    "Авто"
-];
-$tasks = [
-    [
-        "title" => "Собеседование в IT компании",
-        "dueDate" => "01.12.2019",
-        "categoryId" => 2,
-        "isDone" => FALSE,
-    ],
-    [
-        "title" => "Выполнить тестовое задание",
-        "dueDate" => "25.12.2019",
-        "categoryId" => 2,
-        "isDone" => FALSE,
-    ],
-    [
-        "title" => "Сделать задание первого раздела",
-        "dueDate" => "21.12.2019",
-        "categoryId" => 1,
-        "isDone" => TRUE,
-    ],
-    [
-        "title" => "Встреча с другом",
-        "dueDate" => "22.12.2019",
-        "categoryId" => 0,
-        "isDone" => FALSE,
-    ],
-    [
-        "title" => "Купить корм для кота",
-        "dueDate" => NULL,
-        "categoryId" => 3,
-        "isDone" => FALSE,
-    ],
-    [
-        "title" => "Заказать пиццу",
-        "dueDate" => NULL,
-        "categoryId" => 3,
-        "isDone" => FALSE,
-    ],
-];
-
-function getTasksCategoryCount($tasks, $categoryName, $categories)
-{
-    $count = 0;
-    foreach($tasks as $task) {
-        $thisTaskCategoryName = $categories[$task["categoryId"]];
-        if ($thisTaskCategoryName === $categoryName) {
-            $count++;
-        };
-    };
-    return $count;
-}
-
-?>
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $data=>pageTitle; ?></title>
+    <title><?= $data[$pageTitle]; ?></title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/flatpickr.min.css">
 </head>
 
-<body>
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
@@ -106,11 +42,11 @@ function getTasksCategoryCount($tasks, $categoryName, $categories)
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
                         
-                        <?php foreach ($project_categories as $categoryName): ?>
+                        <?php foreach ($data["project_categories"] as $categoryName): ?>
                             <li class="main-navigation__list-item">
                                 <a class="main-navigation__list-item-link" href="#"><?php echo $categoryName ?></a>
                                 <span class="main-navigation__list-item-count">
-                                    <?php echo getTasksCategoryCount($tasks, $categoryName, $project_categories) ?>
+                                    <?php echo getTasksCategoryCount($data["tasks"], $categoryName, $data["project_categories"]) ?>
                                 </span>
                             </li>
                         <?php endforeach; ?>
@@ -122,7 +58,7 @@ function getTasksCategoryCount($tasks, $categoryName, $categories)
                    href="pages/form-project.html" target="project_add">Добавить проект</a>
             </section>
 
-            render
+            <?= include_template("index.php", $data); ?>
 
         </div>
     </div>
@@ -187,7 +123,3 @@ function getTasksCategoryCount($tasks, $categoryName, $categories)
     </div>
 </footer>
 
-<script src="flatpickr.js"></script>
-<script src="script.js"></script>
-</body>
-</html>
