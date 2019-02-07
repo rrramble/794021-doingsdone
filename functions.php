@@ -17,3 +17,15 @@ function include_template($name, $data)
 
     return $result;
 }
+
+function getTasksCategoryCount($tasks, $categoryName, $categories)
+{
+    $count = 0;
+    foreach($tasks as $task) {
+        $thisTaskCategoryName = $categories[$task["categoryId"]];
+        if ($thisTaskCategoryName === $categoryName) {
+            $count++;
+        };
+    };
+    return $count;
+}

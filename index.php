@@ -1,5 +1,7 @@
 <?php
 // показывать или нет выполненные задачи
+include_once('functions.php');
+
 $show_complete_tasks = rand(0, 1);
 $show_complete_tasks_attribute = "checked";
 $project_categories = [
@@ -47,20 +49,8 @@ $tasks = [
         "isDone" => FALSE,
     ],
 ];
-
-function getTasksCategoryCount($tasks, $categoryName, $categories)
-{
-    $count = 0;
-    foreach($tasks as $task) {
-        $thisTaskCategoryName = $categories[$task["categoryId"]];
-        if ($thisTaskCategoryName === $categoryName) {
-            $count++;
-        };
-    };
-    return $count;
-}
-
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
