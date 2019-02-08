@@ -62,4 +62,8 @@
         ]
     ];
 
+    $layoutData["data"]["components"] = [
+        "main" => include_template("index.php", $layoutData["data"]),
+    ];
+
     echo include_template("layout.php", $layoutData);

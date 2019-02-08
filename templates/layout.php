@@ -64,7 +64,7 @@
                    href="pages/form-project.html" target="project_add">Добавить проект</a>
             </section>
 
-            <?= include_template("index.php", $data); ?>
+            <?= $data["components"]["main"]; ?>
 
         </div>
     </div>
