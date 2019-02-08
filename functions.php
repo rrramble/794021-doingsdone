@@ -29,3 +29,23 @@ function getTasksCategoryCount($tasks, $categoryName, $categories)
     };
     return $count;
 }
+
+function isDeadlineNear($dateToCheck)
+{
+    $HOURS_DEADLINE = 24;
+    if ($dateToCheck === NULL) {
+        return false;
+    }
+
+    $now = strtotime("now");
+    $dueDate = strtotime($dateToCheck);
+    return getHoursDiff($dueDate, $now) <= $HOURS_DEADLINE;
+}
+
+function getHoursDiff($recent, $elder)
+{
+    $SECONDS_IN_HOUR = 3600;
+
+    $hoursDiff = ($recent - $elder) / $SECONDS_IN_HOUR;
+    return floor($hoursDiff);
+}
