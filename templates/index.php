@@ -1,3 +1,10 @@
+<?php 
+    $HtmlClasses = [
+        "TASK_COMPLETED" => "task--completed",
+        "TASK_IMPORTANT" => "task--important",
+    ];
+?>
+
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
@@ -31,20 +38,24 @@
     <table class="tasks">
         <?php foreach($tasks as $task): ?>
             <?php if (($show_complete_tasks || !$task["isDone"])): ?>
-            <tr class="tasks__item task <?php echo ($task["isDone"] ? "task--completed" : "") ?>">
-                <td class="task__select">
-                    <label class="checkbox task__checkbox">
-                        <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                        <span class="checkbox__text"><?php echo $task["title"] ?></span>
-                    </label>
-                </td>
+                <?php
+                    $classTaskCompleted = $task["isDone"] ? $HtmlClasses["TASK_COMPLETED"] : "";
+                    $classTaskImportant = isDeadlineNear($task["dueDate"]) ? $HtmlClasses["TASK_IMPORTANT"] : "";
+                ?>
+                <tr class="tasks__item task <?= $classTaskCompleted; ?> <?= $classTaskImportant; ?>">
+                    <td class="task__select">
+                        <label class="checkbox task__checkbox">
+                            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                            <span class="checkbox__text"><?php echo $task["title"] ?></span>
+                        </label>
+                    </td>
 
-                <td class="task__file">
-                    <a class="download-link" href="#">Home.psd</a>
-                </td>
+                    <td class="task__file">
+                        <a class="download-link" href="#">Home.psd</a>
+                    </td>
 
-                <td class="task__date"><?php echo $task["dueDate"] ?></td>
-            </tr>
+                    <td class="task__date"><?php echo $task["dueDate"] ?></td>
+                </tr>
             <?php endif; ?>
         <?php endforeach; ?>
 
