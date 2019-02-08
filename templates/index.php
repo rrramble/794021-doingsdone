@@ -1,3 +1,10 @@
+<?php 
+    $HtmlClasses = [
+        "TASK_COMPLETED" => "task--completed",
+        "TASK_IMPORTANT" => "task--important",
+    ];
+?>
+
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
@@ -32,8 +39,8 @@
         <?php foreach($tasks as $task): ?>
             <?php if (($show_complete_tasks || !$task["isDone"])): ?>
                 <?php
-                    $classTaskCompleted = $task["isDone"] ? "task--completed" : "";
-                    $classTaskImportant = isDeadlineNear($task["dueDate"]) ? "task--important" : "";
+                    $classTaskCompleted = $task["isDone"] ? $HtmlClasses["TASK_COMPLETED"] : "";
+                    $classTaskImportant = isDeadlineNear($task["dueDate"]) ? $HtmlClasses["TASK_IMPORTANT"] : "";
                 ?>
                 <tr class="tasks__item task <?= $classTaskCompleted; ?> <?= $classTaskImportant; ?>">
                     <td class="task__select">
