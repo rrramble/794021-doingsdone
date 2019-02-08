@@ -32,10 +32,10 @@
         <?php foreach($tasks as $task): ?>
             <?php if (($show_complete_tasks || !$task["isDone"])): ?>
                 <?php
-                    $classCompleted = $task["isDone"] ? "task--completed" : "";
+                    $classTaskCompleted = $task["isDone"] ? "task--completed" : "";
                     $classTaskImportant = isDeadlineNear($task["dueDate"]) ? "task--important" : "";
                 ?>
-                <tr class="tasks__item task <?= $classCompleted; ?> <?= $classTaskImportant; ?>">
+                <tr class="tasks__item task <?= $classTaskCompleted; ?> <?= $classTaskImportant; ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
                             <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
