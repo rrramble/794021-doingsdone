@@ -1,0 +1,3 @@
+CREATE DATABASE 794021_doingsdone
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci; 
