@@ -1,6 +1,8 @@
-CREATE DATABASE IF NOT EXISTS 794021_doingsdone
+CREATE DATABASE 794021_doingsdone
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
+
+USE 794021_doingsdone;
 
 CREATE TABLE projects (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -10,17 +12,17 @@ CREATE TABLE projects (
 
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  date_created TIMESTAMP NOT NULL,
-  date_completed TIMESTAMP NULL,
-  status_id INT NOT NULL,
+  date_created DATETIME NOT NULL,
+  date_completed DATETIME NULL,
+  state_id INT NOT NULL DEFAULT 0,
   title VARCHAR(60) NOT NULL,
   file_path VARCHAR(1024) NULL,
-  due_date TIMESTAMP NULL
+  due_date DATETIME NULL
 );
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  date_created TIMESTAMP NOT NULL,
+  date_created DATETIME NOT NULL,
   email VARCHAR(254) UNIQUE NOT NULL,
   name VARCHAR(68) NOT NULL,
   password_hash VARCHAR(266) NOT NULL
@@ -44,7 +46,14 @@ CREATE TABLE users (
  */
 
 
-CREATE TABLE statuses (
+CREATE TABLE task_states (
   id INT PRIMARY KEY,
   title VARCHAR(100) NOT NULL
 );
+
+INSERT INTO task_states
+  (id, title)
+  VALUES
+    (0, "Не выполнена"),
+    (1, "Выполнена")
+;
