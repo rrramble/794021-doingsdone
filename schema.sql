@@ -18,7 +18,8 @@ CREATE TABLE tasks (
   state_id INT NOT NULL DEFAULT 0,
   title VARCHAR(60) NOT NULL,
   file_path VARCHAR(1024) NULL,
-  due_date DATETIME NULL
+  due_date DATETIME NULL,
+  author_user_id INT
 );
 
 CREATE TABLE users (
