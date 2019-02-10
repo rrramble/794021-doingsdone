@@ -7,7 +7,7 @@ USE 794021_doingsdone;
 CREATE TABLE projects (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(60) NOT NULL,
-  user_id INT NOT NULL
+  author_user_id INT NOT NULL
 );
 
 CREATE TABLE tasks (
