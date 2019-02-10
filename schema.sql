@@ -1,3 +1,32 @@
 CREATE DATABASE IF NOT EXISTS 794021_doingsdone
   DEFAULT CHARACTER SET utf8
-  DEFAULT COLLATE utf8_general_ci; 
+  DEFAULT COLLATE utf8_general_ci;
+
+CREATE TABLE projects (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(60) NOT NULL,
+  user_id INT NOT NULL
+);
+
+CREATE TABLE tasks (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  date_created TIMESTAMP NOT NULL,
+  date_completed TIMESTAMP NULL,
+  status_id INT NOT NULL,
+  title VARCHAR(60) NOT NULL,
+  file_path VARCHAR(1024) NULL,
+  due_date TIMESTAMP NULL
+);
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  date_created TIMESTAMP NOT NULL,
+  email VARCHAR(200) UNIQUE NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE statuses (
+  id INT PRIMARY KEY,
+  title VARCHAR(100) NOT NULL
+);
