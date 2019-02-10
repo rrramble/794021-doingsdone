@@ -12,6 +12,7 @@ CREATE TABLE projects (
 
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  project_id INT,
   date_created DATETIME NOT NULL,
   date_completed DATETIME NULL,
   state_id INT NOT NULL DEFAULT 0,
