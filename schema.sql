@@ -52,10 +52,3 @@ CREATE TABLE task_states (
   id INT PRIMARY KEY,
   title VARCHAR(100) NOT NULL
 );
-
-INSERT INTO task_states
-  (id, title)
-  VALUES
-    (0, "Не выполнена"),
-    (1, "Выполнена")
-;
