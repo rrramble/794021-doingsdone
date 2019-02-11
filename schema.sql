@@ -56,5 +56,5 @@ CREATE TABLE users (
 
 CREATE TABLE task_states (
   id INT PRIMARY KEY,
-  title VARCHAR(100) NOT NULL
+  title VARCHAR(100) NOT NULL UNIQUE
 );
