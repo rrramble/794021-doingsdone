@@ -7,13 +7,7 @@ USE 794021_doingsdone;
 CREATE TABLE projects (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(60) NOT NULL,
-  author_user_id INT NOT NULL,
-  date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE project_categories (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(60) NOT NULL UNIQUE
+  author_user_id INT NOT NULL
 );
 
 CREATE TABLE tasks (
