@@ -25,7 +25,7 @@ CREATE TABLE tasks (
   title VARCHAR(60) NOT NULL,
   file_path VARCHAR(1024) NULL,
   due_date DATETIME NULL,
-  author_user_id INT
+  author_user_id INT NULL
 );
 
 CREATE TABLE users (
