@@ -82,7 +82,7 @@ INSERT INTO tasks
 
 SELECT projects.id, projects.title, projects.author_user_id FROM projects
   JOIN users ON projects.author_user_id = users.id
-  WHERE users.email = "ru7ar7@gmail.com"
+  WHERE UPPER(users.email) = UPPER("ru7ar7@gmail.com")
 ;
 
 
