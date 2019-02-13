@@ -20,7 +20,8 @@ INSERT INTO task_states
 INSERT INTO users
   (email, name, password_hash)
   VALUES
-    ("ru7ar7@gmail.com", "ru", "$2y$10$sxxo6wkqHc2Lhs5vTyeXvuwPG5Eb0uSyGqcI4VtichA5gY5PrE9sG")
+    ("ru7ar7@gmail.com", "ru", "$2y$10$sxxo6wkqHc2Lhs5vTyeXvuwPG5Eb0uSyGqcI4VtichA5gY5PrE9sG"),
+    ("crimson_al@mail.ru", "ru", "$2y$10$sxxo6wkqHc2Lhs5vTyeXvuwPG5Eb0uSyGqcI4VtichA5gY5PrE9sG")
 
     /* the abovementioned and following hash is the hash of the empty password:
        $2y$10$sxxo6wkqHc2Lhs5vTyeXvuwPG5Eb0uSyGqcI4VtichA5gY5PrE9sG
