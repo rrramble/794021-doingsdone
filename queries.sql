@@ -72,3 +72,15 @@ INSERT INTO tasks
   VALUES
     (2, 1, "Сделать задание первого раздела", "2019-12-21", 1, "2019-01-29")
 ;
+
+
+
+/*
+  Запрос:
+  Получить список из всех проектов для одного пользователя ru7ar7@gmail.com
+ */
+
+SELECT projects.id, projects.title, projects.author_user_id FROM projects
+  JOIN users ON projects.author_user_id = users.id
+  WHERE users.email = "ru7ar7@gmail.com"
+;
