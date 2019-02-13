@@ -77,7 +77,7 @@ INSERT INTO tasks
 
 /*
   Запрос:
-  Получить список из всех проектов для одного пользователя ru7ar7@gmail.com
+  Получить список из всех проектов для одного пользователя с эл. адресом "ru7ar7@gmail.com"
  */
 
 SELECT projects.id, projects.title, projects.author_user_id FROM projects
