@@ -108,4 +108,3 @@ UPDATE tasks
     tasks.date_completed = "2019-02-13"
   WHERE UPPER(tasks.title) = UPPER("Выполнить тестовое задание")
 ;
-
