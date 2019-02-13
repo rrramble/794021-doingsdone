@@ -95,3 +95,17 @@ SELECT projects.id, projects.title, projects.author_user_id FROM projects
   JOIN users ON projects.author_user_id = users.id
   WHERE UPPER(users.name) = UPPER("ru")
 ;
+
+
+/*
+  Запрос:
+  Пометить задачу "Выполнить тестовое задание" как выполненную
+ */
+
+UPDATE tasks
+  SET
+    tasks.state_id = 1,
+    tasks.date_completed = "2019-02-13"
+  WHERE UPPER(tasks.title) = UPPER("Выполнить тестовое задание")
+;
+
