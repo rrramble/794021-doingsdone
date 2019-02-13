@@ -84,3 +84,14 @@ SELECT projects.id, projects.title, projects.author_user_id FROM projects
   JOIN users ON projects.author_user_id = users.id
   WHERE users.email = "ru7ar7@gmail.com"
 ;
+
+
+/*
+  Запрос:
+  Получить список из всех проектов для одного пользователя с именем "ru"
+ */
+
+SELECT projects.id, projects.title, projects.author_user_id FROM projects
+  JOIN users ON projects.author_user_id = users.id
+  WHERE UPPER(users.name) = UPPER("ru")
+;
