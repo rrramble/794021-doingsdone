@@ -108,3 +108,15 @@ UPDATE tasks
     tasks.date_completed = "2019-02-13"
   WHERE UPPER(tasks.title) = UPPER("Выполнить тестовое задание")
 ;
+
+
+/*
+  Запрос:
+  Обновить название задачи по ее идентификатору
+ */
+
+UPDATE tasks
+  SET
+    tasks.title = "Купить корм для кошки"
+  WHERE tasks.id = 4
+;
