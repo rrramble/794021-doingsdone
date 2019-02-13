@@ -1,3 +1,9 @@
+
+/*
+   Наполнение таблицы
+   Таблица: "Task states" (Типы статусов задач)
+ */
+
 INSERT INTO task_states
   (id, title)
   VALUES
@@ -5,14 +11,27 @@ INSERT INTO task_states
     (1, "Выполнена")
 ;
 
+
+/*
+   Наполнение таблицы
+   Таблица: "Users" (Пользователи)
+ */
+
 INSERT INTO users
   (email, name, password_hash)
   VALUES
     ("ru7ar7@gmail.com", "ru", "$2y$10$sxxo6wkqHc2Lhs5vTyeXvuwPG5Eb0uSyGqcI4VtichA5gY5PrE9sG")
-    /* this is the hash of the empty password: 
+
+    /* the abovementioned and following hash is the hash of the empty password:
        $2y$10$sxxo6wkqHc2Lhs5vTyeXvuwPG5Eb0uSyGqcI4VtichA5gY5PrE9sG
     */
 ;
+
+
+/*
+   Наполнение таблицы
+   Таблица: "Projects" (Проекты)
+ */
 
 INSERT INTO projects
   (title, author_user_id)
@@ -24,6 +43,12 @@ INSERT INTO projects
     ("Авто", 0)
 ;
 
+
+/*
+   Наполнение таблицы
+   Таблица: "Tasks" (Задачи)
+ */
+
 INSERT INTO tasks
   (project_id, state_id, title, due_date, author_user_id)
   VALUES
@@ -33,6 +58,13 @@ INSERT INTO tasks
     (4, 0, "Купить корм для кота", NULL, 1),
     (4, 0, "Заказать пиццу", NULL, 1)
 ;
+
+
+/*
+   Добавление в таблицу особых записей
+   Таблица: "Tasks" (Задачи)
+   В добавляемой записи есть поле "date_completed", которое не заполнялось в запросе выше
+ */
 
 INSERT INTO tasks
   (project_id, state_id, title, due_date, author_user_id, date_completed)
