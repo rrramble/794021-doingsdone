@@ -13,21 +13,21 @@ CREATE TABLE projects (
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
   project_id INT,
-  date_created DATETIME NOT NULL,
   date_completed DATETIME NULL,
   state_id INT NOT NULL DEFAULT 0,
   title VARCHAR(60) NOT NULL,
   file_path VARCHAR(1024) NULL,
   due_date DATETIME NULL,
-  author_user_id INT
+  author_user_id INT NULL,
+  date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  date_created DATETIME NOT NULL,
   email VARCHAR(254) UNIQUE NOT NULL,
   name VARCHAR(68) NOT NULL,
-  password_hash VARCHAR(266) NOT NULL
+  password_hash VARCHAR(266) NOT NULL,
+  date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 /*  About email length
@@ -50,12 +50,5 @@ CREATE TABLE users (
 
 CREATE TABLE task_states (
   id INT PRIMARY KEY,
-  title VARCHAR(100) NOT NULL
+  title VARCHAR(100) NOT NULL UNIQUE
 );
-
-INSERT INTO task_states
-  (id, title)
-  VALUES
-    (0, "Не выполнена"),
-    (1, "Выполнена")
-;
