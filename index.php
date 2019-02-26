@@ -2,13 +2,6 @@
     include_once("functions.php");
 
     $show_complete_tasks_attribute = "checked";
-    $project_categories = [
-        "Входящие",
-        "Учеба",
-        "Работа",
-        "Домашние дела",
-        "Авто"
-    ];
 
     $DbSettings = [
         'HOST' => '127.0.0.1',
@@ -38,14 +31,21 @@
     mysqli_set_charset($db, $DbSettings['ENCODING']);
 
     $currentUserId = 1;
-    $queryTasks  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
 
+    $queryProjects  = "SELECT title FROM projects";
+    $result = mysqli_query($db, $queryProjects);
+    if (!$result) {
+        throw new Exception(mysqli_error($db));
+    };
+    $project_categories = adaptDbResult($result, $getAdaptedProjects);
+
+
+    $queryTasks  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
     $result = mysqli_query($db, $queryTasks);
     if (!$result) {
         throw new Exception(mysqli_error($db));
     };
-
-    $tasks = getAdaptedTasks(mysqli_fetch_all($result, MYSQLI_ASSOC));
+    $tasks = adaptDbResult($result, $getAdaptedTasks);
     $show_complete_tasks = rand(0, 1);
 
     $pageTitle = "Дела в порядке";
