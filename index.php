@@ -8,7 +8,7 @@
         'USERNAME' => 'root',
         'PASSWORD' => '',
         'DB_NAME' => '794021_doingsdone',
-        'ENCODING' => 'utf-8'
+        'ENCODING' => 'utf8'
     ];
 
     $db = mysqli_connect(
