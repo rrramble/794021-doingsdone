@@ -9,6 +9,33 @@
         "Домашние дела",
         "Авто"
     ];
+
+    $DbSettings = [
+        'HOST' => '127.0.0.1',
+        'USERNAME' => 'root',
+        'PASSWORD' => '',
+        'DB_NAME' => '794021_doingsdone',
+        'ENCODING' => 'utf-8'
+    ];
+
+    $db = mysqli_connect(
+        $DbSettings['HOST'],
+        $DbSettings['USERNAME'],
+        $DbSettings['PASSWORD'],
+        $DbSettings['DB_NANE']
+    );
+
+    if (!$db) {
+        throw new Exception(
+            'Error connecting to Database "' .
+            $DbSettings['DB_NAME'] .
+            '"' .
+            mysqli_connect_error()
+        );
+    }
+
+    mysqli_set_charset($db, $DbSettings['ENCODING']);
+
     $tasks = [
         [
             "title" => "Собеседование в IT компании",
