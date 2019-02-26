@@ -52,7 +52,7 @@ function getHoursDiff($recent, $elder)
     return floor($hoursDiff);
 }
 
-function getAdaptedTasks($dbTasks)
+$getAdaptedTasks = function ($dbTasks)
 {
     $tasks = [];
 
@@ -70,4 +70,25 @@ function getAdaptedTasks($dbTasks)
     };
 
     return $tasks;
+};
+
+$getAdaptedProjects = function ($dbProjects)
+{
+    $results = [];
+
+    if (!$dbProjects) {
+        return $results;
+    }
+
+    foreach($dbProjects as $dbProject) {
+        array_push($results, $dbProject['title']);
+    };
+
+    return $results;
+};
+
+function adaptDbResult($dbResult, $func)
+{
+    $fetchedResult = mysqli_fetch_all($dbResult, MYSQLI_ASSOC);
+    return $func($fetchedResult);
 }
