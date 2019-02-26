@@ -34,47 +34,18 @@
         );
     }
 
+    mysqli_query($db, 'use ' . $DbSettings['DB_NAME']);
     mysqli_set_charset($db, $DbSettings['ENCODING']);
 
-    $tasks = [
-        [
-            "title" => "Собеседование в IT компании",
-            "dueDate" => "01.12.2019",
-            "categoryId" => 2,
-            "isDone" => FALSE,
-        ],
-        [
-            "title" => "Выполнить тестовое задание",
-            "dueDate" => "25.12.2019",
-            "categoryId" => 2,
-            "isDone" => FALSE,
-        ],
-        [
-            "title" => "Сделать задание первого раздела",
-            "dueDate" => "21.12.2019",
-            "categoryId" => 1,
-            "isDone" => TRUE,
-        ],
-        [
-            "title" => "Встреча с другом",
-            "dueDate" => "22.12.2019",
-            "categoryId" => 0,
-            "isDone" => FALSE,
-        ],
-        [
-            "title" => "Купить корм для кота",
-            "dueDate" => NULL,
-            "categoryId" => 3,
-            "isDone" => FALSE,
-        ],
-        [
-            "title" => "Заказать пиццу",
-            "dueDate" => NULL,
-            "categoryId" => 3,
-            "isDone" => FALSE,
-        ],
-    ];
+    $currentUserId = 1;
+    $queryTasks  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
 
+    $result = mysqli_query($db, $queryTasks);
+    if (!$result) {
+        throw new Exception(mysqli_error($db));
+    };
+
+    $tasks = getAdaptedTasks(mysqli_fetch_all($result, MYSQLI_ASSOC));
     $show_complete_tasks = rand(0, 1);
 
     $pageTitle = "Дела в порядке";
