@@ -5,30 +5,39 @@ CREATE DATABASE 794021_doingsdone
 USE 794021_doingsdone;
 
 CREATE TABLE projects (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(60) NOT NULL,
-  author_user_id INT NOT NULL
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(60) NOT NULL,
+    author_user_id INT NOT NULL
+  )
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+;
 
 CREATE TABLE tasks (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  project_id INT,
-  date_completed DATETIME NULL,
-  state_id INT NOT NULL DEFAULT 0,
-  title VARCHAR(60) NOT NULL,
-  file_path VARCHAR(1024) NULL,
-  due_date DATETIME NULL,
-  author_user_id INT NULL,
-  date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    project_id INT,
+    date_completed DATETIME NULL,
+    state_id INT NOT NULL DEFAULT 0,
+    title VARCHAR(60) NOT NULL,
+    file_path VARCHAR(1024) NULL,
+    due_date DATETIME NULL,
+    author_user_id INT NULL,
+    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+;
 
 CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  email VARCHAR(254) UNIQUE NOT NULL,
-  name VARCHAR(68) NOT NULL,
-  password_hash VARCHAR(266) NOT NULL,
-  date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(254) UNIQUE NOT NULL,
+    name VARCHAR(68) NOT NULL,
+    password_hash VARCHAR(266) NOT NULL,
+    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+;
 
 /*  About email length
     Although name part may be up to 64 and domain's up to 255,
@@ -49,6 +58,9 @@ CREATE TABLE users (
 
 
 CREATE TABLE task_states (
-  id INT PRIMARY KEY,
-  title VARCHAR(100) NOT NULL UNIQUE
-);
+    id INT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL UNIQUE
+  )
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+;
