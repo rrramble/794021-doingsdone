@@ -1,5 +1,7 @@
 <?php
 
+$TASK_STATE_DONE = 1;
+
 function include_template($name, $data)
 {
     $name = 'templates/' . $name;
@@ -48,4 +50,45 @@ function getHoursDiff($recent, $elder)
 
     $hoursDiff = ($recent - $elder) / $SECONDS_IN_HOUR;
     return floor($hoursDiff);
+}
+
+$getAdaptedTasks = function ($dbTasks)
+{
+    $tasks = [];
+
+    if (!$dbTasks) {
+        return $task;
+    }
+
+    foreach($dbTasks as $dbTask) {
+        $item = array();
+        $item['title'] = $dbTask['title'];
+        $item['dueDate'] = $dbTask['due_date'];
+        $item['categoryId'] = $dbTask['project_id'];
+        $item['isDone'] = $dbTask['state_id'] === $TASK_STATE_DONE;
+        array_push($tasks, $item);
+    };
+
+    return $tasks;
+};
+
+$getAdaptedProjects = function ($dbProjects)
+{
+    $results = [];
+
+    if (!$dbProjects) {
+        return $results;
+    }
+
+    foreach($dbProjects as $dbProject) {
+        array_push($results, $dbProject['title']);
+    };
+
+    return $results;
+};
+
+function adaptDbResult($dbResult, $func)
+{
+    $fetchedResult = mysqli_fetch_all($dbResult, MYSQLI_ASSOC);
+    return $func($fetchedResult);
 }
