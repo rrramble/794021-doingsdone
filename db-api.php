@@ -51,10 +51,14 @@ class DbApi
 
     function getTasks($currentUserId, $currentProjectId)
     {
-        $query  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$currentUserId);
+        $query  = "SELECT * FROM tasks WHERE author_user_id = '$userIdEscaped'";
+
         if ($currentProjectId) {
-            $query .= " AND project_id = '$currentProjectId'";
+            $projectIdEscaped = mysqli_real_escape_string($this->handler, (string)$currentProjectId);
+            $query .= " AND project_id = '$projectIdEscaped'";
         }
+
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
             return NULL;
