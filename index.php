@@ -27,7 +27,6 @@
         );
     }
 
-    mysqli_query($db, 'use ' . $DbSettings['DB_NAME']);
     mysqli_set_charset($db, $DbSettings['ENCODING']);
 
     $currentUserId = 1;
