@@ -42,17 +42,18 @@
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
                         
-                        <?php foreach ($data["project_categories"] as $categoryName): ?>
+                        <?php foreach ($data["projects"] as $project): ?>
+                            <?php
+                                $url = getProjectUrl($project['id']);
+                                $title = strip_tags($project['title']);
+                                $count = getTasksCount($project['id'], $data['userId'], $data["tasks"]);
+                            ?>
                             <li class="main-navigation__list-item">
-                                <a class="main-navigation__list-item-link" href="#">
-                                    <?= strip_tags($categoryName); ?>
+                                <a class="main-navigation__list-item-link" href="<?= $url; ?>">
+                                    <?= $title ?>
                                 </a>
                                 <span class="main-navigation__list-item-count">
-                                    <?= getTasksCategoryCount(
-                                        $data["tasks"],
-                                        $categoryName,
-                                        $data["project_categories"]);
-                                    ?>
+                                    <?= $count ?>
                                 </span>
                             </li>
                         <?php endforeach; ?>
