@@ -15,7 +15,7 @@
         $DbSettings['HOST'],
         $DbSettings['USERNAME'],
         $DbSettings['PASSWORD'],
-        $DbSettings['DB_NANE']
+        $DbSettings['DB_NAME']
     );
 
     if (!$db) {
