@@ -1,7 +1,5 @@
 <?php
 
-$TASK_STATE_DONE = 1;
-
 function include_template($name, $data)
 {
     $name = 'templates/' . $name;
@@ -20,12 +18,11 @@ function include_template($name, $data)
     return $result;
 }
 
-function getTasksCategoryCount($tasks, $categoryName, $categories)
+function getTasksCount($projectId, $userId, $tasks)
 {
     $count = 0;
     foreach($tasks as $task) {
-        $thisTaskCategoryName = $categories[$task["categoryId"]];
-        if ($thisTaskCategoryName === $categoryName) {
+        if ($task['projectId'] === $projectId && $task['authorUserId'] === $userId) {
             $count++;
         };
     };
@@ -42,7 +39,7 @@ function isDeadlineNear($dateToCheck)
     $now = strtotime("now");
     $dueDate = strtotime($dateToCheck);
     return getHoursDiff($dueDate, $now) <= $HOURS_DEADLINE;
-}
+};
 
 function getHoursDiff($recent, $elder)
 {
@@ -50,45 +47,56 @@ function getHoursDiff($recent, $elder)
 
     $hoursDiff = ($recent - $elder) / $SECONDS_IN_HOUR;
     return floor($hoursDiff);
-}
-
-$getAdaptedTasks = function ($dbTasks)
-{
-    $tasks = [];
-
-    if (!$dbTasks) {
-        return $task;
-    }
-
-    foreach($dbTasks as $dbTask) {
-        $item = array();
-        $item['title'] = $dbTask['title'];
-        $item['dueDate'] = $dbTask['due_date'];
-        $item['categoryId'] = $dbTask['project_id'];
-        $item['isDone'] = $dbTask['state_id'] === $TASK_STATE_DONE;
-        array_push($tasks, $item);
-    };
-
-    return $tasks;
 };
 
-$getAdaptedProjects = function ($dbProjects)
+function getAdaptedTasks($dbTasks)
 {
+    $TASK_STATE_DONE = 1;
     $results = [];
 
-    if (!$dbProjects) {
+    if (!$dbTasks) {
         return $results;
     }
 
-    foreach($dbProjects as $dbProject) {
-        array_push($results, $dbProject['title']);
+    foreach($dbTasks as $dbTask) {
+        $item['id'] = (integer)$dbTask['id'];
+        $item['title'] = $dbTask['title'];
+        $item['dueDate'] = $dbTask['due_date'];
+        $item['projectId'] = (integer)$dbTask['project_id'];
+        $item['isDone'] = $dbTask['state_id'] === $TASK_STATE_DONE;
+        $item['authorUserId'] = (integer)$dbTask['author_user_id'];
+        array_push($results, $item);
     };
 
     return $results;
 };
 
-function adaptDbResult($dbResult, $func)
+function getAdaptedProjects($dbProjects)
 {
-    $fetchedResult = mysqli_fetch_all($dbResult, MYSQLI_ASSOC);
-    return $func($fetchedResult);
+    $results = [];
+    if (!$dbProjects) {
+        return $results;
+    }
+
+    foreach($dbProjects as $dbProject) {
+        $item['id'] = (integer)$dbProject['id'];
+        $item['title'] = $dbProject['title'];
+        $item['authorUserId'] = (integer)$dbProject['author_user_id'];
+        array_push($results, $item);
+    };
+
+    return $results;
+};
+
+function getProjectUrl($projectId)
+{
+    return '/index.php?id=' . $projectId;
+}
+
+function getTasksFilteredByProjectId($tasks, $projectId)
+{
+    $results = array_filter($tasks, function($task) {
+        return $task['id'] === $projectId;
+    });
+    return $results;
 }

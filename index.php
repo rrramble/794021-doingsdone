@@ -1,62 +1,38 @@
 <?php
     include_once("functions.php");
+    include_once("db-api.php");
 
     $show_complete_tasks_attribute = "checked";
+    $WEBPAGE_TITLE = "Дела в порядке";
+    $show_complete_tasks = rand(0, 1);
 
-    $DbSettings = [
-        'HOST' => '127.0.0.1',
-        'USERNAME' => 'root',
-        'PASSWORD' => '',
-        'DB_NAME' => '794021_doingsdone',
-        'ENCODING' => 'utf8'
-    ];
-
-    $db = mysqli_connect(
-        $DbSettings['HOST'],
-        $DbSettings['USERNAME'],
-        $DbSettings['PASSWORD'],
-        $DbSettings['DB_NANE']
-    );
-
-    if (!$db) {
-        throw new Exception(
-            'Error connecting to Database "' .
-            $DbSettings['DB_NAME'] .
-            '"' .
-            mysqli_connect_error()
-        );
-    }
-
-    mysqli_query($db, 'use ' . $DbSettings['DB_NAME']);
-    mysqli_set_charset($db, $DbSettings['ENCODING']);
+    $db = new DbApi();
 
     $currentUserId = 1;
 
-    $queryProjects  = "SELECT title FROM projects";
-    $result = mysqli_query($db, $queryProjects);
-    if (!$result) {
-        throw new Exception(mysqli_error($db));
-    };
-    $project_categories = adaptDbResult($result, $getAdaptedProjects);
+    if (isset($_GET['id'])) {
+        $currentProjectId = $_GET['id'];
+    } else {
+        $currentProjectId = NULL;
+    }
 
+    if (!$db->isProjectIdExists($currentProjectId)) {
+        header("HTTP/1.0 404 Not Found");
+        die();
+    }
 
-    $queryTasks  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
-    $result = mysqli_query($db, $queryTasks);
-    if (!$result) {
-        throw new Exception(mysqli_error($db));
-    };
-    $tasks = adaptDbResult($result, $getAdaptedTasks);
-    $show_complete_tasks = rand(0, 1);
-
-    $pageTitle = "Дела в порядке";
+    $tasks = getAdaptedTasks($db->getTasks($currentUserId, $currentProjectId));
+    $projects = getAdaptedProjects($db->getProjects());
 
     $layoutData = [
         "data" => [
-            "pageTitle" => $pageTitle,
+            "pageTitle" => $WEBPAGE_TITLE,
             "show_complete_tasks_attribute" => $show_complete_tasks_attribute,
-            "project_categories" => $project_categories,
+            "projects" => $projects,
             "tasks" => $tasks,
             "show_complete_tasks" => $show_complete_tasks,
+            "userId" => $currentUserId,
+            "currentProjectId" => $currentProjectId
         ]
     ];
 

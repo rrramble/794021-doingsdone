@@ -37,7 +37,12 @@
 
     <table class="tasks">
         <?php foreach($tasks as $task): ?>
-            <?php if (($show_complete_tasks || !$task["isDone"])): ?>
+            <?php
+                if (
+                    ($show_complete_tasks || !$task["isDone"]) &&
+                    ($task["projectId"] === (integer)$currentProjectId || $currentProjectId === NULL)
+                ): 
+            ?>
                 <?php
                     $classTaskCompleted = $task["isDone"] ? $HtmlClasses["TASK_COMPLETED"] : "";
                     $classTaskImportant = isDeadlineNear($task["dueDate"]) ? $HtmlClasses["TASK_IMPORTANT"] : "";
