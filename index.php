@@ -31,7 +31,8 @@
             "projects" => $projects,
             "tasks" => $tasks,
             "show_complete_tasks" => $show_complete_tasks,
-            "userId" => $currentUserId
+            "userId" => $currentUserId,
+            "currentProjectId" => $currentProjectId
         ]
     ];
 

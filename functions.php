@@ -92,3 +92,11 @@ function getProjectUrl($projectId)
 {
     return '/index.php?id=' . $projectId;
 }
+
+function getTasksFilteredByProjectId($tasks, $projectId)
+{
+    $results = array_filter($tasks, function($task) {
+        return $task['id'] === $projectId;
+    });
+    return $results;
+}
