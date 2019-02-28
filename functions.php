@@ -72,7 +72,7 @@ $getAdaptedTasks = function ($dbTasks)
     return $tasks;
 };
 
-$getAdaptedProjects = function ($dbProjects)
+$getAdaptedProjectNames = function ($dbProjects)
 {
     $results = [];
 

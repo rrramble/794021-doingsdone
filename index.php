@@ -37,7 +37,7 @@
     if (!$result) {
         throw new Exception(mysqli_error($db));
     };
-    $project_categories = adaptDbResult($result, $getAdaptedProjects);
+    $project_categories = adaptDbResult($result, $getAdaptedProjectNames);
 
 
     $queryTasks  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
