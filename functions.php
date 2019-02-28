@@ -1,7 +1,5 @@
 <?php
 
-$TASK_STATE_DONE = 1;
-
 function include_template($name, $data)
 {
     $name = 'templates/' . $name;
@@ -54,6 +52,7 @@ function getHoursDiff($recent, $elder)
 
 $getAdaptedTasks = function ($dbTasks)
 {
+    $TASK_STATE_DONE = 1;
     $tasks = [];
 
     if (!$dbTasks) {
