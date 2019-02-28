@@ -9,8 +9,11 @@
     $db = new DbApi();
 
     $currentUserId = 1;
+
     if (isset($_GET['id'])) {
         $currentProjectId = $_GET['id'];
+    } else {
+        $currentProjectId = NULL;
     }
 
     if (!$db->isProjectIdExists($currentProjectId)) {
