@@ -5,10 +5,20 @@
     $show_complete_tasks_attribute = "checked";
     $WEBPAGE_TITLE = "Дела в порядке";
     $show_complete_tasks = rand(0, 1);
-    $currentUserId = 1;
 
     $db = new DbApi();
-    $tasks = getAdaptedTasks($db->getTasks($currentUserId));
+
+    $currentUserId = 1;
+    if (isset($_GET['id'])) {
+        $currentProjectId = $_GET['id'];
+    }
+
+    if (!$db->isProjectIdExists($currentProjectId)) {
+        header("HTTP/1.0 404 Not Found");
+        die();
+    }
+
+    $tasks = getAdaptedTasks($db->getTasks($currentUserId, $currentProjectId));
     $projects = getAdaptedProjects($db->getProjects());
 
     $layoutData = [

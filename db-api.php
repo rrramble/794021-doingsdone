@@ -24,7 +24,7 @@ class DbApi
         if (!$this->isConnected()) {
             $this->throwDbException();
         };
-    
+
         if ($this->handler) {
             mysqli_set_charset($this->handler, $this->DbSettings['ENCODING']);
         };
@@ -48,13 +48,13 @@ class DbApi
         }, $projects);
         return $result;
     }
-    
+
     function getTasks($currentUserId)
     {
         $query  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            return [];
+            return NULL;
         };
         return $result;
     }
@@ -62,6 +62,18 @@ class DbApi
     function isConnected()
     {
         return (boolean)$this->handler;
+    }
+
+    function isProjectIdExists($id)
+    {
+        if ($id === NULL) {
+            return true;
+        }
+        $idEscaped = mysqli_real_escape_string($this->handler, (string)$id);
+        $query = "SELECT id FROM projects WHERE id = '$idEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return count($rows) > 0;
     }
 
     function throwDbException()
