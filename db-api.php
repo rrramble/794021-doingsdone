@@ -49,9 +49,12 @@ class DbApi
         return $result;
     }
 
-    function getTasks($currentUserId)
+    function getTasks($currentUserId, $currentProjectId)
     {
         $query  = "SELECT * FROM tasks WHERE author_user_id = '$currentUserId'";
+        if ($currentProjectId) {
+            $query .= " AND project_id = '$currentProjectId'";
+        }
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
             return NULL;
