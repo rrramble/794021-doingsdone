@@ -1,3 +1,13 @@
+<?php
+  include_once("functions.php");
+  include_once("db-api.php");
+
+  $db = new DbApi();
+  $currentUserId = 1;
+  $projects = getAdaptedProjects($db->getProjects());
+  $tasks = getAdaptedTasks($db->getTasks($currentUserId));
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -42,30 +52,21 @@
 
         <nav class="main-navigation">
           <ul class="main-navigation__list">
+          <?php foreach ($projects as $project): ?>
+            <?php
+                $url = getProjectUrl($project['id']);
+                $title = strip_tags($project['title']);
+                $count = getTasksCount($project['id'], $currentUserId, $tasks);
+            ?>
             <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Входящие</a>
-              <span class="main-navigation__list-item-count">24</span>
+                <a class="main-navigation__list-item-link" href="<?= $url; ?>">
+                    <?= $title ?>
+                </a>
+                <span class="main-navigation__list-item-count">
+                    <?= $count ?>
+                </span>
             </li>
-
-            <li class="main-navigation__list-item main-navigation__list-item--active">
-              <a class="main-navigation__list-item-link" href="#">Работа</a>
-              <span class="main-navigation__list-item-count">12</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Здоровье</a>
-              <span class="main-navigation__list-item-count">3</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Домашние дела</a>
-              <span class="main-navigation__list-item-count">7</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Авто</a>
-              <span class="main-navigation__list-item-count">0</span>
-            </li>
+            <?php endforeach; ?>
           </ul>
         </nav>
 
@@ -85,9 +86,15 @@
           <div class="form__row">
             <label class="form__label" for="project">Проект</label>
 
-            <select class="form__input form__input--select" name="project" id="project">
-              <option value="">Входящие</option>
-            </select>
+              <select class="form__input form__input--select" name="project" id="project">
+              <?php foreach($projects as $project): ?>
+              <?php
+                $title = $project['title'];
+                $id = $project['id'];
+              ?>
+                <option value="<?= $id; ?>"><?= $title; ?></option>
+                <?php endforeach; ?>
+              </select>
           </div>
 
           <div class="form__row">
