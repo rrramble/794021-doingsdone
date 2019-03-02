@@ -1,6 +1,6 @@
 <?php
-  include_once('functions.php');
-  include_once('db-api.php');
+  include_once('../functions.php');
+  include_once('../db-api.php');
   include_once('add-form.php');
 
   $db = new DbApi();
@@ -9,7 +9,6 @@
   $projects = getAdaptedProjects($db->getProjects());
   $tasks = getAdaptedTasks($db->getTasks($currentUserId));
 ?>
-
 <!DOCTYPE html>
 <html lang="ru">
 
