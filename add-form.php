@@ -16,22 +16,22 @@
 
     function __construct()
     {
+      if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        return false;
+      };
 
+      // form fields:
+      // 'name'
+      // 'project'
+      // 'date'
+      // 'preview'
     }
 
     function checkValidity()
     {
-
     }
 
 
   } // class Form
-
-  if ($Form['isReceived']) {
-    $Form['isValid'] = $FormAdd->checkValidity();
-    $Form['isFileReceived'] = $FormAdd->isFileReceived();
-    
-    $Form['isChecked'] = true;
-  };
 
 ?>

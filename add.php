@@ -1,7 +1,7 @@
 <?php
   include_once('functions.php');
   include_once('db-api.php');
-  include_once('add-form.php')
+  include_once('add-form.php');
 
   $db = new DbApi();
   $form = new AddForm();
@@ -78,7 +78,7 @@
       <main class="content__main">
         <h2 class="content__main-heading">Добавление задачи</h2>
 
-        <form class="form"  action="index.html" method="post">
+        <form class="form"  action="add.php" method="post">
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
