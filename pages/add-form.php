@@ -72,6 +72,10 @@
       $this->Field['title']['isValid'] = mb_strlen($trimmedValue) > 0;
     }
 
+    public function getDueDateReadable() {
+      return $this->Field['dueDate']['value'];
+    }
+    
     private function getFormField($formTagName)
     {
       return trim($_POST[$formTagName]) ?? null;
@@ -90,6 +94,12 @@
       return $this->Field['title']['value'];
     }
 
+    public function isDateValid()
+    {
+      $receivedDate = strtotime($this->Field['dueDate']['value']);
+      return $receivedDate > strtotime('now');
+    }
+    
     public function isMethodPost()
     {
       if ($this->State['isMethodPost'] !== null) {

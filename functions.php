@@ -1,5 +1,11 @@
 <?php
 
+function convertDateReadableToHtmlFormInput($dateReadable)
+{
+    $date = date_create_from_format('d.m.Y', $dateReadable);
+    return date_format($date, 'Y-m-d');
+}
+
 function include_template($name, $data)
 {
     $name = 'templates/' . $name;

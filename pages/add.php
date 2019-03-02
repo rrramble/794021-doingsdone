@@ -14,7 +14,11 @@
   $isTitleValid = true;
   $postTaskTitle = '';
 
+  $isDueDateValid = true;
+  $dueDateInInputType = '';
+
   $hasHttpPost = $form->isMethodPost();
+
   if ($hasHttpPost) {
     $isTitleValid = $form->isTaskTitleValid() && !isTaskExists($form->getTaskTitle(), $tasks);
     $postTaskTitle = $form->getTaskTitle();
@@ -22,7 +26,17 @@
       $taskTitleIvalidMessage = 'Нужно указать название';
     } else {
       $taskTitleIvalidMessage = 'Такая задача уже существует';
-    }
+    };
+
+    $isDueDateValid = $form->isDateValid();
+    $dueDateReadable = $form->getDueDateReadable();
+    $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
+
+    if (mb_strlen($dueDateReadable) <=0) {
+      $dueDateIvalidMessage = 'Нужно указать дату';
+    } else {
+      $dueDateIvalidMessage = 'Дата должа быть в будущем';
+    };
 
   }
 ?>
@@ -100,9 +114,7 @@
 
             <input
                 class="form__input <?php if (!$isTitleValid) {echo $CLASS_INPUT_ERROR;} ?>"
-                type="text"
-                name="name"
-                id="name"
+                type="text" name="name" id="name"
                 value="<?= $postTaskTitle; ?>"
                 placeholder="Введите название">
 
@@ -131,7 +143,16 @@
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-            <input class="form__input form__input--date" type="date" name="date" id="date" value="" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+            <input
+              class="form__input form__input--date"
+              type="date" name="date" id="date"
+              value="<?= $dueDateInputType; ?>"
+              placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+            <?php if (!$isDueDateValid): ?>
+              <p class="form__message">
+                <?= $dueDateIvalidMessage; ?>
+              </p>
+            <?php endif; ?>
           </div>
 
           <div class="form__row">
