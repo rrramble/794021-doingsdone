@@ -2,10 +2,7 @@
 
   class AddForm {
     private $State = [
-      'isReceived' => false,
-      'isChecked' => false,
-      'isValid' => false,
-      'isFileReceived' => false
+      'isMethodPost' => null
     ];
 
     private $Field = [
@@ -33,7 +30,8 @@
 
     function __construct()
     {
-      if (!$this->isMethodPost()) {
+      $this->State['isMethodPost'] = $this->isMethodPost();
+      if (!$this->State['isMethodPost']) {
         return;
       }
       $this->getFormFields();
@@ -53,7 +51,7 @@
       }
     }
 
-    function checkValidityFile()
+    private function checkValidityFile()
     {
       $this->Field['file']['isValid'] = true;
     }
@@ -87,8 +85,11 @@
       unset($field);
     }
 
-    private function isMethodPost()
+    public function isMethodPost()
     {
+      if ($this->State['isMethodPost'] !== null) {
+        return $this->State['isMethodPost'];
+      }
       return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
