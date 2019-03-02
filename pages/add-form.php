@@ -74,7 +74,7 @@
 
     private function getFormField($formTagName)
     {
-      return $_POST[$formTagName] ?? null;
+      return trim($_POST[$formTagName]) ?? null;
     }
 
     private function getFormFields()
@@ -85,12 +85,22 @@
       unset($field);
     }
 
+    public function getTaskTitle()
+    {
+      return $this->Field['title']['value'];
+    }
+
     public function isMethodPost()
     {
       if ($this->State['isMethodPost'] !== null) {
         return $this->State['isMethodPost'];
       }
       return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+
+    public function isTaskTitleValid()
+    {
+      return $this->Field['title']['isValid'];
     }
 
   } // class Form

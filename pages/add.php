@@ -3,11 +3,28 @@
   include_once('../db-api.php');
   include_once('add-form.php');
 
+  $CLASS_INPUT_ERROR = 'form__input--error';
+
   $db = new DbApi();
   $form = new AddForm();
   $currentUserId = 1;
   $projects = getAdaptedProjects($db->getProjects());
   $tasks = getAdaptedTasks($db->getTasks($currentUserId));
+
+  $isTitleValid = true;
+  $postTaskTitle = '';
+
+  $hasHttpPost = $form->isMethodPost();
+  if ($hasHttpPost) {
+    $isTitleValid = $form->isTaskTitleValid() && !isTaskExists($form->getTaskTitle(), $tasks);
+    $postTaskTitle = $form->getTaskTitle();
+    if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
+      $taskTitleIvalidMessage = 'Нужно указать название';
+    } else {
+      $taskTitleIvalidMessage = 'Такая задача уже существует';
+    }
+
+  }
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -81,7 +98,20 @@
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
-            <input class="form__input" type="text" name="name" id="name" value="" placeholder="Введите название">
+            <input
+                class="form__input <?php if (!$isTitleValid) {echo $CLASS_INPUT_ERROR;} ?>"
+                type="text"
+                name="name"
+                id="name"
+                value="<?= $postTaskTitle; ?>"
+                placeholder="Введите название">
+
+            <?php if(!$isTitleValid): ?>
+              <p class="form__message">
+                <?= $taskTitleIvalidMessage; ?>
+              </p>
+            <?php endif; ?>
+
           </div>
 
           <div class="form__row">
