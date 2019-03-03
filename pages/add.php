@@ -4,6 +4,7 @@
   include_once('add-form.php');
 
   $CLASS_INPUT_ERROR = 'form__input--error';
+  $FORM_MESSAGE_ERROR = 'Пожалуйста, исправьте ошибки в форме';
 
   $db = new DbApi();
   $form = new AddForm();
@@ -170,6 +171,13 @@
           <div class="form__row form__row--controls">
             <input class="button" type="submit" name="" value="Добавить">
           </div>
+
+          <?php if (!$isTitleValid || !$isDueDateValid): ?>
+            <p class="form__message">
+              <?= $FORM_MESSAGE_ERROR; ?>
+            </p>
+          <?php endif; ?>
+
         </form>
       </main>
     </div>
