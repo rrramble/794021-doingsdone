@@ -20,15 +20,15 @@
   $hasHttpPost = $form->isMethodPost();
 
   if ($hasHttpPost) {
-    $isTitleValid = $form->isTaskTitleValid() && !isTaskExists($form->getTaskTitle(), $tasks);
-    $postTaskTitle = $form->getTaskTitle();
+    $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
+    $postTaskTitle = $form->getTitle();
     if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
       $taskTitleIvalidMessage = 'Нужно указать название';
     } else {
       $taskTitleIvalidMessage = 'Такая задача уже существует';
     };
 
-    $isDueDateValid = $form->isDateValid();
+    $isDueDateValid = $form->getDueDateValidity();
     $dueDateReadable = $form->getDueDateReadable();
     $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
 

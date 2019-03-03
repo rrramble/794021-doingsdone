@@ -35,47 +35,28 @@
         return;
       }
       $this->getFormFields();
-      $this->checkValidityTitle();
-      $this->checkValidityProjectId();
-      $this->checkValidityDueDate();
-      $this->checkValidityFile();
-    }
-
-    private function checkValidityDueDate()
-    {
-      $value = $this->Field['dueDate']['value'];
-      if (false) {
-        $this->Field['projectId']['isValid'] = false;
-      } else {
-        $this->Field['projectId']['isValid'] = true;        
-      }
-    }
-
-    private function checkValidityFile()
-    {
+      $this->Field['title']['isValid'] = $this->isTitleValid();
+      $this->Field['projectId']['isValid'] = $this->isProjectIdValid();
+      $this->Field['dueDate']['isValid'] = $this->isDueDateValid();
       $this->Field['file']['isValid'] = true;
     }
 
-    private function checkValidityProjectId()
+    private function isProjectIdValid()
     {
       $value = $this->Field['projectId']['value'];
-      if ($value !== (string)(integer)$value || (integer)$value <= 0) {
-        $this->Field['projectId']['isValid'] = false;
-      } else {
-        $this->Field['projectId']['isValid'] = true;        
-      }
+      return ($value === (string)(integer)$value || (integer)$value > 0);
     }
 
-    private function checkValidityTitle()
+    public function getDueDateValidity()
     {
-      $trimmedValue = trim($this->Field['title']['value']);
-      $this->Field['title']['isValid'] = mb_strlen($trimmedValue) > 0;
+      return $this->Field['dueDate']['isValid'];
     }
 
-    public function getDueDateReadable() {
+    public function getDueDateReadable()
+    {
       return $this->Field['dueDate']['value'];
     }
-    
+
     private function getFormField($formTagName)
     {
       return trim($_POST[$formTagName]) ?? null;
@@ -89,17 +70,30 @@
       unset($field);
     }
 
-    public function getTaskTitle()
+    public function getTitle()
     {
       return $this->Field['title']['value'];
     }
 
-    public function isDateValid()
+    public function getTitleValidity()
     {
-      $receivedDate = strtotime($this->Field['dueDate']['value']);
-      return $receivedDate > strtotime('now');
+      return $this->Field['title']['isValid'];
     }
-    
+
+    private function isDueDateValid()
+    {
+      $value = $this->Field['dueDate']['value'];
+      if (mb_strlen($value) <= 0) {
+        return true;
+      };
+
+      $date = strtotime($value);
+      if (!$date) {
+        return false;
+      };
+      return $date > strtotime('now');
+    }
+
     public function isMethodPost()
     {
       if ($this->State['isMethodPost'] !== null) {
@@ -108,9 +102,10 @@
       return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
-    public function isTaskTitleValid()
+    private function isTitleValid()
     {
-      return $this->Field['title']['isValid'];
+      $value = $this->Field['title']['value'];
+      return mb_strlen($value) > 0;
     }
 
   } // class Form

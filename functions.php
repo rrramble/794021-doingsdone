@@ -2,6 +2,9 @@
 
 function convertDateReadableToHtmlFormInput($dateReadable)
 {
+    if (mb_strlen($dateReadable <= 0)) {
+        return '';
+    };
     $date = date_create_from_format('d.m.Y', $dateReadable);
     return date_format($date, 'Y-m-d');
 }
