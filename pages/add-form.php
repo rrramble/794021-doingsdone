@@ -70,6 +70,22 @@
       unset($field);
     }
 
+    /**
+     * @return integer
+     */
+    public function getProjectId()
+    {
+      return (integer)$this->Field['projectId']['value'];
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getProjectIdValidity()
+    {
+      return $this->Field['projectId']['isValid'];
+    }
+
     public function getTitle()
     {
       return $this->Field['title']['value'];
@@ -106,6 +122,13 @@
     {
       $value = $this->Field['title']['value'];
       return mb_strlen($value) > 0;
+    }
+
+    public function saveResult()
+    {
+      // 1. save in SQL
+
+      // 2. save the file
     }
 
   } // class Form

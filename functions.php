@@ -110,6 +110,23 @@ function getTasksFilteredByProjectId($tasks, $projectId)
     return $results;
 }
 
+/**
+ * param integer $projectId
+ * param mixed $projects
+ * return boolean
+ */
+function isProjectIdExists($projectId, $projects)
+{
+    $result = false;
+    foreach($projects as $project) {
+        if ($projectId === $project['id']) {
+            $result = true;
+            break;
+        };
+    };
+    return $result;
+}
+
 function isTaskExists($taskName, $tasks)
 {
     $result = false;

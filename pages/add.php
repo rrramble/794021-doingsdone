@@ -3,6 +3,7 @@ include_once('../functions.php');
 include_once('../db-api.php');
 include_once('add-form.php');
 
+$SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $CLASS_INPUT_ERROR = 'form__input--error';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
@@ -22,10 +23,16 @@ $postTaskTitle = '';
 $isDueDateValid = true;
 $dueDateInInputType = '';
 
-$hasHttpPost = $form->isMethodPost();
-
-if ($hasHttpPost) {
+if ($form->isMethodPost()) {
     $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
+    $isDueDateValid = $form->getDueDateValidity();
+    $isProjectIdValid = $form->getProjectIdValidity() && isProjectIdExists($form->getProjectId(), $projects);
+
+    if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
+        $form->saveResult();
+        header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
+    }
+
     $postTaskTitle = $form->getTitle();
     if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
         $taskTitleIvalidMessage = $FormMessage['NO_TITLE_ERROR'];
@@ -33,7 +40,6 @@ if ($hasHttpPost) {
         $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
     };
     
-    $isDueDateValid = $form->getDueDateValidity();
     $dueDateReadable = $form->getDueDateReadable();
     $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
     
