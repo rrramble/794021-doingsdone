@@ -8,7 +8,8 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'NO_TITLE_ERROR' => 'Нужно указать название',
-    'TITLE_ALREADY_EXISTS' => 'Название уже существует'
+    'TITLE_ALREADY_EXISTS' => 'Название уже существует',
+    'DATE_MUST_BE_IN_FUTURE' => 'Дата должна быть в будущем'
 ];
 
 $db = new DbApi();
@@ -43,12 +44,9 @@ if ($form->isMethodPost()) {
     $dueDateReadable = $form->getDueDateReadable();
     $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
     
-    if (mb_strlen($dueDateReadable) <=0) {
-        $dueDateIvalidMessage = 'Нужно указать дату';
-    } else {
-        $dueDateIvalidMessage = 'Дата должа быть в будущем';
-    };
-    
+    $dueDateIvalidMessage = !$isDueDateValid ?
+        $FormMessage['DATE_MUST_BE_IN_FUTURE'] :
+        '';
 }
 ?>
 <!DOCTYPE html>
