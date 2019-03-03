@@ -1,49 +1,49 @@
 <?php
-  include_once('../functions.php');
-  include_once('../db-api.php');
-  include_once('add-form.php');
+include_once('../functions.php');
+include_once('../db-api.php');
+include_once('add-form.php');
 
-  $CLASS_INPUT_ERROR = 'form__input--error';
-  $FormMessage = [
+$CLASS_INPUT_ERROR = 'form__input--error';
+$FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'NO_TITLE_ERROR' => 'Нужно указать название',
     'TITLE_ALREADY_EXISTS' => 'Название уже существует'
-  ];
+];
 
-  $db = new DbApi();
-  $form = new AddForm();
-  $currentUserId = 1;
-  $projects = getAdaptedProjects($db->getProjects());
-  $tasks = getAdaptedTasks($db->getTasks($currentUserId));
+$db = new DbApi();
+$form = new AddForm();
+$currentUserId = 1;
+$projects = getAdaptedProjects($db->getProjects());
+$tasks = getAdaptedTasks($db->getTasks($currentUserId));
 
-  $isTitleValid = true;
-  $postTaskTitle = '';
+$isTitleValid = true;
+$postTaskTitle = '';
 
-  $isDueDateValid = true;
-  $dueDateInInputType = '';
+$isDueDateValid = true;
+$dueDateInInputType = '';
 
-  $hasHttpPost = $form->isMethodPost();
+$hasHttpPost = $form->isMethodPost();
 
-  if ($hasHttpPost) {
+if ($hasHttpPost) {
     $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
     $postTaskTitle = $form->getTitle();
     if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
-      $taskTitleIvalidMessage = $FormMessage['NO_TITLE_ERROR'];
+        $taskTitleIvalidMessage = $FormMessage['NO_TITLE_ERROR'];
     } else {
-      $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
+        $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
     };
-
+    
     $isDueDateValid = $form->getDueDateValidity();
     $dueDateReadable = $form->getDueDateReadable();
     $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
-
+    
     if (mb_strlen($dueDateReadable) <=0) {
-      $dueDateIvalidMessage = 'Нужно указать дату';
+        $dueDateIvalidMessage = 'Нужно указать дату';
     } else {
-      $dueDateIvalidMessage = 'Дата должа быть в будущем';
+        $dueDateIvalidMessage = 'Дата должа быть в будущем';
     };
-
-  }
+    
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
