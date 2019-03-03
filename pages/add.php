@@ -4,7 +4,11 @@
   include_once('add-form.php');
 
   $CLASS_INPUT_ERROR = 'form__input--error';
-  $FORM_MESSAGE_ERROR = 'Пожалуйста, исправьте ошибки в форме';
+  $FormMessage = [
+    'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
+    'NO_TITLE_ERROR' => 'Нужно указать название',
+    'TITLE_ALREADY_EXISTS' => 'Название уже существует'
+  ];
 
   $db = new DbApi();
   $form = new AddForm();
@@ -24,9 +28,9 @@
     $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
     $postTaskTitle = $form->getTitle();
     if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
-      $taskTitleIvalidMessage = 'Нужно указать название';
+      $taskTitleIvalidMessage = $FormMessage['NO_TITLE_ERROR'];
     } else {
-      $taskTitleIvalidMessage = 'Такая задача уже существует';
+      $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
     };
 
     $isDueDateValid = $form->getDueDateValidity();
@@ -109,7 +113,7 @@
       <main class="content__main">
         <h2 class="content__main-heading">Добавление задачи</h2>
 
-        <form class="form"  action="add.php" method="post">
+        <form class="form"  action="add.php" method="post" enctype="multipart/form-data">
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
@@ -158,10 +162,8 @@
 
           <div class="form__row">
             <label class="form__label" for="preview">Файл</label>
-
             <div class="form__input-file">
               <input class="visually-hidden" type="file" name="preview" id="preview" value="">
-
               <label class="button button--transparent" for="preview">
                 <span>Выберите файл</span>
               </label>
@@ -174,7 +176,7 @@
 
           <?php if (!$isTitleValid || !$isDueDateValid): ?>
             <p class="form__message">
-              <?= $FORM_MESSAGE_ERROR; ?>
+              <?= $FormMessage['OVERALL_ERROR']; ?>
             </p>
           <?php endif; ?>
 
