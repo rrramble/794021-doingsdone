@@ -1,6 +1,8 @@
 <?php
 
   class AddForm {
+    private $PUBLIC_FOLDER = '/pub/';
+    
     private $State = [
       'isMethodPost' => null
     ];
@@ -126,9 +128,13 @@
 
     public function saveResult()
     {
-      // 1. save in SQL
+      if (isset($_FILES['preview'])) {
+        $savedFilename = uniqid();
+        $fileMoveResult = move_uploaded_file($file['tmp_name'], $PUBLIC_FOLDER . $filename);
+        $savedFilename = $fileMoveResult ? $savedFilename : null;
+      };
 
-      // 2. save the file
+      sql
     }
 
   } // class Form
