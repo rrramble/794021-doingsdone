@@ -30,6 +30,11 @@ class DbApi
         };
     }
 
+    public function addTask($values)
+    {
+        ;
+    }
+
     function getProjects()
     {
         $query  = "SELECT * FROM projects";

@@ -126,15 +126,20 @@
       return mb_strlen($value) > 0;
     }
 
-    public function saveResult()
+    public function getValues()
     {
-      if (isset($_FILES['preview'])) {
-        $savedFilename = uniqid();
-        $fileMoveResult = move_uploaded_file($file['tmp_name'], $PUBLIC_FOLDER . $filename);
-        $savedFilename = $fileMoveResult ? $savedFilename : null;
-      };
+      $item = array();
+      $item['project_id'] = $this->Field['projectId']['value'];
+      $item['title'] = $this->Field['title']['value'];
+      $item['dueDate'] = $this->Field['dueDate']['value'];
 
-      sql
+      if (isset($_FILES['preview'])) {
+        $item['savedFileName'] = $_FILES['preview']['tmp_name'];
+        $item['userFileName'] = $_FILES['preview']['name'];
+      };
+      var_dump($item);
+      die();
+      return $item;
     }
 
   } // class Form
