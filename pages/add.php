@@ -14,7 +14,7 @@ $FormMessage = [
 ];
 
 $currentUser = [
-  'id' => null
+    'id' => null
 ];
 
 $currentUser['id'] = 1;
@@ -33,46 +33,46 @@ if ($form->isMethodPost()) {
     $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
     $isDueDateValid = $form->getDueDateValidity();
     $isProjectIdValid = $form->getProjectIdValidity() && isProjectIdExists($form->getProjectId(), $projects);
-
+    
     if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
         $values = $form->getValues();
         $values['id'] = $currentUser['id'];
         $isAddedCorrectly = $db->addTask($values);
         if (!$isAddedCorrectly) {
-          header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
-          die();
+            header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
+            die();
         };
         header('Location: ' . $SCRIPT_NAME_IF_FAILURE);
     };
-
+    
     $postTaskTitle = $form->getTitle();
     if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
         $taskTitleIvalidMessage = $FormMessage['NO_TITLE_ERROR'];
     } else {
         $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
     };
-
+    
     $dueDateReadable = $form->getDueDateReadable();
     $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
-
+    
     $dueDateIvalidMessage = !$isDueDateValid ?
-        $FormMessage['DATE_MUST_BE_IN_FUTURE'] :
-        '';
+    $FormMessage['DATE_MUST_BE_IN_FUTURE'] :
+    '';
 }
 
 $layoutData = [
-  "pageTitle" => $WEBPAGE_TITLE,
-  "projects" => $projects,
-  "tasks" => $tasks,
-  "userId" => $currentUserId,
-
-  "isTitleValid" => $isTitleValid,
-  "currentUser" => $currentUser,
-  "postTaskTitle" => $postTaskTitle,
-  "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
-  "dueDateInInputType" => $dueDateInInputType,
-  "dueDateIvalidMessage" => $dueDateIvalidMessage,
-  "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR']
+    "pageTitle" => $WEBPAGE_TITLE,
+    "projects" => $projects,
+    "tasks" => $tasks,
+    "userId" => $currentUserId,
+    
+    "isTitleValid" => $isTitleValid,
+    "currentUser" => $currentUser,
+    "postTaskTitle" => $postTaskTitle,
+    "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
+    "dueDateInInputType" => $dueDateInInputType,
+    "dueDateIvalidMessage" => $dueDateIvalidMessage,
+    "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR']
 ];
 
 echo include_template("add.php", $layoutData);
