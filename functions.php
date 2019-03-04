@@ -11,7 +11,7 @@ function convertDateReadableToHtmlFormInput($dateReadable)
 
 function include_template($name, $data)
 {
-    $name = 'templates/' . $name;
+    $name = __DIR__ . '/templates/' . $name;
     $result = '';
 
     if (!is_readable($name)) {
