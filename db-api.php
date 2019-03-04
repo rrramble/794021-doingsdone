@@ -2,12 +2,20 @@
 
 class DbApi
 {
+    private $FILE_PUB_FOLDER = DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR;
+    private $URL_FILE_FOLDER = '/pub/';
+
     private $DbSettings = [
         'HOST' => '127.0.0.1',
         'USERNAME' => 'root',
         'PASSWORD' => '',
         'DB_NAME' => '794021_doingsdone',
         'ENCODING' => 'utf8'
+    ];
+    private $SqlQuerySTMT = [
+        'ADD_TASK' => 'INSERT INTO tasks ' .
+          '(project_id, state_id, title, due_date, author_user_id, file_path)' .
+          'VALUES(?, 0, ?, ?, ?, ?)',
     ];
 
     protected $handler;
@@ -32,7 +40,24 @@ class DbApi
 
     public function addTask($values)
     {
-        ;
+        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_TASK']);
+        if (!$stmt) {
+            $this->throwDbException();
+        };
+        $dueDate = strtotime($values['dueDate']);
+        $savedFilenamePath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFilePathName']);
+
+        $isBound = mysqli_stmt_bind_param($stmt, 'isiis',
+          $values['projectId'],
+          $values['title'],
+          $dueDate,
+          $values['id'],
+          $savedFilenamePath
+        );
+        if (!$isBound) {
+            $this->throwDbException();
+        };
+
     }
 
     function getProjects()
@@ -81,6 +106,25 @@ class DbApi
         $result = mysqli_query($this->handler, $query);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return count($rows) > 0;
+    }
+
+    private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
+    {
+        if (!isset($tempFileNamePath) || strlen($tempFileNamePath) <= 0) {
+            return '';
+        };
+        $fileExtension = pathinfo($originalFileNamePath, PATHINFO_EXTENSION);
+        $fileExtension = $fileExtension ? '.' . $fileExtension : '';
+        $filename = uniqid() . $fileExtension;
+
+        $newFilePathName = __DIR__ . $this->FILE_PUB_FOLDER . $filename;
+        $isSaved = move_uploaded_file($tempFileNamePath, $newFilePathName);
+        if (!$isSaved) {
+            return '';
+        };
+
+        $url = $this->URL_FILE_FOLDER . $filename;
+        return $url;
     }
 
     function throwDbException()

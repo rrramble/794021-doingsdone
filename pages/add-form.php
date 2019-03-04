@@ -138,7 +138,7 @@
 
       if (isset($_FILES['preview'])) {
         $item['savedFileName'] = $_FILES['preview']['tmp_name'];
-        $item['userFileName'] = $_FILES['preview']['name'];
+        $item['originalFilePathName'] = $_FILES['preview']['name'];
       };
       return $item;
     }

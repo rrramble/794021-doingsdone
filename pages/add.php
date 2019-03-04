@@ -12,11 +12,15 @@ $FormMessage = [
     'DATE_MUST_BE_IN_FUTURE' => 'Дата должна быть в будущем'
 ];
 
+$currentUser = [
+  'id' => 1
+];
+
+$currentUser['id'] = 1;
 $db = new DbApi();
 $form = new AddForm();
-$currentUserId = 1;
 $projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks($currentUserId));
+$tasks = getAdaptedTasks($db->getTasks($currentUser['id']));
 
 $isTitleValid = true;
 $postTaskTitle = '';
@@ -30,7 +34,9 @@ if ($form->isMethodPost()) {
     $isProjectIdValid = $form->getProjectIdValidity() && isProjectIdExists($form->getProjectId(), $projects);
 
     if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
-        $isSavedCorrectly = $db->addTask($form->getValues());
+        $values = $form->getValues();
+        $values['id'] = $currentUser['id'];
+        $isSavedCorrectly = $db->addTask($values);
         if (!$isSavedCorrectly) {
           header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
           die();
@@ -100,7 +106,7 @@ if ($form->isMethodPost()) {
             <?php
                 $url = getProjectUrl($project['id']);
                 $title = strip_tags($project['title']);
-                $count = getTasksCount($project['id'], $currentUserId, $tasks);
+                $count = getTasksCount($project['id'], $currentUser['id'], $tasks);
             ?>
             <li class="main-navigation__list-item">
                 <a class="main-navigation__list-item-link" href="<?= $url; ?>">
