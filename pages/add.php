@@ -30,9 +30,7 @@ if ($form->isMethodPost()) {
     $isProjectIdValid = $form->getProjectIdValidity() && isProjectIdExists($form->getProjectId(), $projects);
 
     if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
-        var_dump($form->getValues());
-        die();
-        $isSavedCorrectly = $db->saveTask($form->getValues());
+        $isSavedCorrectly = $db->addTask($form->getValues());
         if (!$isSavedCorrectly) {
           header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
           die();
