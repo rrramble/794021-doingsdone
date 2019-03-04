@@ -158,7 +158,7 @@ if ($form->isMethodPost()) {
             <input
               class="form__input form__input--date"
               type="date" name="date" id="date"
-              value="<?= $dueDateInputType; ?>"
+              value="<?= $dueDateInInputType; ?>"
               placeholder="Введите дату в формате ДД.ММ.ГГГГ">
             <?php if (!$isDueDateValid): ?>
               <p class="form__message">
