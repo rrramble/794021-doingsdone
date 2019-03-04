@@ -4,6 +4,7 @@ include_once('../db-api.php');
 include_once('add-form.php');
 
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
+$SCRIPT_NAME_IF_SUCCESS = './add.php';
 $CLASS_INPUT_ERROR = 'form__input--error';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
@@ -40,7 +41,8 @@ if ($form->isMethodPost()) {
         if (!$isAddedCorrectly) {
           header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
           die();
-        }
+        };
+        header('Location: ' . $SCRIPT_NAME_IF_FAILURE);
     };
 
     $postTaskTitle = $form->getTitle();

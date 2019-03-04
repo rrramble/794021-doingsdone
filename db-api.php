@@ -1,4 +1,5 @@
 <?php
+include_once('functions.php');
 
 class DbApi
 {
@@ -14,8 +15,8 @@ class DbApi
     ];
     private $SqlQuerySTMT = [
         'ADD_TASK' => 'INSERT INTO tasks ' .
-          '(project_id, state_id, title, due_date, author_user_id, file_path)' .
-          'VALUES(?, 0, ?, ?, ?, ?)',
+          '(project_id, title, due_date, author_user_id, file_path)' .
+          'VALUES(?, ?, ?, ?, ?)',
     ];
 
     protected $handler;
@@ -44,20 +45,28 @@ class DbApi
         if (!$stmt) {
             $this->throwDbException();
         };
-        $dueDate = strtotime($values['dueDate']);
-        $savedFilenamePath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFilePathName']);
-
-        $isBound = mysqli_stmt_bind_param($stmt, 'isiis',
-          $values['projectId'],
-          $values['title'],
+        $result = mysqli_stmt_bind_param($stmt, 'issis',
+          $projectId,
+          $title,
           $dueDate,
-          $values['id'],
-          $savedFilenamePath
+          $authorUserId,
+          $savedFileUrlPath
         );
-        if (!$isBound) {
+        if (!$result) {
             $this->throwDbException();
         };
 
+        $projectId = (integer)$values['projectId'];
+        $title = $values['title'];
+        $dueDate = convertDateReadableToHtmlFormInput($values['dueDate']);
+        $authorUserId = (integer)$values['id'];
+        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFilePathName']);
+
+        $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            $this->throwDbException();
+        };
+        mysqli_stmt_close($stmt);
     }
 
     function getProjects()

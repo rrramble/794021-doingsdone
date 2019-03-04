@@ -132,7 +132,7 @@
     public function getValues()
     {
       $item = array();
-      $item['project_id'] = $this->Field['projectId']['value'];
+      $item['projectId'] = $this->Field['projectId']['value'];
       $item['title'] = $this->Field['title']['value'];
       $item['dueDate'] = $this->Field['dueDate']['value'];
 
