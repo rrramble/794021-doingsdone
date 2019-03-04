@@ -2,7 +2,7 @@
 
   class AddForm {
     private $PUBLIC_FOLDER = '/pub/';
-    
+
     private $State = [
       'isMethodPost' => null
     ];

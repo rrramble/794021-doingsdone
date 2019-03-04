@@ -51,10 +51,10 @@ if ($form->isMethodPost()) {
     } else {
         $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
     };
-    
+
     $dueDateReadable = $form->getDueDateReadable();
     $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
-    
+
     $dueDateIvalidMessage = !$isDueDateValid ?
         $FormMessage['DATE_MUST_BE_IN_FUTURE'] :
         '';
