@@ -36,8 +36,8 @@ if ($form->isMethodPost()) {
     if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
         $values = $form->getValues();
         $values['id'] = $currentUser['id'];
-        $isSavedCorrectly = $db->addTask($values);
-        if (!$isSavedCorrectly) {
+        $isAddedCorrectly = $db->addTask($values);
+        if (!$isAddedCorrectly) {
           header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
           die();
         }
