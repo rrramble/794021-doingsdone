@@ -14,7 +14,7 @@ $FormMessage = [
 ];
 
 $currentUser = [
-  'id' => 1
+  'id' => null
 ];
 
 $currentUser['id'] = 1;
