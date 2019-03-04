@@ -61,6 +61,9 @@
 
     private function getFormField($formTagName)
     {
+      if (!isset($_POST[$formTagName])) {
+        return null;
+      };
       return trim($_POST[$formTagName]) ?? null;
     }
 
