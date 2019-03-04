@@ -1,5 +1,14 @@
 <?php
 
+function convertDateReadableToHtmlFormInput($dateReadable)
+{
+    if (mb_strlen($dateReadable <= 0)) {
+        return '';
+    };
+    $date = date_create_from_format('d.m.Y', $dateReadable);
+    return date_format($date, 'Y-m-d');
+}
+
 function include_template($name, $data)
 {
     $name = 'templates/' . $name;
@@ -99,4 +108,35 @@ function getTasksFilteredByProjectId($tasks, $projectId)
         return $task['id'] === $projectId;
     });
     return $results;
+}
+
+/**
+ * param integer $projectId
+ * param mixed $projects
+ * return boolean
+ */
+function isProjectIdExists($projectId, $projects)
+{
+    $result = false;
+    foreach($projects as $project) {
+        if ($projectId === $project['id']) {
+            $result = true;
+            break;
+        };
+    };
+    return $result;
+}
+
+function isTaskExists($taskName, $tasks)
+{
+    $result = false;
+    $taskName = mb_strtoupper($taskName);
+
+    foreach($tasks as $task) {
+        if ($taskName === mb_strtoupper($task['title'])) {
+            $result = true;
+            break;
+        };
+    };
+    return $result;
 }
