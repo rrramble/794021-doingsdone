@@ -140,8 +140,6 @@
         $item['savedFileName'] = $_FILES['preview']['tmp_name'];
         $item['userFileName'] = $_FILES['preview']['name'];
       };
-      var_dump($item);
-      die();
       return $item;
     }
 
