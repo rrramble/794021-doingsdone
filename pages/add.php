@@ -28,6 +28,8 @@ $postTaskTitle = '';
 
 $isDueDateValid = true;
 $dueDateInInputType = '';
+$taskTitleIvalidMessage = '';
+$dueDateIvalidMessage = '';
 
 if ($form->isMethodPost()) {
     $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
@@ -64,7 +66,6 @@ $layoutData = [
     "pageTitle" => $WEBPAGE_TITLE,
     "projects" => $projects,
     "tasks" => $tasks,
-    "userId" => $currentUserId,
     
     "isTitleValid" => $isTitleValid,
     "currentUser" => $currentUser,
