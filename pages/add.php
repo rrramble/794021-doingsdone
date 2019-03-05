@@ -73,7 +73,8 @@ $layoutData = [
     "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
     "dueDateInInputType" => $dueDateInInputType,
     "dueDateIvalidMessage" => $dueDateIvalidMessage,
-    "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR']
+    "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR'],
+    "isDueDateValid" => $isDueDateValid,
 ];
 
 echo include_template("add.php", $layoutData);
