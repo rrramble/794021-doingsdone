@@ -31,7 +31,7 @@ class AbstractForm {
     /**
      * @return boolean
      */
-    protected function isFieldValid($fieldName)
+    public function isFieldValid($fieldName)
     {
         if (!isset($this->Field[$fieldName])) {
             throw new Exception('No such field in form class: ' . $fieldName);
