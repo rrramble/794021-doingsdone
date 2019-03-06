@@ -117,6 +117,15 @@ class DbApi
         return count($rows) > 0;
     }
 
+    public function isUserEmailExist($email)
+    { // DRY principle violated! Rewrite! See also: 'isProjectIdExists'
+        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
+        $query = "SELECT email FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return count($rows) > 0;
+    }
+
     private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
     {
         if (!isset($tempFileNamePath) || strlen($tempFileNamePath) <= 0) {
