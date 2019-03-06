@@ -98,6 +98,9 @@ class AbstractForm {
         if (!isset($this->Field[$fieldName])) {
             throw new Exception('No such field name in class: ' . $fieldName);
         };
+        if (!isset($this->Field[$fieldName]['value'])) {
+            throw new Exception('No "value" in field: ' . $fieldName);
+        };
         return $this->Field[$fieldName]['value'];
     }
 
@@ -110,8 +113,8 @@ class AbstractForm {
         if (!isset($this->Field[$fieldName])) {
             throw new Exception('No such field name in class: ' . $fieldName);
         };
-        if (isset($this->Field['isPublic']) && !$this->Field['isPublic']) {
-            throw new Exception('Field is not public: ' . $fieldName);
+        if (!isset($this->Field['isPublic']) || !$this->Field['isPublic']) {
+            return null;
         };
         return $this->getValue($fieldName);
     }
