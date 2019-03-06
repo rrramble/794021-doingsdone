@@ -77,7 +77,7 @@ class AbstractForm {
         if (!isset($_POST[$formTagName])) {
             throw new Exception('No such field in HTML form: ' . $formTagName);
         };
-        return trim($_POST[$formTagName]) ?? null;
+        return trim($_POST[$formTagName]);
     }
 
 
@@ -113,8 +113,9 @@ class AbstractForm {
         if (!isset($this->Field[$fieldName])) {
             throw new Exception('No such field name in class: ' . $fieldName);
         };
-        if (!isset($this->Field['isPublic']) || !$this->Field['isPublic']) {
-            return null;
+        $field = $this->Field[$fieldName];
+        if (!isset($field['isPublic']) || !$field['isPublic']) {
+            throw new Exception('Value is not public: ' . $fieldName);
         };
         return $this->getValue($fieldName);
     }
