@@ -117,10 +117,10 @@
 
     public function isMethodPost()
     {
-      if ($this->State['isMethodPost'] !== null) {
-        return $this->State['isMethodPost'];
-      }
-      return $_SERVER['REQUEST_METHOD'] === 'POST';
+      if ($this->State['isMethodPost'] === null) {
+        $this->State['isMethodPost'] = ($_SERVER['REQUEST_METHOD'] === 'POST');
+      };
+      return $this->State['isMethodPost'];
     }
 
     private function isTitleValid()

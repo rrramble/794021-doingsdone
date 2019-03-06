@@ -17,6 +17,9 @@ class DbApi
         'ADD_TASK' => 'INSERT INTO tasks ' .
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
+        'ADD_USER' => 'INSERT INTO users ' .
+          '(email, name, password_hash)' .
+          'VALUES(?, ?, ?)',
     ];
 
     protected $handler;
@@ -69,6 +72,33 @@ class DbApi
         mysqli_stmt_close($stmt);
     }
 
+    public function addUser($user)
+    {
+        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_USER']);
+        if (!$stmt) {
+            $this->throwDbException();
+        };
+        $result = mysqli_stmt_bind_param($stmt, 'sss',
+          $email,
+          $userName,
+          $passwordHash
+        );
+        if (!$result) {
+            $this->throwDbException();
+        };
+
+        $email = $user['email'];
+        $userName = $user['userName'];
+        $passwordHash = $user['passwordHash'];
+
+        $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            $this->throwDbException();
+        };
+        mysqli_stmt_close($stmt);
+    }
+
+
     function getProjects()
     {
         $query  = "SELECT * FROM projects";
@@ -112,6 +142,15 @@ class DbApi
         }
         $idEscaped = mysqli_real_escape_string($this->handler, (string)$id);
         $query = "SELECT id FROM projects WHERE id = '$idEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return count($rows) > 0;
+    }
+
+    public function isUserEmailExist($email)
+    { // DRY principle violated! Rewrite! See also: 'isProjectIdExists'
+        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
+        $query = "SELECT email FROM users WHERE email = '$emailEscaped'";
         $result = mysqli_query($this->handler, $query);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return count($rows) > 0;
