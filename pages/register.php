@@ -58,7 +58,6 @@ function isOverallFormValid($form, $db)
 {
     return
         $form->isValid() &&
-        !$db->isUserEmailExist($form->getValuePublic('email')) &&
-        true
+        !$db->isUserEmailExist($form->getValuePublic('email'))
     ;
 }
