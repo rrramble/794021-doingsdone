@@ -138,7 +138,7 @@ class AbstractForm {
     {
         if ($this->State['isMethodPost'] === null) {
             $this->State['isMethodPost'] =
-            $_SERVER['REQUEST_METHOD'] === 'POST';
+                $_SERVER['REQUEST_METHOD'] === 'POST';
         };
         return $this->State['isMethodPost'];
     }
