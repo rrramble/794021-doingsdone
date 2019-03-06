@@ -98,6 +98,17 @@ class DbApi
         mysqli_stmt_close($stmt);
     }
 
+    function getUserPasswordHash($email)
+    {
+        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
+        $query  = "SELECT password_hash FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            return NULL;
+        };
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $result ? $result[0]['password_hash'] : null;
+    }
 
     function getProjects()
     {
@@ -133,6 +144,12 @@ class DbApi
     function isConnected()
     {
         return (boolean)$this->handler;
+    }
+
+    function isValidUserCredential($email, $password)
+    {
+        $dbPasswordHash = $this->getUserPasswordHash($email);
+        return password_verify($password, $dbPasswordHash);
     }
 
     function isProjectIdExists($id)
