@@ -41,11 +41,10 @@ class AbstractForm {
             throw new Exception('No "value" field to validate: ' . $fieldName);
         };
 
-        if (!isset($this->Field[$fieldName]['validationCbName'])) {
+        if (!isset($this->Field[$fieldName]['validationCb'])) {
             return true;
         };
-
-        $callbackName = $this->Field[$fieldName]['validationCbName'];
+        $callbackName = $this->Field[$fieldName]['validationCb'];
         return $callbackName($this->Field[$fieldName]['value']);
     }
 
