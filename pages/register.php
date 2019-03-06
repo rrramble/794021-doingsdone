@@ -8,8 +8,9 @@ $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'register.php';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
-    'NO_TITLE_ERROR' => 'Нужно указать название',
-    'TITLE_ALREADY_EXISTS' => 'Название уже существует',
+    'EMAIL_IS_EMPTY' => 'Нужно указать электронную почту',
+    'EMAIL_IS_WRONG' => 'Неверный формат электронной почты',
+    'EMAIL_ALREADY_EXISTS' => 'Пользователь с такой электронной почтой уже зарегистрирован',
     'DATE_MUST_BE_IN_FUTURE' => 'Дата должна быть в будущем'
 ];
 
