@@ -33,7 +33,7 @@ class RegisterForm extends AbstractForm {
             parent::__construct();
 
             if ($this->isMethodPost()) {
-                $this->Field['passwordHash'] = password_hash(
+                $this->Field['passwordHash']['value'] = password_hash(
                     $this->getValue('password'),
                     PASSWORD_DEFAULT
                 );
