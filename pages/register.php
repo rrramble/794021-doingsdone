@@ -8,9 +8,10 @@ $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'register.php';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
-    'EMAIL_IS_EMPTY' => 'Нужно указать электронную почту',
+    'EMAIL_IS_EMPTY' => 'Указать электронную почту',
     'EMAIL_IS_WRONG' => 'Неверный формат электронной почты',
     'EMAIL_ALREADY_EXISTS' => 'Пользователь с такой электронной почтой уже зарегистрирован',
+    'USERNAME_IS_WRONG' => 'Указать имя пользователя'
 ];
 
 $layoutData = [
@@ -30,6 +31,14 @@ if ($form->isMethodPost()) {
     };
     $layoutData['data']['postEmail'] = $form->getValuePublic('email');
     $layoutData['data']['postUserName'] = $form->getValuePublic('userName');
+
+
+    $layoutData['data']['emailErrorMessage'] = !$form->isFieldValid('email') ?
+        $FormMessage['EMAIL_IS_WRONG'] :
+        '';
+    $layoutData['data']['userNameErrorMessage'] = !$form->isFieldValid('userName') ?
+        $FormMessage['USERNAME_IS_WRONG'] :
+        '';
 };
 
 echo include_template('register.php', $layoutData);
