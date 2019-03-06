@@ -24,21 +24,41 @@ $db = new DbApi();
 $form = new RegisterForm();
 
 if ($form->isMethodPost()) {
-    if ($form->isValid()) {
+    $postEmail = $form->getValuePublic('email');
+
+    if (isOverallFormValid($form, $db)) {
         $db->saveUser($form->getFieldsPublic());
         header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
         die();
     };
-    $layoutData['data']['postEmail'] = $form->getValuePublic('email');
+
+    $layoutData['data']['postEmail'] = $postEmail;
     $layoutData['data']['postUserName'] = $form->getValuePublic('userName');
+    $layoutData['data']['emailErrorMessage'] = '';
+    $layoutData['data']['userNameErrorMessage'] = '';
 
+    if (mb_strlen($postEmail) <= 0) {
+        $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_EMPTY'];
+    } elseif (!$form->isFieldValid('email')) {
+        $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_WRONG'];
+    } elseif ($db->isUserEmailExist($postEmail)) {
+        $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_ALREADY_EXISTS'];
+    };
 
-    $layoutData['data']['emailErrorMessage'] = !$form->isFieldValid('email') ?
-        $FormMessage['EMAIL_IS_WRONG'] :
-        '';
     $layoutData['data']['userNameErrorMessage'] = !$form->isFieldValid('userName') ?
         $FormMessage['USERNAME_IS_WRONG'] :
         '';
 };
 
 echo include_template('register.php', $layoutData);
+die();
+
+
+function isOverallFormValid($form, $db)
+{
+    return
+        $form->isValid() &&
+        !$db->isUserEmailExist($form->getValuePublic('email')) &&
+        true
+    ;
+}
