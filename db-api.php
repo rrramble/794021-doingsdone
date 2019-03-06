@@ -175,11 +175,6 @@ class DbApi
         return $url;
     }
 
-    public function SaveUser()
-    {
-        return; ////
-    }
-
     function throwDbException()
     {
         throw new Exception(mysqli_connect_error());
