@@ -12,7 +12,7 @@ class AbstractForm {
         if (!$this->isMethodPost()) {
             return;
         }
-        $this->saveFields();
+        $this->saveFieldsFromForm();
         $this->checkAndSaveFieldsValidity();
     }
 
@@ -122,7 +122,7 @@ class AbstractForm {
     /**
      * @return void
      */
-    protected function saveFields()
+    protected function saveFieldsFromForm()
     {
         foreach($this->Field as &$field) {
             if (isset($field['formTagName'])) {
