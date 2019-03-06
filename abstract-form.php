@@ -78,11 +78,13 @@ class AbstractForm {
 
     public function getFieldsPublic()
     {
-        return array_filter($this->Field, function($field) {
-            if (isset($field['isPublic']) && $field['isPublic']) {
-                return $field;
+        $result = [];
+        foreach ($this->Field as $key => $item) {
+            if (isset($item['isPublic']) && $item['isPublic']) {
+                $result[$key] = $this->getValue($key);
             };
-        });
+        };
+        return $result;
     }
 
     /**
