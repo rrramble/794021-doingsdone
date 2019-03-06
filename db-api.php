@@ -17,6 +17,9 @@ class DbApi
         'ADD_TASK' => 'INSERT INTO tasks ' .
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
+        'ADD_USER' => 'INSERT INTO users ' .
+          '(email, name, password_hash)' .
+          'VALUES(?, ?, ?)',
     ];
 
     protected $handler;
@@ -68,6 +71,33 @@ class DbApi
         };
         mysqli_stmt_close($stmt);
     }
+
+    public function addUser($user)
+    {
+        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_USER']);
+        if (!$stmt) {
+            $this->throwDbException();
+        };
+        $result = mysqli_stmt_bind_param($stmt, 'sss',
+          $email,
+          $userName,
+          $passwordHash
+        );
+        if (!$result) {
+            $this->throwDbException();
+        };
+
+        $email = $user['email'];
+        $userName = $user['userName'];
+        $passwordHash = $user['passwordHash'];
+
+        $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            $this->throwDbException();
+        };
+        mysqli_stmt_close($stmt);
+    }
+
 
     function getProjects()
     {
