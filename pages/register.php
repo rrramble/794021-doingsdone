@@ -27,7 +27,7 @@ if ($form->isMethodPost()) {
     $postEmail = $form->getValuePublic('email');
 
     if (isOverallFormValid($form, $db)) {
-        $db->saveUser($form->getFieldsPublic());
+        $db->addUser($form->getFieldsPublic());
         header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
         die();
     };
