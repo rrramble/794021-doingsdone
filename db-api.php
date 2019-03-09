@@ -70,6 +70,7 @@ class DbApi
             $this->throwDbException();
         };
         mysqli_stmt_close($stmt);
+        return true;
     }
 
     public function addUser($user)
@@ -139,6 +140,27 @@ class DbApi
             return NULL;
         };
         return $result;
+    }
+
+    function getUserDataByEmail($email)
+    {
+        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
+        $query = "SELECT id, name, email FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            $this->throwDbException();
+        };
+
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        if (count($rows) <= 0) {
+            $this->throwDbException();
+        };
+
+        return [
+            "id" => $rows[0]["id"],
+            "email" => $rows[0]["email"],
+            "userName" => $rows[0]["name"],
+        ];
     }
 
     function isConnected()
