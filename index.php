@@ -3,7 +3,7 @@
     include_once("db-api.php");
     include_once('session.php');
 
-    const SHOW_COLPETE_TASKS_CSS_ATTRIBUTE = "checked";
+    const SHOW_COMPLETE_TASKS_CSS_ATTRIBUTE = "checked";
     const WEBPAGE_TITLE = "Дела в порядке";
     $show_complete_tasks = rand(0, 1);
 
@@ -13,7 +13,7 @@
     $layoutData = [
         "data" => [
             "pageTitle" => WEBPAGE_TITLE,
-            "show_complete_tasks_attribute" => SHOW_COLPETE_TASKS_CSS_ATTRIBUTE,
+            "show_complete_tasks_attribute" => SHOW_COMPLETE_TASKS_CSS_ATTRIBUTE,
             "show_complete_tasks" => $show_complete_tasks,
             "user" => $session->getUserData(),
         ]
