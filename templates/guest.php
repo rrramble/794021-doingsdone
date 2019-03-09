@@ -4,7 +4,7 @@
   </a>
 
   <div class="main-header__side">
-    <a class="main-header__side-item button button--transparent" href="form-authorization.html">Войти</a>
+    <a class="main-header__side-item button button--transparent" href="/pages/auth.php">Войти</a>
   </div>
 </header>
 
@@ -14,7 +14,6 @@
 
     <div class="welcome__text">
       <p>«Дела в порядке» — это веб приложение для удобного ведения списка дел. Сервис помогает пользователям не забывать о предстоящих важных событиях и задачах.</p>
-
       <p>После создания аккаунта, пользователь может начать вносить свои дела, деля их по проектам и указывая сроки.</p>
     </div>
 
