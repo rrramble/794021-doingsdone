@@ -23,7 +23,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       </a>
 
       <div class="main-header__side">
-        <a class="main-header__side-item button button--plus" href="form-task.html">Добавить задачу</a>
+        <a class="main-header__side-item button button--plus" href="/pages/add.php">Добавить задачу</a>
 
         <div class="main-header__side-item user-menu">
           <div class="user-menu__image">
@@ -31,7 +31,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
           </div>
 
           <div class="user-menu__data">
-            <p>Константин</p>
+            <p><?= $data["user"]["userName"]; ?></p>
 
             <a href="#">Выйти</a>
           </div>
@@ -45,11 +45,11 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
         <nav class="main-navigation">
           <ul class="main-navigation__list">
-          <?php foreach ($projects as $project): ?>
+          <?php foreach ($data["projects"] as $project): ?>
             <?php
                 $url = getProjectUrl($project['id']);
                 $title = strip_tags($project['title']);
-                $count = getTasksCount($project['id'], $currentUser['id'], $tasks);
+                $count = getTasksCount($project['id'], $data["user"]["id"], $data["tasks"]);
             ?>
             <li class="main-navigation__list-item">
                 <a class="main-navigation__list-item-link" href="<?= $url; ?>">
@@ -74,14 +74,14 @@ $CLASS_INPUT_ERROR = 'form__input--error';
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
             <input
-                class="form__input <?php if (!$isTitleValid) {echo $CLASS_INPUT_ERROR;} ?>"
+                class="form__input <?php if (!$data['isTitleValid']) {echo $CLASS_INPUT_ERROR;} ?>"
                 type="text" name="name" id="name"
-                value="<?= $postTaskTitle; ?>"
+                value="<?= $data["postTaskTitle"]; ?>"
                 placeholder="Введите название">
 
-            <?php if(!$isTitleValid): ?>
+            <?php if(!$data['isTitleValid']): ?>
               <p class="form__message">
-                <?= $taskTitleIvalidMessage; ?>
+                <?= $data["taskTitleIvalidMessage"]; ?>
               </p>
             <?php endif; ?>
 
@@ -91,7 +91,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
             <label class="form__label" for="project">Проект</label>
 
               <select class="form__input form__input--select" name="project" id="project">
-              <?php foreach($projects as $project): ?>
+              <?php foreach($data["projects"] as $project): ?>
               <?php
                 $title = $project['title'];
                 $id = $project['id'];
@@ -109,9 +109,9 @@ $CLASS_INPUT_ERROR = 'form__input--error';
               type="date" name="date" id="date"
               value="<?= $dueDateInInputType; ?>"
               placeholder="Введите дату в формате ДД.ММ.ГГГГ">
-            <?php if (!$isDueDateValid): ?>
+            <?php if (!$data["isDueDateValid"]): ?>
               <p class="form__message">
-                <?= $dueDateIvalidMessage; ?>
+                <?= $data["dueDateIvalidMessage"]; ?>
               </p>
             <?php endif; ?>
           </div>
@@ -130,9 +130,9 @@ $CLASS_INPUT_ERROR = 'form__input--error';
             <input class="button" type="submit" name="" value="Добавить">
           </div>
 
-          <?php if (!$isTitleValid || !$isDueDateValid): ?>
+          <?php if (!$data["isTitleValid"] || !$data["isDueDateValid"]): ?>
             <p class="form__message">
-              <?= $formOverallErrorMessage; ?>
+              <?= $data["formOverallErrorMessage"]; ?>
             </p>
           <?php endif; ?>
 
@@ -150,7 +150,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <p>Веб-приложение для удобного ведения списка дел.</p>
     </div>
 
-    <a class="main-footer__button button button--plus" href="form-task.html">Добавить задачу</a>
+    <a class="main-footer__button button button--plus" href="/pages/add.php">Добавить задачу</a>
 
     <div class="main-footer__social social">
       <span class="visually-hidden">Мы в соцсетях:</span>

@@ -1,6 +1,7 @@
 <?php
 include_once('../functions.php');
 include_once('../db-api.php');
+include_once('../session.php');
 include_once('add-form.php');
 
 $WEBPAGE_TITLE = 'Добавление задачи';
@@ -13,15 +14,14 @@ $FormMessage = [
     'DATE_MUST_BE_IN_FUTURE' => 'Дата должна быть в будущем'
 ];
 
-$currentUser = [
-    'id' => null
-];
-
-$currentUser['id'] = 1;
 $db = new DbApi();
 $form = new AddForm();
+$session = new Session();
+
+$user = $session->getUserData();
+
 $projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks($currentUser['id']));
+$tasks = getAdaptedTasks($db->getTasks($user["id"]));
 
 $isTitleValid = true;
 $postTaskTitle = '';
@@ -38,9 +38,9 @@ if ($form->isMethodPost()) {
     
     if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
         $values = $form->getValues();
-        $values['id'] = $currentUser['id'];
+        $values['id'] = $session->getUserData()['id'];
         $isAddedCorrectly = $db->addTask($values);
-        if (!$isAddedCorrectly) {
+        if ($isAddedCorrectly) {
             header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
             die();
         };
@@ -63,18 +63,21 @@ if ($form->isMethodPost()) {
 }
 
 $layoutData = [
-    "pageTitle" => $WEBPAGE_TITLE,
-    "projects" => $projects,
-    "tasks" => $tasks,
-    
-    "isTitleValid" => $isTitleValid,
-    "currentUser" => $currentUser,
-    "postTaskTitle" => $postTaskTitle,
-    "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
-    "dueDateInInputType" => $dueDateInInputType,
-    "dueDateIvalidMessage" => $dueDateIvalidMessage,
-    "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR'],
-    "isDueDateValid" => $isDueDateValid,
+    "data" => [
+        "pageTitle" => $WEBPAGE_TITLE,
+        "projects" => $projects,
+        "tasks" => $tasks,
+        
+        "isTitleValid" => $isTitleValid,
+        "currentUser" => $user,
+        "postTaskTitle" => $postTaskTitle,
+        "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
+        "dueDateInInputType" => $dueDateInInputType,
+        "dueDateIvalidMessage" => $dueDateIvalidMessage,
+        "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR'],
+        "isDueDateValid" => $isDueDateValid,
+        "user" => $session->getUserData(),
+    ],
 ];
 
 echo include_template("add.php", $layoutData);

@@ -1,10 +1,9 @@
 <?php
     include_once("./functions.php");
 
-    if ((!isset($data["user"]) || count($data["user"]) <= 0)) {
+    if (!isset($data["user"])) {
         $data["user"] = null;
     };
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -33,7 +32,7 @@
                 </a>
 
                 <div class="main-header__side">
-                    <a class="main-header__side-item button button--plus open-modal" href="pages/form-task.html">Добавить задачу</a>
+                    <a class="main-header__side-item button button--plus open-modal" href="/pages/add.php">Добавить задачу</a>
 
                     <div class="main-header__side-item user-menu">
                         <div class="user-menu__image">
@@ -41,9 +40,9 @@
                         </div>
 
                         <div class="user-menu__data">
-                            <p>Константин</p>
+                            <p><?= $data["user"]["userName"]; ?></p>
 
-                            <a href="#">Выйти</a>
+                            <a href="/pages/logout.php">Выйти</a>
                         </div>
                     </div>
                 </div>
@@ -60,7 +59,7 @@
                                 <?php
                                     $url = getProjectUrl($project['id']);
                                     $title = strip_tags($project['title']);
-                                    $count = getTasksCount($project['id'], $data['userId'], $data["tasks"]);
+                                    $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
                                 ?>
                                 <li class="main-navigation__list-item">
                                     <a class="main-navigation__list-item-link" href="<?= $url; ?>">
@@ -95,7 +94,7 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-        <a class="main-footer__button button button--plus" href="pages/form-task.html">Добавить задачу</a>
+        <a class="main-footer__button button button--plus" href="/pages/add.php">Добавить задачу</a>
 
         <div class="main-footer__social social">
             <span class="visually-hidden">Мы в соцсетях:</span>
