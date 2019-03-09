@@ -55,7 +55,11 @@ if ($form->isMethodPost()) {
     };
 };
 
-echo include_template('auth.php', $layoutData);
+$layoutData["data"]["components"] = [
+    "main" => include_template("auth.php", $layoutData["data"]),
+];
+
+echo include_template('layout.php', $layoutData);
 die();
 
 
