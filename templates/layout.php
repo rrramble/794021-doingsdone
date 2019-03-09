@@ -1,6 +1,4 @@
 <?php
-    include_once("./functions.php");
-
     if (!isset($data["user"])) {
         $data["user"] = null;
     };
