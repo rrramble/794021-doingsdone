@@ -80,4 +80,8 @@ $layoutData = [
     ],
 ];
 
-echo include_template("add.php", $layoutData);
+$layoutData["data"]["components"] = [
+    "main" => include_template("add.php", $layoutData),
+];
+
+echo include_template("layout.php", $layoutData);
