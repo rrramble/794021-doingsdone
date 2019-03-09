@@ -2,6 +2,7 @@
 include_once('../functions.php');
 include_once('../db-api.php');
 include_once('auth-form.php');
+include_once('../session.php');
 
 $WEBPAGE_TITLE = 'Авторизация на сайте';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
@@ -18,12 +19,26 @@ $layoutData = [
     ],
 ];
 
+$session = new Session();
+$layoutData["data"]["user"] = $session->getUserData();
+
+if ($layoutData["data"]["user"]) {
+    header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
+    die();
+};
+
 $db = new DbApi();
 $form = new AuthForm();
 
 if ($form->isMethodPost()) {
 
     if (isOverallFormValid($form, $db)) {
+        $userData = $db->getUserDataByEmail($form->getValuePublic('email'));
+        $session->setUserData([
+            "email" => $userData["email"],
+            "userName" => $userData["userName"],
+            "id" => $userData["id"],
+        ]);
         header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
         die();
     };
