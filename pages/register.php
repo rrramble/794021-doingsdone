@@ -17,6 +17,7 @@ $FormMessage = [
 $layoutData = [
     'data' => [
         'pageTitle' => $WEBPAGE_TITLE,
+        'isShowTemplateEvenUnauthorised' => true,
     ],
 ];
 
@@ -50,7 +51,9 @@ if ($form->isMethodPost()) {
         '';
 };
 
-echo include_template('register.php', $layoutData);
+$layoutData['data']['components']['main'] = include_template('register.php', $layoutData);
+
+echo include_template('layout.php', $layoutData);
 die();
 
 

@@ -4,8 +4,6 @@
         "TASK_IMPORTANT" => "task--important",
     ];
 ?>
-
-<main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
     <form class="search-form" action="index.php" method="post">
@@ -65,4 +63,3 @@
         <?php endforeach; ?>
 
     </table>
-</main>
