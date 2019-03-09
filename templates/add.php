@@ -33,7 +33,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
           <div class="user-menu__data">
             <p><?= $data["user"]["userName"]; ?></p>
 
-            <a href="#">Выйти</a>
+            <a href="/pages/logout.php">Выйти</a>
           </div>
         </div>
       </div>
