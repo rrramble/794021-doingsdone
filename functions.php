@@ -31,7 +31,10 @@ function getTasksCount($projectId, $userId, $tasks)
 {
     $count = 0;
     foreach($tasks as $task) {
-        if ($task['projectId'] === $projectId && $task['authorUserId'] === $userId) {
+        if (
+            (string)$task['projectId'] === (string)$projectId &&
+            (string)$task['authorUserId'] === (string)$userId
+        ) {
             $count++;
         };
     };
