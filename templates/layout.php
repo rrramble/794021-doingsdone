@@ -9,9 +9,9 @@
 <head>
     <meta charset="UTF-8">
     <title><?= strip_tags($data["pageTitle"]); ?></title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/flatpickr.min.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/flatpickr.min.css">
 </head>
 
 <h1 class="visually-hidden">Дела в порядке</h1>
