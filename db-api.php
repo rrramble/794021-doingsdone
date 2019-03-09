@@ -70,6 +70,7 @@ class DbApi
             $this->throwDbException();
         };
         mysqli_stmt_close($stmt);
+        return true;
     }
 
     public function addUser($user)
@@ -98,6 +99,17 @@ class DbApi
         mysqli_stmt_close($stmt);
     }
 
+    function getUserPasswordHash($email)
+    {
+        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
+        $query  = "SELECT password_hash FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            return NULL;
+        };
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $result ? $result[0]['password_hash'] : null;
+    }
 
     function getProjects()
     {
@@ -130,9 +142,36 @@ class DbApi
         return $result;
     }
 
+    function getUserDataByEmail($email)
+    {
+        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
+        $query = "SELECT id, name, email FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            $this->throwDbException();
+        };
+
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        if (count($rows) <= 0) {
+            $this->throwDbException();
+        };
+
+        return [
+            "id" => $rows[0]["id"],
+            "email" => $rows[0]["email"],
+            "userName" => $rows[0]["name"],
+        ];
+    }
+
     function isConnected()
     {
         return (boolean)$this->handler;
+    }
+
+    function isValidUserCredential($email, $password)
+    {
+        $dbPasswordHash = $this->getUserPasswordHash($email);
+        return password_verify($password, $dbPasswordHash);
     }
 
     function isProjectIdExists($id)

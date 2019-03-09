@@ -1,73 +1,86 @@
+<?php
+    if (!isset($data["user"])) {
+        $data["user"] = null;
+    };
+?>
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
     <meta charset="UTF-8">
     <title><?= strip_tags($data["pageTitle"]); ?></title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/flatpickr.min.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/flatpickr.min.css">
 </head>
 
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
     <div class="container container--with-sidebar">
-        <header class="main-header">
-            <a href="/">
-                <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
-            </a>
 
-            <div class="main-header__side">
-                <a class="main-header__side-item button button--plus open-modal" href="pages/form-task.html">Добавить задачу</a>
+        <?php if (!$data["user"]): ?>
+            <?= include_template("guest.php", $data); ?>
 
-                <div class="main-header__side-item user-menu">
-                    <div class="user-menu__image">
-                        <img src="img/user.png" width="40" height="40" alt="Пользователь">
-                    </div>
+        <?php else: ?>
 
-                    <div class="user-menu__data">
-                        <p>Константин</p>
+            <header class="main-header">
+                <a href="/">
+                    <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
+                </a>
 
-                        <a href="#">Выйти</a>
+                <div class="main-header__side">
+                    <a class="main-header__side-item button button--plus open-modal" href="/pages/add.php">Добавить задачу</a>
+
+                    <div class="main-header__side-item user-menu">
+                        <div class="user-menu__image">
+                            <img src="img/user.png" width="40" height="40" alt="Пользователь">
+                        </div>
+
+                        <div class="user-menu__data">
+                            <p><?= $data["user"]["userName"]; ?></p>
+
+                            <a href="/pages/logout.php">Выйти</a>
+                        </div>
                     </div>
                 </div>
+            </header>
+
+            <div class="content">
+                <section class="content__side">
+                    <h2 class="content__side-heading">Проекты</h2>
+
+                    <nav class="main-navigation">
+                        <ul class="main-navigation__list">
+
+                            <?php foreach ($data["projects"] as $project): ?>
+                                <?php
+                                    $url = getProjectUrl($project['id']);
+                                    $title = strip_tags($project['title']);
+                                    $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
+                                ?>
+                                <li class="main-navigation__list-item">
+                                    <a class="main-navigation__list-item-link" href="<?= $url; ?>">
+                                        <?= $title ?>
+                                    </a>
+                                    <span class="main-navigation__list-item-count">
+                                        <?= $count ?>
+                                    </span>
+                                </li>
+                            <?php endforeach; ?>
+
+                        </ul>
+                    </nav>
+
+                    <a class="button button--transparent button--plus content__side-button"
+                    href="pages/form-project.html" target="project_add">Добавить проект</a>
+                </section>
+
+                <?= $data["components"]["main"]; ?>
+
             </div>
-        </header>
+        <?php endif; ?>
 
-        <div class="content">
-            <section class="content__side">
-                <h2 class="content__side-heading">Проекты</h2>
-
-                <nav class="main-navigation">
-                    <ul class="main-navigation__list">
-                        
-                        <?php foreach ($data["projects"] as $project): ?>
-                            <?php
-                                $url = getProjectUrl($project['id']);
-                                $title = strip_tags($project['title']);
-                                $count = getTasksCount($project['id'], $data['userId'], $data["tasks"]);
-                            ?>
-                            <li class="main-navigation__list-item">
-                                <a class="main-navigation__list-item-link" href="<?= $url; ?>">
-                                    <?= $title ?>
-                                </a>
-                                <span class="main-navigation__list-item-count">
-                                    <?= $count ?>
-                                </span>
-                            </li>
-                        <?php endforeach; ?>
-
-                    </ul>
-                </nav>
-
-                <a class="button button--transparent button--plus content__side-button"
-                   href="pages/form-project.html" target="project_add">Добавить проект</a>
-            </section>
-
-            <?= $data["components"]["main"]; ?>
-
-        </div>
     </div>
 </div>
 
@@ -79,7 +92,7 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-        <a class="main-footer__button button button--plus" href="pages/form-task.html">Добавить задачу</a>
+        <a class="main-footer__button button button--plus" href="/pages/add.php">Добавить задачу</a>
 
         <div class="main-footer__social social">
             <span class="visually-hidden">Мы в соцсетях:</span>
