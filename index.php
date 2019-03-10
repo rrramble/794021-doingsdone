@@ -17,16 +17,25 @@
         $showCompleteTasks = (integer)$session->getCustomProp("showCompleted");
     };
     
+    if (isset($_GET["filter"])) {
+        $taskFilter = (integer)($_GET["filter"]);
+        $session->setCustomProp("filter", $filterTasks);
+    } else {
+        $taskFilter = (integer)$session->getCustomProp("filter");
+    };
+
+    
     $layoutData = [
         "data" => [
             "pageTitle" => WEBPAGE_TITLE,
             "showCompleteTasks" => $showCompleteTasks,
             "user" => $session->getUserData(),
+            "tasksFilter" => $taskFilter,
         ]
     ];
 
     $layoutData["data"]["tasks"] = isset($layoutData["data"]["user"]["id"]) ?
-        getAdaptedTasks($db->getTasks($layoutData["data"]["user"]["id"])) :
+        getAdaptedTasks($db->getTasks($layoutData["data"]["user"]["id"]), $taskFilter) :
         NULL;
 
     $layoutData["data"]["projects"] = isset($layoutData["data"]["user"]["id"]) ?
