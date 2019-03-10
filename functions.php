@@ -5,8 +5,13 @@ function convertDateReadableToHtmlFormInput($dateReadable)
     if (mb_strlen($dateReadable <= 0)) {
         return '';
     };
-    $date = date_create_from_format('d.m.Y', $dateReadable);
-    return date_format($date, 'Y-m-d');
+    $dateDMY = date_create_from_format('d.m.Y', $dateReadable);
+    $dateYMD = date_create_from_format('Y-m-d', $dateReadable);
+
+    if (!$dateDMY && !$dateYMD) {
+        throw new Exception("Is not a date: " . $dateReadable);
+    };
+    return date_format($dateDMY ? $dateDMY : $dateYMD, 'Y-m-d');
 }
 
 function include_template($name, $data)
