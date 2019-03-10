@@ -2,11 +2,11 @@
 include_once('../functions.php');
 include_once('../db-api.php');
 include_once('../session.php');
-include_once('add-form.php');
+include_once('add-task-form.php');
 
 $WEBPAGE_TITLE = 'Добавление задачи';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
-$SCRIPT_NAME_IF_FAILURE = './add.php';
+$SCRIPT_NAME_IF_FAILURE = './add-task.php';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'NO_TITLE_ERROR' => 'Нужно указать название',
@@ -81,7 +81,7 @@ $layoutData = [
 ];
 
 $layoutData["data"]["components"] = [
-    "main" => include_template("add.php", $layoutData),
+    "main" => include_template("add-task.php", $layoutData),
 ];
 
 echo include_template("layout.php", $layoutData);

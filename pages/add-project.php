@@ -6,7 +6,7 @@ include_once('add-project-form.php');
 
 const WEBPAGE_TITLE = 'Добавление проекта';
 const SCRIPT_NAME_IF_SUCCESS = '/index.php';
-const SCRIPT_NAME_IF_FAILURE = './add.php';
+const SCRIPT_NAME_IF_FAILURE = 'add-project.php';
 const FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'NO_TITLE_ERROR' => 'Нужно указать название',
