@@ -5,7 +5,6 @@
 
     const SHOW_COMPLETE_TASKS_CSS_ATTRIBUTE = "checked";
     const WEBPAGE_TITLE = "Дела в порядке";
-    $show_complete_tasks = rand(0, 1);
 
     $db = new DbApi();
     $session = new Session();
@@ -13,8 +12,7 @@
     $layoutData = [
         "data" => [
             "pageTitle" => WEBPAGE_TITLE,
-            "show_complete_tasks_attribute" => SHOW_COMPLETE_TASKS_CSS_ATTRIBUTE,
-            "show_complete_tasks" => $show_complete_tasks,
+            "showCompleteTasks" => (integer)($_GET["show_completed"] ?? 0),
             "user" => $session->getUserData(),
         ]
     ];

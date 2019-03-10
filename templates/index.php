@@ -21,13 +21,10 @@
         </nav>
 
         <label class="checkbox">
-            <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
             <input class="checkbox__input visually-hidden show_completed" type="checkbox" 
-                <?php if ($show_complete_tasks === 1)
-                {
-                    echo $show_complete_tasks_attribute;
-                }
-                ?>
+                <?php if ($data["showCompleteTasks"]): ?>
+                checked
+                <?php endif; ?>
             >
             <span class="checkbox__text">Показывать выполненные</span>
         </label>
@@ -37,7 +34,7 @@
         <?php foreach($tasks as $task): ?>
             <?php
                 if (
-                    ($show_complete_tasks || !$task["isDone"]) &&
+                    ($data["showCompleteTasks"] || !$task["isDone"]) &&
                     ($task["projectId"] === (integer)$currentProjectId || $currentProjectId === NULL)
                 ): 
             ?>
