@@ -80,7 +80,7 @@ function getAdaptedTasks($dbTasks)
         $item['title'] = $dbTask['title'];
         $item['dueDate'] = $dbTask['due_date'];
         $item['projectId'] = (integer)$dbTask['project_id'];
-        $item['isDone'] = $dbTask['state_id'] === $TASK_STATE_DONE;
+        $item['isDone'] = (integer)$dbTask['state_id'] === (integer)$TASK_STATE_DONE;
         $item['authorUserId'] = (integer)$dbTask['author_user_id'];
         array_push($results, $item);
     };
