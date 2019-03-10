@@ -105,6 +105,18 @@ function getAdaptedProjects($dbProjects)
     return $results;
 };
 
+function getToggledTaskState()
+{
+    if (!isset($_GET["task_id"]) || !isset($_GET["check"])) {
+        return null;
+    };
+
+    return [
+        "id" => (integer)$_GET["task_id"],
+        "isDone" => (integer)$_GET["check"],
+    ];
+}
+
 function getProjectUrl($projectId)
 {
     return '/index.php?id=' . $projectId;

@@ -8,6 +8,8 @@
 
     $db = new DbApi();
     $session = new Session();
+
+    $db->setTaskIsDone(getToggledTaskState());
     
     $layoutData = [
         "data" => [
