@@ -10,11 +10,17 @@
     $session = new Session();
 
     $db->setTaskIsDone(getToggledTaskState());
+    if (isset($_GET["show_completed"])) {
+        $showCompleteTasks = (integer)($_GET["show_completed"]);
+        $session->setCustomProp("showCompleted", $showCompleteTasks);
+    } else {
+        $showCompleteTasks = (integer)$session->getCustomProp("showCompleted");
+    };
     
     $layoutData = [
         "data" => [
             "pageTitle" => WEBPAGE_TITLE,
-            "showCompleteTasks" => (integer)($_GET["show_completed"] ?? 0),
+            "showCompleteTasks" => $showCompleteTasks,
             "user" => $session->getUserData(),
         ]
     ];
