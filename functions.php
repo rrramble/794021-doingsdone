@@ -1,4 +1,5 @@
 <?php
+const SERVER_TIMEZONE = "Asia/Oral";
 
 function convertDateReadableToHtmlFormInput($dateReadable)
 {
@@ -66,21 +67,42 @@ function getHoursDiff($recent, $elder)
     return floor($hoursDiff);
 };
 
-function getAdaptedTasks($dbTasks)
+function getAdaptedTasks($dbTasks, $filter = 0)
 {
     $TASK_STATE_DONE = 1;
     $results = [];
 
     if (!$dbTasks) {
         return $results;
-    }
+    };
+    date_default_timezone_set(SERVER_TIMEZONE);
+    $todayInt = (integer)date("Ymd");
 
     foreach($dbTasks as $dbTask) {
+        $item['isDone'] = (integer)$dbTask['state_id'] === (integer)$TASK_STATE_DONE;
+
+        list($year, $month, $day) = sscanf($dbTask['due_date'], "%d-%d-%d");
+        $dueDateInt = $year * 10000 + $month * 100 + $day;
+        if ($dueDateInt === 0) {
+            $dueDateInt = null;
+            $item['dueDate'] = "";
+        } else {
+            $item['dueDate'] = sprintf("%04d-%02d-%02d", $year, $month, $day);
+        };
+
+        if ($filter === 1 && $dueDateInt !== $todayInt) {
+            continue;
+        };
+        if ($filter === 2 && $dueDateInt !== $todayInt + 1) {
+            continue;
+        };
+        if ($filter === 3 && ($dueDateInt === null || $dueDateInt >= $todayInt || $item["isDone"])) {
+            continue;
+        };
+
         $item['id'] = (integer)$dbTask['id'];
         $item['title'] = $dbTask['title'];
-        $item['dueDate'] = $dbTask['due_date'];
         $item['projectId'] = (integer)$dbTask['project_id'];
-        $item['isDone'] = (integer)$dbTask['state_id'] === (integer)$TASK_STATE_DONE;
         $item['authorUserId'] = (integer)$dbTask['author_user_id'];
         array_push($results, $item);
     };
