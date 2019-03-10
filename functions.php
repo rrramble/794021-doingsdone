@@ -3,7 +3,7 @@
 function convertDateReadableToHtmlFormInput($dateReadable)
 {
     if (mb_strlen($dateReadable <= 0)) {
-        return '';
+        return null;
     };
     $dateDMY = date_create_from_format('d.m.Y', $dateReadable);
     $dateYMD = date_create_from_format('Y-m-d', $dateReadable);
