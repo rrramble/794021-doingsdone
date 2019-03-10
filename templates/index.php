@@ -48,7 +48,8 @@
                 <tr class="tasks__item task <?= $classTaskCompleted; ?> <?= $classTaskImportant; ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
-                            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox"
+                            value="<?= $task['isDone']; ?>">
                             <span class="checkbox__text"><?php echo $task["title"] ?></span>
                         </label>
                     </td>
