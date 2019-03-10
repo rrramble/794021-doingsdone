@@ -1,7 +1,6 @@
 <?php
 $CLASS_INPUT_ERROR = 'form__input--error';
 ?>
-<main class="content__main">
   <h2 class="content__main-heading">Добавление задачи</h2>
 
   <form class="form"  action="/pages/add.php" method="post" enctype="multipart/form-data">
@@ -72,4 +71,3 @@ $CLASS_INPUT_ERROR = 'form__input--error';
     <?php endif; ?>
 
   </form>
-</main>
