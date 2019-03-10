@@ -143,3 +143,17 @@ function isTaskExists($taskName, $tasks)
     };
     return $result;
 }
+
+function isTitleExist($title, $list)
+{
+    $result = false;
+    $title = mb_strtoupper($title);
+
+    foreach($list as $item) {
+        if ($title === mb_strtoupper($item['title'])) {
+            $result = true;
+            break;
+        };
+    };
+    return $result;
+}
