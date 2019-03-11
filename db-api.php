@@ -17,10 +17,16 @@ class DbApi
         'ADD_TASK' => 'INSERT INTO tasks ' .
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
+        'ADD_PROJECT' => 'INSERT INTO projects ' .
+            '(title)' .
+            'VALUES(?)',
         'ADD_USER' => 'INSERT INTO users ' .
           '(email, name, password_hash)' .
           'VALUES(?, ?, ?)',
-    ];
+        'TASK_DONE' => 'UPDATE tasks ' .
+          'SET state_id = ? ' .
+          'WHERE id = ?',
+        ];
 
     protected $handler;
 
@@ -40,6 +46,29 @@ class DbApi
         if ($this->handler) {
             mysqli_set_charset($this->handler, $this->DbSettings['ENCODING']);
         };
+    }
+
+    public function addProject($values)
+    {
+        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_PROJECT']);
+        if (!$stmt) {
+            $this->throwDbException();
+        };
+        $result = mysqli_stmt_bind_param($stmt, 's',
+          $title
+        );
+        if (!$result) {
+            $this->throwDbException();
+        };
+
+        $title = $values['title'];
+
+        $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            $this->throwDbException();
+        };
+        mysqli_stmt_close($stmt);
+        return true;
     }
 
     public function addTask($values)
@@ -186,6 +215,15 @@ class DbApi
         return count($rows) > 0;
     }
 
+    public function isTaskStateExist($stateId)
+    {
+        $stateIdEscaped = mysqli_real_escape_string($this->handler, (string)$stateId);
+        $query = "SELECT id FROM task_states WHERE id = '$stateIdEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return count($rows) > 0;
+    }
+
     public function isUserEmailExist($email)
     { // DRY principle violated! Rewrite! See also: 'isProjectIdExists'
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
@@ -212,6 +250,37 @@ class DbApi
 
         $url = $this->URL_FILE_FOLDER . $filename;
         return $url;
+    }
+
+    public function setTaskIsDone($taskState)
+    {
+        if (!$taskState) {
+            return false;
+        };
+
+        $taskIsDoneState = (integer)$taskState["isDone"];
+        $taskId = (integer)$taskState["id"];
+
+        if (!$this->isTaskStateExist($taskIsDoneState)) {
+            return false;
+        };
+
+        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['TASK_DONE']);
+        if (!$stmt) {
+            $this->throwDbException();
+        };
+
+        $result = mysqli_stmt_bind_param($stmt, 'ii',
+            $taskIsDoneState,
+            $taskId
+        );
+        if (!$result) {
+            $this->throwDbException();
+        };
+
+        $result = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        return true;
     }
 
     function throwDbException()

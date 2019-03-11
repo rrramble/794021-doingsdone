@@ -1,10 +1,9 @@
 <?php
 $CLASS_INPUT_ERROR = 'form__input--error';
 ?>
-<main class="content__main">
   <h2 class="content__main-heading">Добавление задачи</h2>
 
-  <form class="form"  action="/pages/add.php" method="post" enctype="multipart/form-data">
+  <form class="form"  action="/pages/add-task.php" method="post" enctype="multipart/form-data">
     <div class="form__row">
       <label class="form__label" for="name">Название <sup>*</sup></label>
 
@@ -72,4 +71,3 @@ $CLASS_INPUT_ERROR = 'form__input--error';
     <?php endif; ?>
 
   </form>
-</main>

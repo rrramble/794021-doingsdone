@@ -1,12 +1,18 @@
 <?php
+const SERVER_TIMEZONE = "Asia/Oral";
 
 function convertDateReadableToHtmlFormInput($dateReadable)
 {
     if (mb_strlen($dateReadable <= 0)) {
-        return '';
+        return null;
     };
-    $date = date_create_from_format('d.m.Y', $dateReadable);
-    return date_format($date, 'Y-m-d');
+    $dateDMY = date_create_from_format('d.m.Y', $dateReadable);
+    $dateYMD = date_create_from_format('Y-m-d', $dateReadable);
+
+    if (!$dateDMY && !$dateYMD) {
+        throw new Exception("Is not a date: " . $dateReadable);
+    };
+    return date_format($dateDMY ? $dateDMY : $dateYMD, 'Y-m-d');
 }
 
 function include_template($name, $data)
@@ -61,21 +67,42 @@ function getHoursDiff($recent, $elder)
     return floor($hoursDiff);
 };
 
-function getAdaptedTasks($dbTasks)
+function getAdaptedTasks($dbTasks, $filter = 0)
 {
     $TASK_STATE_DONE = 1;
     $results = [];
 
     if (!$dbTasks) {
         return $results;
-    }
+    };
+    date_default_timezone_set(SERVER_TIMEZONE);
+    $todayInt = (integer)date("Ymd");
 
     foreach($dbTasks as $dbTask) {
+        $item['isDone'] = (integer)$dbTask['state_id'] === (integer)$TASK_STATE_DONE;
+
+        list($year, $month, $day) = sscanf($dbTask['due_date'], "%d-%d-%d");
+        $dueDateInt = $year * 10000 + $month * 100 + $day;
+        if ($dueDateInt === 0) {
+            $dueDateInt = null;
+            $item['dueDate'] = "";
+        } else {
+            $item['dueDate'] = sprintf("%04d-%02d-%02d", $year, $month, $day);
+        };
+
+        if ($filter === 1 && $dueDateInt !== $todayInt) {
+            continue;
+        };
+        if ($filter === 2 && $dueDateInt !== $todayInt + 1) {
+            continue;
+        };
+        if ($filter === 3 && ($dueDateInt === null || $dueDateInt >= $todayInt || $item["isDone"])) {
+            continue;
+        };
+
         $item['id'] = (integer)$dbTask['id'];
         $item['title'] = $dbTask['title'];
-        $item['dueDate'] = $dbTask['due_date'];
         $item['projectId'] = (integer)$dbTask['project_id'];
-        $item['isDone'] = $dbTask['state_id'] === $TASK_STATE_DONE;
         $item['authorUserId'] = (integer)$dbTask['author_user_id'];
         array_push($results, $item);
     };
@@ -99,6 +126,18 @@ function getAdaptedProjects($dbProjects)
 
     return $results;
 };
+
+function getToggledTaskState()
+{
+    if (!isset($_GET["task_id"]) || !isset($_GET["check"])) {
+        return null;
+    };
+
+    return [
+        "id" => (integer)$_GET["task_id"],
+        "isDone" => (integer)$_GET["check"],
+    ];
+}
 
 function getProjectUrl($projectId)
 {
@@ -137,6 +176,20 @@ function isTaskExists($taskName, $tasks)
 
     foreach($tasks as $task) {
         if ($taskName === mb_strtoupper($task['title'])) {
+            $result = true;
+            break;
+        };
+    };
+    return $result;
+}
+
+function isTitleExist($title, $list)
+{
+    $result = false;
+    $title = mb_strtoupper($title);
+
+    foreach($list as $item) {
+        if ($title === mb_strtoupper($item['title'])) {
             $result = true;
             break;
         };

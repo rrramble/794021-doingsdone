@@ -14,73 +14,44 @@
     <link rel="stylesheet" href="/css/flatpickr.min.css">
 </head>
 
+<body>
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
     <div class="container container--with-sidebar">
 
-        <?php if (!$data["user"]): ?>
-            <?= include_template("guest.php", $data); ?>
+        <?php
+        if (!$data["user"]) {
+            echo include_template("header-guest.php", $data);
+        } else {
+            echo include_template("header.php", $data);
+        };
+        ?>
 
-        <?php else: ?>
+        <div class="content">
+            <?php
+                if(!$data["user"]) {
+                    echo include_template("side-guest.php", $data);
+                } else {
+                    echo include_template("side.php", $data);
+                };
+            ?>
 
-            <header class="main-header">
-                <a href="/">
-                    <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
-                </a>
+            <main class="content__main">
+                <?php
+                if(!$data["user"]) {
+                    if (isset($data["isShowTemplateEvenUnauthorised"])) {
+                        echo $data["components"]["main"];
+                    } else {
+                        echo include_template("guest.php", $data);
+                    };
 
-                <div class="main-header__side">
-                    <a class="main-header__side-item button button--plus open-modal" href="/pages/add.php">Добавить задачу</a>
-
-                    <div class="main-header__side-item user-menu">
-                        <div class="user-menu__image">
-                            <img src="img/user.png" width="40" height="40" alt="Пользователь">
-                        </div>
-
-                        <div class="user-menu__data">
-                            <p><?= $data["user"]["userName"]; ?></p>
-
-                            <a href="/pages/logout.php">Выйти</a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <div class="content">
-                <section class="content__side">
-                    <h2 class="content__side-heading">Проекты</h2>
-
-                    <nav class="main-navigation">
-                        <ul class="main-navigation__list">
-
-                            <?php foreach ($data["projects"] as $project): ?>
-                                <?php
-                                    $url = getProjectUrl($project['id']);
-                                    $title = strip_tags($project['title']);
-                                    $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
-                                ?>
-                                <li class="main-navigation__list-item">
-                                    <a class="main-navigation__list-item-link" href="<?= $url; ?>">
-                                        <?= $title ?>
-                                    </a>
-                                    <span class="main-navigation__list-item-count">
-                                        <?= $count ?>
-                                    </span>
-                                </li>
-                            <?php endforeach; ?>
-
-                        </ul>
-                    </nav>
-
-                    <a class="button button--transparent button--plus content__side-button"
-                    href="pages/form-project.html" target="project_add">Добавить проект</a>
-                </section>
-
-                <?= $data["components"]["main"]; ?>
-
-            </div>
-        <?php endif; ?>
-
+                } else {
+                    echo $data["components"]["main"];
+                };
+                ?>
+            </main>
+        </div>
     </div>
 </div>
 
@@ -92,7 +63,7 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-        <a class="main-footer__button button button--plus" href="/pages/add.php">Добавить задачу</a>
+        <a class="main-footer__button button button--plus" href="/pages/add-task.php">Добавить задачу</a>
 
         <div class="main-footer__social social">
             <span class="visually-hidden">Мы в соцсетях:</span>
@@ -142,4 +113,6 @@
         </div>
     </div>
 </footer>
-
+<script src="/flatpickr.js"></script>
+<script src="/script.js"></script>
+</body>

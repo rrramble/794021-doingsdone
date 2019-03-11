@@ -13,22 +13,22 @@ $FormMessage = [
     'EMAIL_IS_NOT_VALID' => 'Неверный формат электронной почты',
 ];
 
+$session = new Session();
+$db = new DbApi();
+$form = new AuthForm();
+
 $layoutData = [
     'data' => [
         'pageTitle' => $WEBPAGE_TITLE,
+        'user' => $session->getUserData(),
+        'isShowTemplateEvenUnauthorised' => true,
     ],
 ];
-
-$session = new Session();
-$layoutData["data"]["user"] = $session->getUserData();
 
 if ($layoutData["data"]["user"]) {
     header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
     die();
 };
-
-$db = new DbApi();
-$form = new AuthForm();
 
 if ($form->isMethodPost()) {
 
@@ -56,7 +56,7 @@ if ($form->isMethodPost()) {
 };
 
 $layoutData["data"]["components"] = [
-    "main" => include_template("auth.php", $layoutData["data"]),
+    "main" => include_template("auth.php", $layoutData),
 ];
 
 echo include_template('layout.php', $layoutData);

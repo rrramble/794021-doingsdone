@@ -7,6 +7,14 @@ class Session {
         session_start();
     }
 
+    public function getCustomProp($name)
+    {
+        if (!isset($_SESSION[$name])) {
+            return null;
+        };
+        return $_SESSION[$name];
+    }
+
     public function getUserData()
     {
         if (!$this->isAuthenticated()) {
@@ -22,6 +30,11 @@ class Session {
     private function isAuthenticated()
     {
         return isset($_SESSION["user"]);
+    }
+
+    public function setCustomProp($name, $value)
+    {
+        $_SESSION[$name] = $value;
     }
 
     public function setUserData($props)
