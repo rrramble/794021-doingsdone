@@ -232,7 +232,7 @@ class DbApi
     }
 
     public function isUserEmailExist($email)
-    { // DRY principle violated! Rewrite! See also: 'isProjectIdExists'
+    {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query = "SELECT email FROM users WHERE email = '$emailEscaped'";
         $result = mysqli_query($this->handler, $query);
