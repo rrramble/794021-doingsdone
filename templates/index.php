@@ -4,7 +4,6 @@
         "TASK_IMPORTANT" => "task--important",
         "FILTER_ACTIVE" => "tasks-switch__item--active",
     ];
-    var_dump($data["tasksFilter"]);
 ?>
     <h2 class="content__main-heading">Список задач</h2>
 
@@ -16,7 +15,7 @@
 
     <div class="tasks-controls">
         <nav class="tasks-switch">
-            <a href="/" class="tasks-switch__item
+            <a href="/?filter=0" class="tasks-switch__item
                 <?= $data["tasksFilter"] === 0 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
                 Все задачи
             </a>
@@ -68,7 +67,9 @@
                     </td>
 
                     <td class="task__file">
-                        <a class="download-link" href="#">Home.psd</a>
+                        <?php if(isset($task["filePath"]) && $task["filePath"]): ?>
+                        <a class="download-link" href="<?= $task["filePath"]; ?>">Файл</a>
+                        <?php endif; ?>
                     </td>
 
                     <td class="task__date"><?php echo $task["dueDate"] ?></td>

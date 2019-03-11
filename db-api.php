@@ -18,8 +18,8 @@ class DbApi
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
         'ADD_PROJECT' => 'INSERT INTO projects ' .
-            '(title)' .
-            'VALUES(?)',
+            '(title, author_user_id)' .
+            'VALUES(?, ?)',
         'ADD_USER' => 'INSERT INTO users ' .
           '(email, name, password_hash)' .
           'VALUES(?, ?, ?)',
@@ -30,7 +30,7 @@ class DbApi
 
     protected $handler;
 
-    function __construct()
+    function __construct($userId)
     {
         $this->handler = mysqli_connect(
             $this->DbSettings['HOST'],
@@ -46,6 +46,9 @@ class DbApi
         if ($this->handler) {
             mysqli_set_charset($this->handler, $this->DbSettings['ENCODING']);
         };
+
+        $this->userId = $userId;
+
     }
 
     public function addProject($values)
@@ -54,14 +57,17 @@ class DbApi
         if (!$stmt) {
             $this->throwDbException();
         };
-        $result = mysqli_stmt_bind_param($stmt, 's',
-          $title
+        $title = $values["title"];
+        $authorId = $values["authorId"];
+
+        $result = mysqli_stmt_bind_param($stmt, 'si',
+          $title,
+          $authorId
         );
         if (!$result) {
             $this->throwDbException();
         };
 
-        $title = $values['title'];
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
@@ -142,7 +148,8 @@ class DbApi
 
     function getProjects()
     {
-        $query  = "SELECT * FROM projects";
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
+        $query  = "SELECT * FROM projects WHERE author_user_id = '$userIdEscaped'";
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
             return [];
@@ -225,9 +232,18 @@ class DbApi
     }
 
     public function isUserEmailExist($email)
-    { // DRY principle violated! Rewrite! See also: 'isProjectIdExists'
+    {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query = "SELECT email FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return count($rows) > 0;
+    }
+
+    private function isUserIdExist($userId)
+    {
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$userId);
+        $query = "SELECT id FROM users WHERE id = '$userIdEscaped'";
         $result = mysqli_query($this->handler, $query);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return count($rows) > 0;
@@ -236,7 +252,7 @@ class DbApi
     private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
     {
         if (!isset($tempFileNamePath) || strlen($tempFileNamePath) <= 0) {
-            return '';
+            return null;
         };
         $fileExtension = pathinfo($originalFileNamePath, PATHINFO_EXTENSION);
         $fileExtension = $fileExtension ? '.' . $fileExtension : '';

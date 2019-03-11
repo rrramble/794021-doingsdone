@@ -14,9 +14,9 @@ $FormMessage = [
     'DATE_MUST_BE_IN_FUTURE' => 'Дата должна быть в будущем'
 ];
 
-$db = new DbApi();
-$form = new AddForm();
 $session = new Session();
+$db = new DbApi($session->getUserId());
+$form = new AddForm();
 
 $user = $session->getUserData();
 

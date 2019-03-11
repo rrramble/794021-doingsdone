@@ -6,8 +6,8 @@
     const SHOW_COMPLETE_TASKS_CSS_ATTRIBUTE = "checked";
     const WEBPAGE_TITLE = "Дела в порядке";
 
-    $db = new DbApi();
     $session = new Session();
+    $db = new DbApi($session->getUserId());
 
     $db->setTaskIsDone(getToggledTaskState());
     if (isset($_GET["show_completed"])) {
@@ -19,7 +19,7 @@
     
     if (isset($_GET["filter"])) {
         $taskFilter = (integer)($_GET["filter"]);
-        $session->setCustomProp("filter", $filterTasks);
+        $session->setCustomProp("filter", $taskFilter);
     } else {
         $taskFilter = (integer)$session->getCustomProp("filter");
     };

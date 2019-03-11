@@ -13,9 +13,9 @@ const FormMessage = [
     'TITLE_ALREADY_EXISTS' => 'Название уже существует',
 ];
 
-$db = new DbApi();
-$form = new AddProjectForm();
 $session = new Session();
+$db = new DbApi($session->getUserId());
+$form = new AddProjectForm();
 
 $user = $session->getUserData();
 
@@ -27,18 +27,18 @@ $postTaskTitle = '';
 $taskTitleIvalidMessage = '';
 
 if ($form->isMethodPost()) {
-    $isTitleValid = $form->getTitleValidity() && !isTitleExist($form->getTitle(), $projects);
+    $isTitleValid = $form->isValid() && !isTitleExist($form->getValuePublic("title"), $projects);
     if ($isTitleValid) {
-        $title = $form->getValues();
-        $isAddedCorrectly = $db->addProject($title);
-        if ($isAddedCorrectly) {
+        $values = $form->getFieldsPublic();
+        $values['authorId'] = (integer)$user['id'];
+        if ($db->addProject($values)) {
             header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
             die();
         };
         header('Location: ' . SCRIPT_NAME_IF_FAILURE);
     };
     
-    $postTaskTitle = $form->getTitle();
+    $postTaskTitle = $form->getValuePublic('title');
     if (!$isTitleValid && mb_strlen($postTaskTitle) <= 0) {
         $taskTitleIvalidMessage = FormMessage['NO_TITLE_ERROR'];
     } else {

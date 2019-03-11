@@ -104,6 +104,7 @@ function getAdaptedTasks($dbTasks, $filter = 0)
         $item['title'] = $dbTask['title'];
         $item['projectId'] = (integer)$dbTask['project_id'];
         $item['authorUserId'] = (integer)$dbTask['author_user_id'];
+        $item['filePath'] = $dbTask['file_path'];
         array_push($results, $item);
     };
 

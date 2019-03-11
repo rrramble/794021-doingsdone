@@ -3,12 +3,14 @@ include_once('../functions.php');
 include_once('../db-api.php');
 include_once('register-form.php');
 
+const NOT_EXISTED_USER_ID = 0;
 $WEBPAGE_TITLE = 'Регистрация пользователя';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'register.php';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'EMAIL_IS_EMPTY' => 'Указать электронную почту',
+    'PASSWORD_IS_EMPTY' => 'Указать пароль',
     'EMAIL_IS_WRONG' => 'Неверный формат электронной почты',
     'EMAIL_ALREADY_EXISTS' => 'Пользователь с такой электронной почтой уже зарегистрирован',
     'USERNAME_IS_WRONG' => 'Указать имя пользователя'
@@ -21,7 +23,7 @@ $layoutData = [
     ],
 ];
 
-$db = new DbApi();
+$db = new DbApi(NOT_EXISTED_USER_ID);
 $form = new RegisterForm();
 
 if ($form->isMethodPost()) {
@@ -37,6 +39,7 @@ if ($form->isMethodPost()) {
     $layoutData['data']['postUserName'] = $form->getValuePublic('userName');
     $layoutData['data']['emailErrorMessage'] = '';
     $layoutData['data']['userNameErrorMessage'] = '';
+    $layoutData['data']['passwordErrorMessage'] = '';
 
     if (mb_strlen($postEmail) <= 0) {
         $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_EMPTY'];
@@ -44,6 +47,10 @@ if ($form->isMethodPost()) {
         $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_WRONG'];
     } elseif ($db->isUserEmailExist($postEmail)) {
         $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_ALREADY_EXISTS'];
+    };
+
+    if (!$form->isFieldValid('password')) {
+        $layoutData['data']['passwordErrorMessage'] = $FormMessage['PASSWORD_IS_EMPTY'];
     };
 
     $layoutData['data']['userNameErrorMessage'] = !$form->isFieldValid('userName') ?
