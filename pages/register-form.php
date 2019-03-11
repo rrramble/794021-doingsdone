@@ -15,6 +15,10 @@ class RegisterForm extends AbstractForm {
 
         $this->Field['password'] = [
             'formTagName' => 'password',
+            'validationCb' => function() {
+                $value = $this->getValue('password');
+                return (boolean)mb_strlen($value) > 0;
+            },
         ];
 
         $this->Field['passwordHash'] = [

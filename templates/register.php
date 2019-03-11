@@ -6,6 +6,9 @@
     $userName = $data['postUserName'] ?? '';
     $userNameErrorMessage = $data['userNameErrorMessage'] ?? '';
     $userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
+
+    $passwordErrorMessage = $data['passwordErrorMessage'] ?? '';
+    $userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
 ?>
 <h2 class="content__main-heading">Регистрация аккаунта</h2>
 
@@ -19,6 +22,7 @@
   <div class="form__row">
     <label class="form__label" for="password">Пароль <sup>*</sup></label>
     <input class="form__input" type="password" name="password" id="password" value="" placeholder="Введите пароль">
+    <p class="form__message"><?= $passwordErrorMessage; ?></p>
   </div>
 
   <div class="form__row">
