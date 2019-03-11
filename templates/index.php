@@ -15,7 +15,7 @@
 
     <div class="tasks-controls">
         <nav class="tasks-switch">
-            <a href="/" class="tasks-switch__item
+            <a href="/?filter=0" class="tasks-switch__item
                 <?= $data["tasksFilter"] === 0 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
                 Все задачи
             </a>

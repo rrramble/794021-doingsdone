@@ -19,7 +19,7 @@
     
     if (isset($_GET["filter"])) {
         $taskFilter = (integer)($_GET["filter"]);
-        $session->setCustomProp("filter", $filterTasks);
+        $session->setCustomProp("filter", $taskFilter);
     } else {
         $taskFilter = (integer)$session->getCustomProp("filter");
     };
