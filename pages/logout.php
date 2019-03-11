@@ -1,7 +1,7 @@
 <?php
 include_once('../session.php');
 
-const PAGE_AFTER_LOGOUT = "/index.php";
+const PAGE_AFTER_LOGOUT = "/pages/guest.php";
 
 $session = new Session();
 $session->logout();
