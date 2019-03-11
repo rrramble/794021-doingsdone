@@ -30,7 +30,7 @@ class DbApi
 
     protected $handler;
 
-    function __construct()
+    function __construct($userId)
     {
         $this->handler = mysqli_connect(
             $this->DbSettings['HOST'],
@@ -46,6 +46,9 @@ class DbApi
         if ($this->handler) {
             mysqli_set_charset($this->handler, $this->DbSettings['ENCODING']);
         };
+
+        $this->userId = $userId;
+
     }
 
     public function addProject($values)
@@ -145,7 +148,8 @@ class DbApi
 
     function getProjects()
     {
-        $query  = "SELECT * FROM projects";
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
+        $query  = "SELECT * FROM projects WHERE author_user_id = '$userIdEscaped'";
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
             return [];
@@ -231,6 +235,15 @@ class DbApi
     { // DRY principle violated! Rewrite! See also: 'isProjectIdExists'
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query = "SELECT email FROM users WHERE email = '$emailEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return count($rows) > 0;
+    }
+
+    private function isUserIdExist($userId)
+    {
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$userId);
+        $query = "SELECT id FROM users WHERE id = '$userIdEscaped'";
         $result = mysqli_query($this->handler, $query);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return count($rows) > 0;

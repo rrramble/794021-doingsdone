@@ -13,9 +13,9 @@ const FormMessage = [
     'TITLE_ALREADY_EXISTS' => 'Название уже существует',
 ];
 
-$db = new DbApi();
-$form = new AddProjectForm();
 $session = new Session();
+$db = new DbApi($session->getUserId());
+$form = new AddProjectForm();
 
 $user = $session->getUserData();
 

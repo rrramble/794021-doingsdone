@@ -14,7 +14,7 @@ $FormMessage = [
 ];
 
 $session = new Session();
-$db = new DbApi();
+$db = new DbApi($session->getUserId());
 $form = new AuthForm();
 
 $layoutData = [

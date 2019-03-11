@@ -27,6 +27,11 @@ class Session {
         return $result;
     }
 
+    public function getUserId()
+    {
+        return $result["id"] = (integer)($_SESSION["user"]["id"] ?? null);
+    }
+
     private function isAuthenticated()
     {
         return isset($_SESSION["user"]);

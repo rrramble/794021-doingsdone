@@ -3,6 +3,7 @@ include_once('../functions.php');
 include_once('../db-api.php');
 include_once('register-form.php');
 
+const NOT_EXISTED_USER_ID = 0;
 $WEBPAGE_TITLE = 'Регистрация пользователя';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'register.php';
@@ -22,7 +23,7 @@ $layoutData = [
     ],
 ];
 
-$db = new DbApi();
+$db = new DbApi(NOT_EXISTED_USER_ID);
 $form = new RegisterForm();
 
 if ($form->isMethodPost()) {
