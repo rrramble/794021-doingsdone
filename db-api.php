@@ -252,7 +252,7 @@ class DbApi
     private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
     {
         if (!isset($tempFileNamePath) || strlen($tempFileNamePath) <= 0) {
-            return '';
+            return null;
         };
         $fileExtension = pathinfo($originalFileNamePath, PATHINFO_EXTENSION);
         $fileExtension = $fileExtension ? '.' . $fileExtension : '';
