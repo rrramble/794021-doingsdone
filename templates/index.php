@@ -1,8 +1,10 @@
-<?php 
+<?php
     $HtmlClasses = [
         "TASK_COMPLETED" => "task--completed",
         "TASK_IMPORTANT" => "task--important",
+        "FILTER_ACTIVE" => "tasks-switch__item--active",
     ];
+    var_dump($data["tasksFilter"]);
 ?>
     <h2 class="content__main-heading">Список задач</h2>
 
@@ -14,14 +16,26 @@
 
     <div class="tasks-controls">
         <nav class="tasks-switch">
-            <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-            <a href="/" class="tasks-switch__item">Повестка дня</a>
-            <a href="/" class="tasks-switch__item">Завтра</a>
-            <a href="/" class="tasks-switch__item">Просроченные</a>
+            <a href="/" class="tasks-switch__item
+                <?= $data["tasksFilter"] === 0 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                Все задачи
+            </a>
+            <a href="/?filter=1" class="tasks-switch__item
+                <?= $data["tasksFilter"] === 1 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                Повестка дня
+            </a>
+            <a href="/?filter=2" class="tasks-switch__item
+                <?= $data["tasksFilter"] === 2 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                Завтра
+            </a>
+            <a href="/?filter=3" class="tasks-switch__item
+                <?= $data["tasksFilter"] === 3 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                Просроченные
+            </a>
         </nav>
 
         <label class="checkbox">
-            <input class="checkbox__input visually-hidden show_completed" type="checkbox" 
+            <input class="checkbox__input visually-hidden show_completed" type="checkbox"
                 <?php if ($data["showCompleteTasks"]): ?>
                 checked
                 <?php endif; ?>
@@ -36,7 +50,7 @@
                 if (
                     ($data["showCompleteTasks"] || !$task["isDone"]) &&
                     ($task["projectId"] === (integer)$currentProjectId || $currentProjectId === NULL)
-                ): 
+                ):
             ?>
                 <?php
                     $classTaskCompleted = $task["isDone"] ? $HtmlClasses["TASK_COMPLETED"] : "";
