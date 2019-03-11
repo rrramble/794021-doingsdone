@@ -67,7 +67,9 @@
                     </td>
 
                     <td class="task__file">
-                        <a class="download-link" href="#">Home.psd</a>
+                        <?php if(isset($task["filePath"]) && $task["filePath"]): ?>
+                        <a class="download-link" href="<?= $task["filePath"]; ?>">Файл</a>
+                        <?php endif; ?>
                     </td>
 
                     <td class="task__date"><?php echo $task["dueDate"] ?></td>
