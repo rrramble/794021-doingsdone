@@ -4,7 +4,6 @@
         "TASK_IMPORTANT" => "task--important",
         "FILTER_ACTIVE" => "tasks-switch__item--active",
     ];
-    var_dump($data["tasksFilter"]);
 ?>
     <h2 class="content__main-heading">Список задач</h2>
 
