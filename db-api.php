@@ -18,8 +18,8 @@ class DbApi
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
         'ADD_PROJECT' => 'INSERT INTO projects ' .
-            '(title)' .
-            'VALUES(?)',
+            '(title, author_user_id)' .
+            'VALUES(?, ?)',
         'ADD_USER' => 'INSERT INTO users ' .
           '(email, name, password_hash)' .
           'VALUES(?, ?, ?)',
@@ -54,14 +54,17 @@ class DbApi
         if (!$stmt) {
             $this->throwDbException();
         };
-        $result = mysqli_stmt_bind_param($stmt, 's',
-          $title
+        $title = $values["title"];
+        $authorId = $values["authorId"];
+
+        $result = mysqli_stmt_bind_param($stmt, 'si',
+          $title,
+          $authorId
         );
         if (!$result) {
             $this->throwDbException();
         };
 
-        $title = $values['title'];
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
