@@ -23,6 +23,7 @@ $layoutData = [
         'pageTitle' => WEBPAGE_TITLE,
         'user' => $session->getUserData(),
         'isShowTemplateEvenUnauthorised' => true,
+        'emailErrorMessage' => '',
     ],
 ];
 
@@ -45,7 +46,6 @@ if ($form->isMethodPost()) {
     };
 
     $layoutData['data']['postEmail'] = $form->getValuePublic('email');
-    $layoutData['data']['emailErrorMessage'] = '';
 
     if (mb_strlen($layoutData['data']['postEmail']) <= 0) {
         $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_EMPTY'];
