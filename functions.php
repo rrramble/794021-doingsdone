@@ -1,6 +1,12 @@
 <?php
 const SERVER_TIMEZONE = "Asia/Oral";
 
+
+/**
+ * @param string $dateReadable
+ *
+ * @return string
+ */
 function convertDateReadableToHtmlFormInput($dateReadable)
 {
     if (mb_strlen($dateReadable <= 0)) {
@@ -15,6 +21,13 @@ function convertDateReadableToHtmlFormInput($dateReadable)
     return date_format($dateDMY ? $dateDMY : $dateYMD, 'Y-m-d');
 }
 
+
+/**
+ * @param string $name
+ * @param array $data
+ *
+ * @return string
+ */
 function include_template($name, $data)
 {
     $name = __DIR__ . '/templates/' . $name;
@@ -31,6 +44,14 @@ function include_template($name, $data)
     return ob_get_clean();
 }
 
+
+/**
+ * @param integer $projectId
+ * @param integer $userId
+ * @param array $tasks
+ *
+ * @return integer
+ */
 function getTasksCount($projectId, $userId, $tasks)
 {
     $count = 0;
@@ -45,6 +66,12 @@ function getTasksCount($projectId, $userId, $tasks)
     return $count;
 }
 
+
+/**
+ * @param string $dateToCheck
+ *
+ * @return boolean
+ */
 function isDeadlineNear($dateToCheck)
 {
     $HOURS_DEADLINE = 24;
@@ -57,6 +84,13 @@ function isDeadlineNear($dateToCheck)
     return getHoursDiff($dueDate, $now) <= $HOURS_DEADLINE;
 };
 
+
+/**
+ * @param integer $recent
+ * @param integer $elder
+ *
+ * @return integer
+ */
 function getHoursDiff($recent, $elder)
 {
     $SECONDS_IN_HOUR = 3600;
@@ -65,6 +99,13 @@ function getHoursDiff($recent, $elder)
     return floor($hoursDiff);
 };
 
+
+/**
+ * @param array $dbTasks
+ * @param integer $filter
+ *
+ * @return array
+ */
 function getAdaptedTasks($dbTasks, $filter = 0)
 {
     $TASK_STATE_DONE = 1;
@@ -109,6 +150,11 @@ function getAdaptedTasks($dbTasks, $filter = 0)
     return $results;
 };
 
+/**
+ * @param array $dbProjects
+ *
+ * @return array
+ */
 function getAdaptedProjects($dbProjects)
 {
     $results = [];
@@ -126,8 +172,12 @@ function getAdaptedProjects($dbProjects)
     return $results;
 };
 
+
+/**
+ * @return array
+ */
 function getToggledTaskState()
-{
+{//!
     if (!isset($_GET["task_id"]) || !isset($_GET["check"])) {
         return null;
     };
@@ -138,11 +188,24 @@ function getToggledTaskState()
     ];
 }
 
+
+/**
+ * @param integer $projectId
+ *
+ * @return string
+ */
 function getProjectUrl($projectId)
-{
+{ //!
     return '/index.php?id=' . $projectId;
 }
 
+
+/**
+ * @param array $tasks
+ * @param integer $projectId
+ *
+ * @return array
+ */
 function getTasksFilteredByProjectId($tasks, $projectId)
 {
     $results = array_filter($tasks, function($task) {
@@ -151,7 +214,12 @@ function getTasksFilteredByProjectId($tasks, $projectId)
     return $results;
 }
 
+
 /**
+ * @param string $title
+ * @param array $list
+ *
+ * @return boolean
  */
 function isTitleExist($title, $list)
 {
