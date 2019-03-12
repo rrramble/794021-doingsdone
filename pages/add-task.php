@@ -11,7 +11,7 @@ $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'NO_TITLE_ERROR' => 'Нужно указать название',
     'TITLE_ALREADY_EXISTS' => 'Название уже существует',
-    'DATE_MUST_BE_IN_FUTURE' => 'Дата должна быть в будущем'
+    'DATE_MUST_BE_TODAY_OR_FUTURE' => 'Дата должна быть сегодня или в будущем',
 ];
 
 $session = new Session();
@@ -56,7 +56,7 @@ if ($form->isMethodPost()) {
     $postDueDateInInputType = convertDateReadableToHtmlFormInput($postDueDateReadable);
     $dueDateIvalidMessage = $form->getFieldValidity('dueDate') ?
         '' :
-        $FormMessage['DATE_MUST_BE_IN_FUTURE'];
+        $FormMessage['DATE_MUST_BE_TODAY_OR_FUTURE'];
 }
 
 $layoutData = [
