@@ -152,36 +152,7 @@ function getTasksFilteredByProjectId($tasks, $projectId)
 }
 
 /**
- * param integer $projectId
- * param mixed $projects
- * return boolean
  */
-function isProjectIdExists($projectId, $projects)
-{
-    $result = false;
-    foreach($projects as $project) {
-        if ($projectId === $project['id']) {
-            $result = true;
-            break;
-        };
-    };
-    return $result;
-}
-
-function isTaskExists($taskName, $tasks)
-{
-    $result = false;
-    $taskName = mb_strtoupper($taskName);
-
-    foreach($tasks as $task) {
-        if ($taskName === mb_strtoupper($task['title'])) {
-            $result = true;
-            break;
-        };
-    };
-    return $result;
-}
-
 function isTitleExist($title, $list)
 {
     $result = false;
