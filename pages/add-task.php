@@ -4,7 +4,7 @@ include_once('../db-api.php');
 include_once('../session.php');
 include_once('add-task-form.php');
 
-$WEBPAGE_TITLE = 'Добавление задачи';
+const WEBPAGE_TITLE = 'Добавление задачи';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = './add-task.php';
 $FormMessage = [
@@ -23,21 +23,19 @@ $user = $session->getUserData();
 $projects = getAdaptedProjects($db->getProjects());
 $tasks = getAdaptedTasks($db->getTasks($user["id"]));
 
-$isTitleValid = true;
 $postTaskTitle = '';
-
-$isDueDateValid = true;
-$dueDateInInputType = '';
 $taskTitleIvalidMessage = '';
+
+$postProjectId = null;
+
+$postDueDateReadable = null;
+$postDueDateInInputType = null;
 $dueDateIvalidMessage = '';
 
+
 if ($form->isMethodPost()) {
-    $isTitleValid = $form->getTitleValidity() && !isTaskExists($form->getTitle(), $tasks);
-    $isDueDateValid = $form->getDueDateValidity();
-    $isProjectIdValid = $form->getProjectIdValidity() && isProjectIdExists($form->getProjectId(), $projects);
-    
-    if ($isTitleValid && $isDueDateValid && $isProjectIdValid) {
-        $values = $form->getValues();
+    if ($form->isValid() && $db->isProjectIdExistForCurrentUser($form->getValuePublic('projectId'))) {
+        $values = $form->getFieldsPublic();
         $values['id'] = $session->getUserData()['id'];
         $isAddedCorrectly = $db->addTask($values);
         if ($isAddedCorrectly) {
@@ -46,37 +44,37 @@ if ($form->isMethodPost()) {
         };
         header('Location: ' . $SCRIPT_NAME_IF_FAILURE);
     };
-    
-    $postTaskTitle = $form->getTitle();
-    if (!$isTitleValid && mb_strlen($postTaskTitle) <=0) {
-        $taskTitleIvalidMessage = $FormMessage['NO_TITLE_ERROR'];
-    } else {
-        $taskTitleIvalidMessage = $FormMessage['TITLE_ALREADY_EXISTS'];
-    };
-    
-    $dueDateReadable = $form->getDueDateReadable();
-    $dueDateInInputType = convertDateReadableToHtmlFormInput($dueDateReadable);
-    
-    $dueDateIvalidMessage = !$isDueDateValid ?
-    $FormMessage['DATE_MUST_BE_IN_FUTURE'] :
-    '';
+
+    $postTaskTitle = $form->getValuePublic('title');
+    $taskTitleIvalidMessage = $form->getFieldValidity('title') ?
+        '' :
+        $FormMessage['NO_TITLE_ERROR'];
+
+    $postProjectId = $form->getValuePublic('projectId');
+
+    $postDueDateReadable = $form->getValuePublic('dueDate');
+    $postDueDateInInputType = convertDateReadableToHtmlFormInput($postDueDateReadable);
+    $dueDateIvalidMessage = $form->getFieldValidity('dueDate') ?
+        '' :
+        $FormMessage['DATE_MUST_BE_IN_FUTURE'];
 }
 
 $layoutData = [
     "data" => [
-        "pageTitle" => $WEBPAGE_TITLE,
+        "pageTitle" => WEBPAGE_TITLE,
         "projects" => $projects,
         "tasks" => $tasks,
-        
-        "isTitleValid" => $isTitleValid,
-        "currentUser" => $user,
+        "user" => $session->getUserData(),
+
         "postTaskTitle" => $postTaskTitle,
         "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
-        "dueDateInInputType" => $dueDateInInputType,
+
+        "postProjectId" => (integer)$postProjectId,
+
+        "postDueDate" => $postDueDateInInputType,
         "dueDateIvalidMessage" => $dueDateIvalidMessage,
+
         "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR'],
-        "isDueDateValid" => $isDueDateValid,
-        "user" => $session->getUserData(),
     ],
 ];
 

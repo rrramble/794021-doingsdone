@@ -8,12 +8,15 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <label class="form__label" for="name">Название <sup>*</sup></label>
 
       <input
-          class="form__input <?php if (!$data['isTitleValid']) {echo $CLASS_INPUT_ERROR;} ?>"
-          type="text" name="name" id="name"
-          value="<?= $data["postTaskTitle"]; ?>"
-          placeholder="Введите название">
+          class="form__input
+            <?php if ($data["taskTitleIvalidMessage"]) {echo $CLASS_INPUT_ERROR;} ?>"
 
-      <?php if(!$data['isTitleValid']): ?>
+            type="text" name="name" id="name"
+            value="<?= $data["postTaskTitle"]; ?>"
+
+            placeholder="Введите название">
+
+      <?php if($data["taskTitleIvalidMessage"]): ?>
         <p class="form__message">
           <?= $data["taskTitleIvalidMessage"]; ?>
         </p>
@@ -26,11 +29,12 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
         <select class="form__input form__input--select" name="project" id="project">
         <?php foreach($data["projects"] as $project): ?>
-        <?php
-          $title = $project['title'];
-          $id = $project['id'];
-        ?>
-          <option value="<?= $id; ?>"><?= $title; ?></option>
+          <option
+            value="<?= $project['id']; ?>"
+            <?= $project['id'] === $data["postProjectId"] ? "selected" : ""; ?>
+            >
+              <?= $project['title']; ?>
+          </option>
           <?php endforeach; ?>
         </select>
     </div>
@@ -41,9 +45,9 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <input
         class="form__input form__input--date"
         type="date" name="date" id="date"
-        value="<?= $dueDateInInputType; ?>"
+        value="<?= $data["postDueDate"]; ?>"
         placeholder="Введите дату в формате ДД.ММ.ГГГГ">
-      <?php if (!$data["isDueDateValid"]): ?>
+      <?php if ($data["dueDateIvalidMessage"]): ?>
         <p class="form__message">
           <?= $data["dueDateIvalidMessage"]; ?>
         </p>
@@ -64,7 +68,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <input class="button" type="submit" name="" value="Добавить">
     </div>
 
-    <?php if (!$data["isTitleValid"] || !$data["isDueDateValid"]): ?>
+    <?php if ($data["formOverallErrorMessage"]): ?>
       <p class="form__message">
         <?= $data["formOverallErrorMessage"]; ?>
       </p>

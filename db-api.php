@@ -98,8 +98,7 @@ class DbApi
         $title = $values['title'];
         $dueDate = convertDateReadableToHtmlFormInput($values['dueDate']);
         $authorUserId = (integer)$values['id'];
-        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFilePathName']);
-
+        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFileName']);
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
             $this->throwDbException();
@@ -210,13 +209,15 @@ class DbApi
         return password_verify($password, $dbPasswordHash);
     }
 
-    function isProjectIdExists($id)
+    function isProjectIdExistForCurrentUser($projectId)
     {
-        if ($id === NULL) {
+        if ($projectId === NULL) {
             return true;
         }
-        $idEscaped = mysqli_real_escape_string($this->handler, (string)$id);
-        $query = "SELECT id FROM projects WHERE id = '$idEscaped'";
+        $projectIdEscaped = mysqli_real_escape_string($this->handler, (string)$projectId);
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
+
+        $query = "SELECT id FROM projects WHERE id = '$projectIdEscaped' AND author_user_id = '$userIdEscaped'";
         $result = mysqli_query($this->handler, $query);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return count($rows) > 0;
