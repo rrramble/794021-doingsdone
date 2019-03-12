@@ -8,7 +8,8 @@ $WEBPAGE_TITLE = 'Авторизация на сайте';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'auth.php';
 $FormMessage = [
-    'AUTH_ERROR' => 'Неверный пароль или электронная почта',
+    'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
+    'AUTH_ERROR' => 'Вы ввели неверный email/пароль',
     'EMAIL_IS_EMPTY' => 'Укажите электронную почту',
     'EMAIL_IS_NOT_VALID' => 'Неверный формат электронной почты',
 ];
