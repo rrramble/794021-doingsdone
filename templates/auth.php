@@ -1,4 +1,9 @@
 <?php
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+
     $email = $data['postEmail'] ?? '';
     $emailErrorMessage = $data['emailErrorMessage'] ?? '';
     $emailErrorCssClass = $emailErrorMessage ? 'form__input--error' : '';

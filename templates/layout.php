@@ -1,7 +1,12 @@
 <?php
-    if (!isset($data["user"])) {
-        $data["user"] = null;
-    };
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+
+if (!isset($data["user"])) {
+    $data["user"] = null;
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">

@@ -1,3 +1,9 @@
+<?php
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+?>
 <header class="main-header">
     <a href="/">
         <img src="/img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">

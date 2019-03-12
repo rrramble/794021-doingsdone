@@ -1,4 +1,9 @@
 <?php
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+
 $CLASS_INPUT_ERROR = 'form__input--error';
 ?>
 <h2 class="content__main-heading">Добавление проекта</h2>

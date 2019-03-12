@@ -1,14 +1,19 @@
 <?php
-    $email = $data['postEmail'] ?? '';
-    $emailErrorMessage = $data['emailErrorMessage'] ?? '';
-    $emailErrorCssClass = $emailErrorMessage ? 'form__input--error' : '';
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
 
-    $userName = $data['postUserName'] ?? '';
-    $userNameErrorMessage = $data['userNameErrorMessage'] ?? '';
-    $userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
+$email = $data['postEmail'] ?? '';
+$emailErrorMessage = $data['emailErrorMessage'] ?? '';
+$emailErrorCssClass = $emailErrorMessage ? 'form__input--error' : '';
 
-    $passwordErrorMessage = $data['passwordErrorMessage'] ?? '';
-    $userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
+$userName = $data['postUserName'] ?? '';
+$userNameErrorMessage = $data['userNameErrorMessage'] ?? '';
+$userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
+
+$passwordErrorMessage = $data['passwordErrorMessage'] ?? '';
+$userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
 ?>
 <h2 class="content__main-heading">Регистрация аккаунта</h2>
 

@@ -1,4 +1,10 @@
 <?php
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+?>
+<?php
     $HtmlClasses = [
         "TASK_COMPLETED" => "task--completed",
         "TASK_IMPORTANT" => "task--important",
