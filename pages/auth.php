@@ -4,7 +4,7 @@ include_once('../db-api.php');
 include_once('auth-form.php');
 include_once('../session.php');
 
-$WEBPAGE_TITLE = 'Авторизация на сайте';
+const WEBPAGE_TITLE = 'Авторизация на сайте';
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'auth.php';
 $FormMessage = [
@@ -20,7 +20,7 @@ $form = new AuthForm();
 
 $layoutData = [
     'data' => [
-        'pageTitle' => $WEBPAGE_TITLE,
+        'pageTitle' => WEBPAGE_TITLE,
         'user' => $session->getUserData(),
         'isShowTemplateEvenUnauthorised' => true,
     ],
