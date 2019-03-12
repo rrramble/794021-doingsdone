@@ -33,7 +33,6 @@ if ($layoutData["data"]["user"]) {
 };
 
 if ($form->isMethodPost()) {
-
     if (isOverallFormValid($form, $db)) {
         $userData = $db->getUserDataByEmail($form->getValuePublic('email'));
         $session->setUserData([
