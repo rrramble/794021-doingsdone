@@ -108,7 +108,7 @@
             <span class="visually-hidden">Разработано:</span>
 
             <a href="https://htmlacademy.ru/intensive/php">
-                <img src="img/htmlacademy.svg" alt="HTML Academy" width="118" height="40">
+                <img src="/img/htmlacademy.svg" alt="HTML Academy" width="118" height="40">
             </a>
         </div>
     </div>
