@@ -28,9 +28,7 @@ function include_template($name, $data)
     extract($data);
     require $name;
 
-    $result = ob_get_clean();
-
-    return $result;
+    return ob_get_clean();
 }
 
 function getTasksCount($projectId, $userId, $tasks)
