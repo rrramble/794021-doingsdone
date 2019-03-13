@@ -33,7 +33,9 @@ if ($layoutData["data"]["user"]) {
 };
 
 if ($form->isMethodPost()) {
-    if (isOverallFormValid($form, $db)) {
+    $email = $form->getValuePublic('email');
+    $password = $form->getValuePublic('password');
+    if ($form->isValid() && $db->isValidUserCredential($email, $password)) {
         $userData = $db->getUserDataByEmail($form->getValuePublic('email'));
         $session->setUserData([
             "email" => $userData["email"],
@@ -60,15 +62,3 @@ $layoutData["data"]["components"] = [
 ];
 
 echo include_template('layout.php', $layoutData);
-die();
-
-
-function isOverallFormValid($form, $db)
-{
-    return
-        $form->isValid() &&
-        $db->isValidUserCredential(
-            $form->getValuePublic('email'),
-            $form->getValuePublic('password')
-        );
-}
