@@ -9,7 +9,7 @@ class Session {
 
     public function getCustomProp($name)
     {
-        if (!isset($_SESSION[$name])) {
+        if (!$name || !isset($_SESSION[$name])) {
             return null;
         };
         return $_SESSION[$name];
@@ -18,6 +18,15 @@ class Session {
     public function getUserData()
     {
         if (!$this->isAuthenticated()) {
+            return null;
+        };
+
+        if (
+            !isset($_SESSION["user"]) ||
+            !isset($_SESSION["user"]["email"]) ||
+            !isset($_SESSION["user"]["userName"]) ||
+            !isset($_SESSION["user"]["id"])
+        ) {
             return null;
         };
 
@@ -37,16 +46,29 @@ class Session {
         return isset($_SESSION["user"]);
     }
 
-    public function setCustomProp($name, $value)
+    public function setCustomProp($name, $value = null)
     {
-        $_SESSION[$name] = $value;
+        if (!$name) {
+            return;
+        };
+
+        $_SESSION[(string)$name] = (string)$value;
     }
 
     public function setUserData($props)
     {
-        $_SESSION["user"]["email"] = $props["email"];
-        $_SESSION["user"]["userName"] = $props["userName"];
-        $_SESSION["user"]["id"] = $props["id"];
+        if (
+            !$props ||
+            !isset($props["email"]) ||
+            !isset($props["userName"]) ||
+            !isset($props["id"])
+        ) {
+            return;
+        };
+
+        $_SESSION["user"]["email"] = $props["email"] ?? null;
+        $_SESSION["user"]["userName"] = $props["userName"] ?? null;
+        $_SESSION["user"]["id"] = $props["id"] ?? null;
     }
 
     public function logout()
