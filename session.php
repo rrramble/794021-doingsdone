@@ -7,6 +7,12 @@ class Session {
         session_start();
     }
 
+
+    /**
+     * @param string $name
+     *
+     * @return string|null
+     */
     public function getCustomProp($name)
     {
         if (!$name || !isset($_SESSION[$name])) {
@@ -15,6 +21,10 @@ class Session {
         return $_SESSION[$name];
     }
 
+
+    /**
+     * @return array|null
+     */
     public function getUserData()
     {
         if (!$this->isAuthenticated()) {
@@ -36,16 +46,28 @@ class Session {
         return $result;
     }
 
+
+    /**
+     * @return integer|null
+     */
     public function getUserId()
     {
         return $result["id"] = (integer)($_SESSION["user"]["id"] ?? null);
     }
 
+
+    /**
+     * @return boolean
+     */
     private function isAuthenticated()
     {
         return isset($_SESSION["user"]);
     }
 
+
+    /**
+     * @return void
+     */
     public function setCustomProp($name, $value = null)
     {
         if (!$name) {
@@ -55,6 +77,12 @@ class Session {
         $_SESSION[(string)$name] = (string)$value;
     }
 
+
+    /**
+     * @param array $props
+     *
+     * @return void
+     */
     public function setUserData($props)
     {
         if (
@@ -71,6 +99,10 @@ class Session {
         $_SESSION["user"]["id"] = $props["id"] ?? null;
     }
 
+
+    /**
+     * @return void
+     */
     public function logout()
     {
         if (isset($_SESSION["user"])) {
