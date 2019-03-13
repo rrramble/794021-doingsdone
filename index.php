@@ -11,6 +11,12 @@
 
     $db->setTaskIsDone(getToggledTaskState());
 
+    if (empty($_GET)) {
+        $session->setCustomProp("showCompleted");
+        $session->setCustomProp("filter");
+        $session->setCustomProp("projectId");
+    };
+
     if (isset($_GET["show_completed"])) {
         $showCompleteTasks = (integer)($_GET["show_completed"]);
         $session->setCustomProp("showCompleted", $showCompleteTasks);
