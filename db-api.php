@@ -203,7 +203,7 @@ class DbApi
 
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            return NULL;
+            return null;
         };
 
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
