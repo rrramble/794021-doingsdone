@@ -69,10 +69,12 @@ class DbApi
         ) {
             return false;
         };
+
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_PROJECT']);
         if (!$stmt) {
             return false;
         };
+
         $title = $values["title"];
         $authorId = $values["authorId"];
 
@@ -89,6 +91,7 @@ class DbApi
         if (!$result) {
             return false;
         };
+
         mysqli_stmt_close($stmt);
         return true;
     }
