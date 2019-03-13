@@ -34,7 +34,7 @@ $dueDateIvalidMessage = '';
 if ($form->isMethodPost()) {
     if ($form->isValid() && $db->isProjectIdExistForCurrentUser($form->getValuePublic('projectId'))) {
         $values = $form->getFieldsPublic();
-        $values['id'] = $session->getUserData()['id'];
+        $values['id'] = $session->getUserData()['id'] ?? null;
         $isAddedCorrectly = $db->addTask($values);
         if ($isAddedCorrectly) {
             header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
