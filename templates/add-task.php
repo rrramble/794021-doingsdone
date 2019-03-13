@@ -9,7 +9,7 @@ if (!isset($data["projects"])) {
 };
 
 if (!isset($data["postProjectId"])) {
-  $data["postProjectId"] = null;
+  $data["postProjectId"] = 0;
 };
 
 $CLASS_INPUT_ERROR = 'form__input--error';
@@ -41,19 +41,23 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <label class="form__label" for="project">Проект</label>
 
         <select class="form__input form__input--select" name="project" id="project">
-        <?php foreach($data["projects"] as $project): ?>
-          <?php 
-            if (!isset($project["id"]) || !isset($project["title"])) {
-              continue;
-            };
-          ?>
-          <option
-            value="<?= strip_tags($project['id']); ?>"
-            <?= $project['id'] === $data["postProjectId"] ? "selected" : ""; ?>
-          >
-            <?= strip_tags($project['title']); ?>
-          </option>
-          <?php endforeach; ?>
+          <option value="0"
+            <?= $data["postProjectId"] === 0 ? " selected " : ""; ?>
+          ></option>
+
+          <?php foreach($data["projects"] as $project): ?>
+            <?php
+              if (!isset($project["id"]) || !isset($project["title"])) {
+                continue;
+              };
+            ?>
+            <option
+              value="<?= strip_tags($project['id']); ?>"
+              <?= $project['id'] === $data["postProjectId"] ? "selected" : ""; ?>
+            >
+              <?= strip_tags($project['title']); ?>
+            </option>
+            <?php endforeach; ?>
         </select>
     </div>
 

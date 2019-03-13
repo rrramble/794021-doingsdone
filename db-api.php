@@ -50,7 +50,6 @@ class DbApi
         };
 
         $this->userId = $userId;
-
     }
 
 
@@ -106,37 +105,38 @@ class DbApi
      */
     public function addTask($values)
     {
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
+        if (!$stmt) {
+            return false;
+        };
+
         if (
             !isset($values["projectId"]) ||
             !isset($values["title"]) ||
             !isset($values["dueDate"]) ||
-            !isset($values["id"]) ||
+            !isset($values["userId"]) ||
             !isset($values["savedFileName"]) ||
             !isset($values["originalFileName"])
         ) {
             return false;
         };
 
-        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
-        if (!$stmt) {
-            return false;
-        };
+        $projectId = (integer)$values['projectId'];
+        $title = $values['title'];
+        $dueDate = convertDateReadableToHtmlFormInput($values['dueDate']);
+        $authorUserId = (integer)$values['userId'];
+        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFileName']);
+
         $result = mysqli_stmt_bind_param($stmt, 'issis',
-          $projectId,
-          $title,
-          $dueDate,
-          $authorUserId,
-          $savedFileUrlPath
+            $projectId,
+            $title,
+            $dueDate,
+            $authorUserId,
+            $savedFileUrlPath
         );
         if (!$result) {
             return false;
         };
-
-        $projectId = (integer)$values['projectId'];
-        $title = $values['title'];
-        $dueDate = convertDateReadableToHtmlFormInput($values['dueDate']);
-        $authorUserId = (integer)$values['id'];
-        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFileName']);
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {

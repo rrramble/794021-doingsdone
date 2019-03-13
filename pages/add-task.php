@@ -26,16 +26,16 @@ $tasks = getAdaptedTasks($db->getTasks());
 $postTaskTitle = '';
 $taskTitleIvalidMessage = '';
 
-$postProjectId = null;
+$postProjectId = 0;
 
 $dueDateIvalidMessage = '';
 
 
 if ($form->isMethodPost()) {
-    if ($form->isValid() && $db->isProjectIdExistForCurrentUser($form->getValuePublic('projectId'))) {
-        $values = $form->getFieldsPublic();
-        $values['id'] = $session->getUserData()['id'] ?? null;
-        $isAddedCorrectly = $db->addTask($values);
+    if ($form->isValid()) {
+        $taskData = $form->getFieldsPublic();
+        $taskData['userId'] = $session->getUserId();
+        $isAddedCorrectly = $db->addTask($taskData);
         if ($isAddedCorrectly) {
             header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
             die();
