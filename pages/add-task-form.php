@@ -19,8 +19,8 @@ class AddForm extends AbstractForm {
             'value' => null,
             'isPublic' => true,
             'validationCb' => function() {
-                $value = $this->getValue('projectId');
-                return (string)$value === (string)(integer)$value;
+                $value = (integer)$this->getValue('projectId');
+                return is_int($value) && $value >= 0;
             }
         ];
 
