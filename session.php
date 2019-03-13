@@ -50,7 +50,10 @@ class Session {
      */
     public function getUserId()
     {
-        return $result["id"] = (integer)($_SESSION["user"]["id"] ?? null);
+        if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["id"])) {
+            return null;
+        };
+        return (integer)$_SESSION["user"]["id"];
     }
 
 
