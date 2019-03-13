@@ -243,14 +243,6 @@ class DbApi
         return count($rows) > 0;
     }
 
-    private function isUserIdExist($userId)
-    {
-        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$userId);
-        $query = "SELECT id FROM users WHERE id = '$userIdEscaped'";
-        $result = mysqli_query($this->handler, $query);
-        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        return count($rows) > 0;
-    }
 
     private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
     {
