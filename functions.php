@@ -119,55 +119,34 @@ function getAdaptedTasks($dbTasks, $filter = 0)
     $todayInt = (integer)date("Ymd");
 
     foreach($dbTasks as $dbTask) {
-        $dateTime = date_create_from_format("Y-m-d H:i:s", $dbTask['due_date']);
-        $item['dueDate'] = $dateTime ? date_format($dateTime, "Y-m-d") : "";
-
-        if ($filter === 1 && !isTodayIsoDate($item['dueDate'])) {
-            continue;
-        };
-        if ($filter === 2 && !isTodayIsoDate($item['dueDate'])) { /////
-            continue;
-        };
-
-        $dueDateInt = getIntFromIsoDateTime($dbTask['due_date']);
-        if ($filter === 3 && ($item['dueDate'] === "" || isTodayOrFutureIsoDate($item['dueDate']) || $item["isDone"])) {
-            continue;
-        };
-
         $item['isDone'] = (integer)$dbTask['state_id'] === (integer)$TASK_STATE_DONE;
         $item['id'] = (integer)$dbTask['id'];
         $item['title'] = $dbTask['title'];
         $item['projectId'] = (integer)$dbTask['project_id'];
         $item['authorUserId'] = (integer)$dbTask['author_user_id'];
         $item['filePath'] = $dbTask['file_path'];
+
+        $dateTime = date_create_from_format("Y-m-d H:i:s", $dbTask['due_date']);
+        $item['dueDate'] = $dateTime ? date_format($dateTime, "Y-m-d") : "";
+
+        if ($filter === 1 && !isTodayIsoDate($item['dueDate'])) {
+            continue;
+        };
+        if ($filter === 2 && !isTomorrowIsoDate($item['dueDate'])) {
+            continue;
+        };
+
+        $dueDateInt = getIntFromIsoDateTime($dbTask['due_date']);
+        if ($filter === 3 && (!$item["dueDate"] || isTodayOrFutureIsoDate($item['dueDate']) || $item["isDone"])) {
+            continue;
+        };
+
         array_push($results, $item);
     };
 
     return $results;
 };
 
-
-function isTodayIsoDate($isoDate)
-{
-    date_default_timezone_set(SERVER_TIMEZONE);
-    if (!$isoDate) {
-        return false;
-    };
-
-    $isoToday = date("Y-m-d");
-    return $isoDate === $isoToday;
-}
-
-function isTodayOrFutureIsoDate($isoDate)
-{
-    date_default_timezone_set(SERVER_TIMEZONE);
-    if (!$isoDate) {
-        return false;
-    };
-
-    $isoToday = date("Y-m-d");
-    return $isoDate >= $isoToday;
-}
 
 /**
  * @param array $dbProjects
@@ -271,4 +250,59 @@ function isTitleExist($title, $list)
         };
     };
     return $result;
+}
+
+
+/**
+ * @param string $isoDate
+ *
+ * @return boolean
+ */
+function isTodayIsoDate($isoDate)
+{
+    date_default_timezone_set(SERVER_TIMEZONE);
+    if (!$isoDate) {
+        return false;
+    };
+
+    $isoToday = date("Y-m-d");
+    return $isoDate === $isoToday;
+}
+
+
+/**
+ * @param string $isoDate
+ *
+ * @return boolean
+ */
+function isTodayOrFutureIsoDate($isoDate)
+{
+    date_default_timezone_set(SERVER_TIMEZONE);
+    if (!$isoDate) {
+        return false;
+    };
+    $dateTime = date_create_from_format("Y-m-d", $isoDate);
+    $dateTimeToday = date_create_from_format("Y-m-d", date("Y-m-d"));
+
+    if (!$dateTime) {
+        return false;
+    };
+    return $dateTime >= $dateTimeToday;
+}
+
+
+/**
+ * @param string $isoDate
+ *
+ * @return boolean
+ */
+function isTomorrowIsoDate($isoDate)
+{
+    date_default_timezone_set(SERVER_TIMEZONE);
+    if (!$isoDate) {
+        return false;
+    };
+
+    $isoTomorrow = date("Y-m-d", strtotime("+1 day"));
+    return $isoDate === $isoTomorrow;
 }
