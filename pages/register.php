@@ -28,7 +28,7 @@ $form = new RegisterForm();
 if ($form->isMethodPost()) {
     $postEmail = $form->getValuePublic('email');
 
-    if (isOverallFormValid($form, $db)) {
+    if ($form->isValid() && !$db->isUserEmailExist($postEmail)) {
         $db->addUser($form->getFieldsPublic());
         header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
         die();
@@ -60,13 +60,3 @@ if ($form->isMethodPost()) {
 $layoutData['data']['components']['main'] = include_template('register.php', $layoutData);
 
 echo include_template('layout.php', $layoutData);
-die();
-
-
-function isOverallFormValid($form, $db)
-{
-    return
-        $form->isValid() &&
-        !$db->isUserEmailExist($form->getValuePublic('email'))
-    ;
-}
