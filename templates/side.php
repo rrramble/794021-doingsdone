@@ -15,7 +15,7 @@ const SELECTED_ITEM_CLASS = "main-navigation__list-item--active";
             <?php foreach ($data["projects"] as $project): ?>
 
                 <?php
-                    $cssClass = isset($data["isSelected"]) && $data["isSelected"] ? SELECTED_ITEM_CLASS : "";
+                    $cssClass = isset($data["projectId"]) && isset($project["id"]) && $project["id"] === $data["projectId"] ? SELECTED_ITEM_CLASS : "";
                     $url = isset($project['id']) ? getProjectUrl($project['id']) : "";
                     $title = isset($project['title']) ? strip_tags($project['title']) : "";
                     $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
