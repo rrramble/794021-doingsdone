@@ -20,7 +20,7 @@ $form = new AddProjectForm();
 $user = $session->getUserData();
 
 $projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks($user["id"]));
+$tasks = getAdaptedTasks($db->getTasks());
 
 $isTitleValid = true;
 $postTaskTitle = '';
