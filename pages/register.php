@@ -4,7 +4,7 @@ include_once('../db-api.php');
 include_once('register-form.php');
 
 $WEBPAGE_TITLE = 'Регистрация пользователя';
-$SCRIPT_NAME_IF_SUCCESS = '/index.php';
+$SCRIPT_NAME_IF_SUCCESS = '/pages/auth.php';
 $SCRIPT_NAME_IF_FAILURE = 'register.php';
 $FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
