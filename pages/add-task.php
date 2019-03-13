@@ -5,9 +5,9 @@ include_once('../session.php');
 include_once('add-task-form.php');
 
 const WEBPAGE_TITLE = 'Добавление задачи';
-$SCRIPT_NAME_IF_SUCCESS = '/index.php';
-$SCRIPT_NAME_IF_FAILURE = './add-task.php';
-$FormMessage = [
+const SCRIPT_NAME_IF_SUCCESS = '/index.php';
+const SCRIPT_NAME_IF_FAILURE = './add-task.php';
+const FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'NO_TITLE_ERROR' => 'Нужно указать название',
     'TITLE_ALREADY_EXISTS' => 'Название уже существует',
@@ -37,22 +37,22 @@ if ($form->isMethodPost()) {
         $values['id'] = $session->getUserData()['id'];
         $isAddedCorrectly = $db->addTask($values);
         if ($isAddedCorrectly) {
-            header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
+            header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
             die();
         };
-        header('Location: ' . $SCRIPT_NAME_IF_FAILURE);
+        header('Location: ' . SCRIPT_NAME_IF_FAILURE);
     };
 
     $postTaskTitle = $form->getValuePublic('title');
     $taskTitleIvalidMessage = $form->getFieldValidity('title') ?
         '' :
-        $FormMessage['NO_TITLE_ERROR'];
+        FormMessage['NO_TITLE_ERROR'];
 
     $postProjectId = $form->getValuePublic('projectId');
 
     $dueDateIvalidMessage = $form->getFieldValidity('dueDate') ?
         '' :
-        $FormMessage['DATE_MUST_BE_TODAY_OR_FUTURE'];
+        FormMessage['DATE_MUST_BE_TODAY_OR_FUTURE'];
 }
 
 $layoutData = [
@@ -69,7 +69,7 @@ $layoutData = [
 
         "dueDateIvalidMessage" => $dueDateIvalidMessage,
 
-        "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR'],
+        "formOverallErrorMessage" => FormMessage['OVERALL_ERROR'],
     ],
 ];
 
