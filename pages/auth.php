@@ -5,6 +5,7 @@ include_once('auth-form.php');
 include_once('../session.php');
 
 const WEBPAGE_TITLE = 'Авторизация на сайте';
+const PAGE_IF_ALREADY_LOGGED_IN = "/index.php";
 $SCRIPT_NAME_IF_SUCCESS = '/index.php';
 $SCRIPT_NAME_IF_FAILURE = 'auth.php';
 $FormMessage = [
@@ -15,40 +16,40 @@ $FormMessage = [
 ];
 
 $session = new Session();
-$db = new DbApi($session->getUserId());
+if ($session->getUserId()) {
+    header("Location: " . PAGE_IF_ALREADY_LOGGED_IN);
+    die();
+};
+
 $form = new AuthForm();
 
 $layoutData = [
     'data' => [
         'pageTitle' => WEBPAGE_TITLE,
-        'user' => $session->getUserData(),
         'isShowTemplateEvenUnauthorised' => true,
         'emailErrorMessage' => '',
     ],
 ];
 
-if ($layoutData["data"]["user"]) {
-    header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
-    die();
-};
-
 if ($form->isMethodPost()) {
     $email = $form->getValuePublic('email');
     $password = $form->getValuePublic('password');
+
+    $db = new DbApi();
     if ($form->isValid() && $db->isValidUserCredential($email, $password)) {
-        $userData = $db->getUserDataByEmail($form->getValuePublic('email'));
+        $userData = $db->getUserDataByEmail($email);
         $session->setUserData([
-            "email" => $userData["email"],
-            "userName" => $userData["userName"],
-            "id" => $userData["id"],
+            "userName" => $userData["userName"] ?? null,
+            "id" => $userData["id"] ?? 0,
         ]);
+
         header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
         die();
     };
 
-    $layoutData['data']['postEmail'] = $form->getValuePublic('email');
+    $layoutData['data']['postEmail'] = $email;
 
-    if (mb_strlen($layoutData['data']['postEmail']) <= 0) {
+    if (mb_strlen($email) <= 0) {
         $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_EMPTY'];
     } elseif (!$form->isFieldValid('email')) {
         $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_NOT_VALID'];
