@@ -19,10 +19,10 @@
     };
     
     if (isset($_GET["filter"])) {
-        $taskFilter = (integer)($_GET["filter"]);
-        $session->setCustomProp("filter", $taskFilter);
+        $taskFilterId = (integer)($_GET["filter"]);
+        $session->setCustomProp("filter", $taskFilterId);
     } else {
-        $taskFilter = (integer)$session->getCustomProp("filter");
+        $taskFilterId = (integer)$session->getCustomProp("filter");
     };
 
     if (isset($_GET['id'])) {
@@ -37,13 +37,13 @@
             "pageTitle" => WEBPAGE_TITLE,
             "showCompleteTasks" => $showCompleteTasks,
             "user" => $session->getUserData(),
-            "tasksFilter" => $taskFilter,
+            "tasksFilterId" => $taskFilterId,
             "projectId" => $projectId,
             ]
     ];
 
     $layoutData["data"]["tasks"] = isset($layoutData["data"]["user"]["id"]) ?
-        getAdaptedTasks($db->getTasks($layoutData["data"]["user"]["id"]), $taskFilter) :
+        getAdaptedTasks($db->getTasks($layoutData["data"]["user"]["id"]), $taskFilterId) :
         NULL;
 
     $layoutData["data"]["projects"] = isset($layoutData["data"]["user"]["id"]) ?
