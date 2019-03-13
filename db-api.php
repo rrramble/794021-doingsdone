@@ -71,7 +71,7 @@ class DbApi
         };
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_PROJECT']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
         $title = $values["title"];
         $authorId = $values["authorId"];
@@ -81,13 +81,13 @@ class DbApi
           $authorId
         );
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
 
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
         mysqli_stmt_close($stmt);
         return true;
@@ -115,7 +115,7 @@ class DbApi
         };
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
         $result = mysqli_stmt_bind_param($stmt, 'issis',
           $projectId,
@@ -125,7 +125,7 @@ class DbApi
           $savedFileUrlPath
         );
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
 
         $projectId = (integer)$values['projectId'];
@@ -135,7 +135,7 @@ class DbApi
         $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFileName']);
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
         mysqli_stmt_close($stmt);
         return true;
@@ -160,7 +160,7 @@ class DbApi
         };
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
         $result = mysqli_stmt_bind_param($stmt, 'sss',
           $email,
@@ -168,7 +168,7 @@ class DbApi
           $passwordHash
         );
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
 
         $email = $user['email'];
@@ -177,7 +177,7 @@ class DbApi
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
         mysqli_stmt_close($stmt);
     }
@@ -266,12 +266,12 @@ class DbApi
         $query = "SELECT id, name, email FROM users WHERE email = '$emailEscaped'";
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            $this->throwDbException();
+            return null;
         };
 
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if (count($rows) <= 0) {
-            $this->throwDbException();
+            return null;
         if (
             !isset($rows[0]) ||
             !isset($rows[0]["id"]) ||
@@ -425,7 +425,7 @@ class DbApi
 
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['TASK_DONE']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
 
         $result = mysqli_stmt_bind_param($stmt, 'isi',
@@ -434,12 +434,12 @@ class DbApi
             $taskId
         );
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
 
         mysqli_stmt_close($stmt);
