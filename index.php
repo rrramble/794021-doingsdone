@@ -10,6 +10,7 @@
     $db = new DbApi($session->getUserId());
 
     $db->setTaskIsDone(getToggledTaskState());
+
     if (isset($_GET["show_completed"])) {
         $showCompleteTasks = (integer)($_GET["show_completed"]);
         $session->setCustomProp("showCompleted", $showCompleteTasks);
@@ -24,6 +25,12 @@
         $taskFilter = (integer)$session->getCustomProp("filter");
     };
 
+    if (isset($_GET['id'])) {
+        $projectId = (integer)$_GET["id"];
+        $session->setCustomProp("showCompleted", $projectId);
+    } else {
+        $projectId = (integer)$session->getCustomProp("id");
+    };
     
     $layoutData = [
         "data" => [
@@ -31,7 +38,8 @@
             "showCompleteTasks" => $showCompleteTasks,
             "user" => $session->getUserData(),
             "tasksFilter" => $taskFilter,
-        ]
+            "projectId" => $projectId,
+            ]
     ];
 
     $layoutData["data"]["tasks"] = isset($layoutData["data"]["user"]["id"]) ?
@@ -40,10 +48,6 @@
 
     $layoutData["data"]["projects"] = isset($layoutData["data"]["user"]["id"]) ?
         getAdaptedProjects($db->getProjects()) :
-        NULL;
-
-    $layoutData["data"]["currentProjectId"] = isset($_GET['id']) ?
-        $_GET['id'] :
         NULL;
 
     $layoutData["data"]["components"] = [

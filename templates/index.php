@@ -3,6 +3,10 @@ if (!isset($data)) {
     header("Location: /");
     die();
 };
+
+$currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
+var_dump($currentProjectId);
+
 ?>
 <?php
     $HtmlClasses = [
@@ -54,7 +58,7 @@ if (!isset($data)) {
             <?php
                 if (
                     ($data["showCompleteTasks"] || !$task["isDone"]) &&
-                    ($task["projectId"] === (integer)$currentProjectId || $currentProjectId === NULL)
+                    ($currentProjectId === 0 || $task["projectId"] === $currentProjectId)
                 ):
             ?>
                 <?php
