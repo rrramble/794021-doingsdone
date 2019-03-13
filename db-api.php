@@ -63,6 +63,12 @@ class DbApi
      */
     public function addProject($values)
     {
+        if (
+            !isset($values["title"]) ||
+            !isset($values["authorId"])
+        ) {
+            return false;
+        };
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_PROJECT']);
         if (!$stmt) {
             $this->throwDbException();
@@ -97,6 +103,16 @@ class DbApi
      */
     public function addTask($values)
     {
+        if (
+            !isset($values["projectId"]) ||
+            !isset($values["title"]) ||
+            !isset($values["dueDate"]) ||
+            !isset($values["id"]) ||
+            !isset($values["savedFileName"]) ||
+            !isset($values["originalFileName"])
+        ) {
+            return false;
+        };
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
         if (!$stmt) {
             $this->throwDbException();
@@ -135,6 +151,13 @@ class DbApi
      */
     public function addUser($user)
     {
+        if (
+            !isset($user["email"]) ||
+            !isset($user["userName"]) ||
+            !isset($user["passwordHash"])
+        ) {
+            return false;
+        };
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
         if (!$stmt) {
             $this->throwDbException();
@@ -249,6 +272,13 @@ class DbApi
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if (count($rows) <= 0) {
             $this->throwDbException();
+        if (
+            !isset($rows[0]) ||
+            !isset($rows[0]["id"]) ||
+            !isset($rows[0]["email"]) ||
+            !isset($rows[0]["name"])
+        ) {
+            return null;
         };
 
         return [
@@ -378,7 +408,10 @@ class DbApi
      */
     public function setTaskIsDone($taskState)
     {
-        if (!$taskState) {
+        if (
+            !isset($taskState["isDone"]) ||
+            !isset($taskState["id"])
+        ) {
             return false;
         };
 
