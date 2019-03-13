@@ -53,6 +53,14 @@ class DbApi
 
     }
 
+
+    /**
+     * addProject
+     *
+     * @param  array $values
+     *
+     * @return boolean
+     */
     public function addProject($values)
     {
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_PROJECT']);
@@ -79,6 +87,14 @@ class DbApi
         return true;
     }
 
+
+    /**
+     * addTask
+     *
+     * @param  array $values
+     *
+     * @return boolean
+     */
     public function addTask($values)
     {
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
@@ -109,6 +125,14 @@ class DbApi
         return true;
     }
 
+
+    /**
+     * addUser
+     *
+     * @param  array $user
+     *
+     * @return boolean
+     */
     public function addUser($user)
     {
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
@@ -135,6 +159,14 @@ class DbApi
         mysqli_stmt_close($stmt);
     }
 
+
+    /**
+     * getUserPasswordHash
+     *
+     * @param  string $email
+     *
+     * @return string|null
+     */
     function getUserPasswordHash($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
@@ -147,6 +179,12 @@ class DbApi
         return $result ? $result[0]['password_hash'] : null;
     }
 
+
+    /**
+     * getProjects
+     *
+     * @return array
+     */
     function getProjects()
     {
         $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
@@ -158,6 +196,12 @@ class DbApi
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
+
+    /**
+     * getProjectTitles
+     *
+     * @return array
+     */
     function getProjectTitles()
     {
         $projects = $this->getProjects();
@@ -167,6 +211,12 @@ class DbApi
         return $result;
     }
 
+
+    /**
+     * getTasks
+     *
+     * @return array
+     */
     function getTasks()
     {
         $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
@@ -179,6 +229,14 @@ class DbApi
         return $result;
     }
 
+
+    /**
+     * getUserDataByEmail
+     *
+     * @param  string $email
+     *
+     * @return array
+     */
     function getUserDataByEmail($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
@@ -200,17 +258,40 @@ class DbApi
         ];
     }
 
+
+    /**
+     * isConnected
+     *
+     * @return boolean
+     */
     function isConnected()
     {
         return (boolean)$this->handler;
     }
 
+
+    /**
+     * isValidUserCredential
+     *
+     * @param  string $email
+     * @param  string $password
+     *
+     * @return boolean
+     */
     function isValidUserCredential($email, $password)
     {
         $dbPasswordHash = $this->getUserPasswordHash($email);
         return password_verify($password, $dbPasswordHash);
     }
 
+
+    /**
+     * isProjectIdExistForCurrentUser
+     *
+     * @param  integer $projectId
+     *
+     * @return boolean
+     */
     function isProjectIdExistForCurrentUser($projectId)
     {
         if ($projectId === NULL) {
@@ -225,6 +306,14 @@ class DbApi
         return count($rows) > 0;
     }
 
+
+    /**
+     * isTaskStateExist
+     *
+     * @param  integer $stateId
+     *
+     * @return boolean
+     */
     public function isTaskStateExist($stateId)
     {
         $stateIdEscaped = mysqli_real_escape_string($this->handler, (string)$stateId);
@@ -234,6 +323,14 @@ class DbApi
         return count($rows) > 0;
     }
 
+
+    /**
+     * isUserEmailExist
+     *
+     * @param  string $email
+     *
+     * @return boolean
+     */
     public function isUserEmailExist($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
@@ -244,6 +341,14 @@ class DbApi
     }
 
 
+    /**
+     * saveFileFromTempFolder
+     *
+     * @param  string $tempFileNamePath
+     * @param  string $originalFileNamePath
+     *
+     * @return string|null
+     */
     private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
     {
         if (!isset($tempFileNamePath) || strlen($tempFileNamePath) <= 0) {
@@ -263,6 +368,14 @@ class DbApi
         return $url;
     }
 
+
+    /**
+     * setTaskIsDone
+     *
+     * @param  array $taskState
+     *
+     * @return boolean
+     */
     public function setTaskIsDone($taskState)
     {
         if (!$taskState) {
@@ -300,6 +413,12 @@ class DbApi
         return true;
     }
 
+
+    /**
+     * throwDbException
+     *
+     * @return void
+     */
     function throwDbException()
     {
         throw new Exception(mysqli_connect_error());
