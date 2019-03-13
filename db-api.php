@@ -389,7 +389,7 @@ class DbApi
         $newFilePathName = __DIR__ . self::FILE_PUB_FOLDER . $filename;
         $isSaved = move_uploaded_file($tempFileNamePath, $newFilePathName);
         if (!$isSaved) {
-            return '';
+            return null;
         };
 
         $url = self::URL_FILE_FOLDER . $filename;
