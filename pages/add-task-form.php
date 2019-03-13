@@ -52,8 +52,8 @@ class AddForm extends AbstractForm {
         ];
 
         if (isset($_FILES['preview'])) {
-            $this->Field['savedFileName']['value'] = $_FILES['preview']['tmp_name'];
-            $this->Field['originalFileName']['value'] = $_FILES['preview']['name'];
+            $this->Field['savedFileName']['value'] = $_FILES['preview']['tmp_name'] ?? null;
+            $this->Field['originalFileName']['value'] = $_FILES['preview']['name'] ?? null;
         };
 
         parent::__construct();
