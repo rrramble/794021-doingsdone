@@ -21,7 +21,7 @@ $form = new AddForm();
 $user = $session->getUserData();
 
 $projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks($user["id"]));
+$tasks = getAdaptedTasks($db->getTasks());
 
 $postTaskTitle = '';
 $taskTitleIvalidMessage = '';
