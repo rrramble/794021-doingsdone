@@ -23,19 +23,19 @@ $HtmlClasses = [
     <div class="tasks-controls">
         <nav class="tasks-switch">
             <a href="/?filter=0" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 0 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                <?= $data["tasksFilterId"] === 0 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Все задачи
             </a>
             <a href="/?filter=1" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 1 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                <?= $data["tasksFilterId"] === 1 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Повестка дня
             </a>
             <a href="/?filter=2" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 2 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                <?= $data["tasksFilterId"] === 2 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Завтра
             </a>
             <a href="/?filter=3" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 3 ? $HtmlClasses["FILTER_ACTIVE"] : ""; ?>">
+                <?= $data["tasksFilterId"] === 3 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Просроченные
             </a>
         </nav>
@@ -62,24 +62,26 @@ $HtmlClasses = [
                     $classTaskCompleted = $task["isDone"] ? $HtmlClasses["TASK_COMPLETED"] : "";
                     $classTaskImportant = isDeadlineNear($task["dueDate"]) ? $HtmlClasses["TASK_IMPORTANT"] : "";
                 ?>
-                <tr class="tasks__item task <?= $classTaskCompleted; ?> <?= $classTaskImportant; ?>">
+                <tr class="tasks__item task <?= strip_tags($classTaskCompleted); ?> <?= strip_tags($classTaskImportant); ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
                             <input class="checkbox__input visually-hidden task__checkbox" type="checkbox"
-                              value="<?= $task["id"]; ?>"
+                              value="<?= strip_tags($task["id"]); ?>"
                               <?= $classTaskCompleted ? "checked" : ""; ?>
                             >
-                            <span class="checkbox__text"><?php echo $task["title"] ?></span>
+                            <span class="checkbox__text"><?= strip_tags($task["title"]); ?></span>
                         </label>
                     </td>
 
                     <td class="task__file">
                         <?php if(isset($task["filePath"]) && $task["filePath"]): ?>
-                        <a class="download-link" href="<?= $task["filePath"]; ?>">Файл</a>
+                        <a class="download-link" href="<?= strip_tags($task["filePath"]); ?>">Файл</a>
                         <?php endif; ?>
                     </td>
 
-                    <td class="task__date"><?php echo $task["dueDate"] ?></td>
+                    <td class="task__date">
+                        <?= strip_tags($task["dueDate"]); ?>
+                    </td>
                 </tr>
             <?php endif; ?>
         <?php endforeach; ?>

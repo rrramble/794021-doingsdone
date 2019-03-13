@@ -15,11 +15,11 @@ if (!isset($data)) {
   <div class="form__row">
     <label class="form__label" for="email">E-mail <sup>*</sup></label>
     <input
-        class="form__input <?= $emailErrorCssClass; ?>"
+        class="form__input <?= strip_tags($emailErrorCssClass); ?>"
         type="text" name="email" id="email"
-        value="<?= $email; ?>"
+        value="<?= strip_tags($email); ?>"
         placeholder="Введите e-mail">
-    <p class="form__message"><?= $emailErrorMessage; ?></p>
+    <p class="form__message"><?= strip_tags($emailErrorMessage); ?></p>
   </div>
 
   <div class="form__row">
@@ -35,7 +35,7 @@ if (!isset($data)) {
   </div>
 
   <?php if ($formErrorMessage):?>
-    <p class="error-message"><?= $formErrorMessage; ?></p>
+    <p class="error-message"><?= strip_tags($formErrorMessage); ?></p>
   <?php endif; ?>
 
 </form>

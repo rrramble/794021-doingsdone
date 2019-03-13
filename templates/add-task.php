@@ -14,16 +14,16 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
       <input
           class="form__input
-            <?php if ($data["taskTitleIvalidMessage"]) {echo $CLASS_INPUT_ERROR;} ?>"
+            <?= $data["taskTitleIvalidMessage"] ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
 
             type="text" name="name" id="name"
-            value="<?= $data["postTaskTitle"]; ?>"
+            value="<?= strip_tags($data["postTaskTitle"]); ?>"
 
             placeholder="Введите название">
 
       <?php if($data["taskTitleIvalidMessage"]): ?>
         <p class="form__message">
-          <?= $data["taskTitleIvalidMessage"]; ?>
+          <?= strip_tags($data["taskTitleIvalidMessage"]); ?>
         </p>
       <?php endif; ?>
 
@@ -35,10 +35,10 @@ $CLASS_INPUT_ERROR = 'form__input--error';
         <select class="form__input form__input--select" name="project" id="project">
         <?php foreach($data["projects"] as $project): ?>
           <option
-            value="<?= $project['id']; ?>"
+            value="<?= strip_tags($project['id']); ?>"
             <?= $project['id'] === $data["postProjectId"] ? "selected" : ""; ?>
             >
-              <?= $project['title']; ?>
+              <?= strip_tags($project['title']); ?>
           </option>
           <?php endforeach; ?>
         </select>
@@ -50,11 +50,11 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <input
         class="form__input form__input--date"
         type="date" name="date" id="date"
-        value="<?= $data["postDueDate"]; ?>"
+        value="<?= strip_tags($data["postDueDate"]); ?>"
         placeholder="Введите дату в формате ДД.ММ.ГГГГ">
       <?php if ($data["dueDateIvalidMessage"]): ?>
         <p class="form__message">
-          <?= $data["dueDateIvalidMessage"]; ?>
+          <?= strip_tags($data["dueDateIvalidMessage"]); ?>
         </p>
       <?php endif; ?>
     </div>
@@ -75,7 +75,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
     <?php if ($data["formOverallErrorMessage"]): ?>
       <p class="form__message">
-        <?= $data["formOverallErrorMessage"]; ?>
+        <?= strip_tags($data["formOverallErrorMessage"]); ?>
       </p>
     <?php endif; ?>
 

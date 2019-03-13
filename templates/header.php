@@ -18,7 +18,7 @@ if (!isset($data)) {
             </div>
 
             <div class="user-menu__data">
-                <p><?= $data["user"]["userName"]; ?></p>
+                <p><?= strip_tags($data["user"]["userName"]); ?></p>
 
                 <a href="/pages/logout.php">Выйти</a>
             </div>

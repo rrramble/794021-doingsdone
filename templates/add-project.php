@@ -13,14 +13,14 @@ $CLASS_INPUT_ERROR = 'form__input--error';
         <label class="form__label" for="project_name">Название <sup>*</sup></label>
 
         <input
-            class="form__input <?php if (!$data['isTitleValid']) {echo $CLASS_INPUT_ERROR;} ?>"
+            class="form__input <?= !$data['isTitleValid'] ? $CLASS_INPUT_ERROR : ""; ?>"
             type="text" name="name" id="project_name"
-            value="<?= $data["postTaskTitle"]; ?>"
+            value="<?= strip_tags($data["postTaskTitle"]); ?>"
             placeholder="Введите название проекта">
 
         <?php if(!$data['isTitleValid']): ?>
             <p class="form__message">
-            <?= $data["taskTitleIvalidMessage"]; ?>
+            <?= strip_tags($data["taskTitleIvalidMessage"]); ?>
             </p>
         <?php endif; ?>
 
