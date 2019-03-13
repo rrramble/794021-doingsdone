@@ -300,6 +300,10 @@ class DbApi
         };
 
         $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            $this->throwDbException();
+        };
+
         mysqli_stmt_close($stmt);
         return true;
     }
