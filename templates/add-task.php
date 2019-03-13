@@ -63,7 +63,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <input
         class="form__input form__input--date"
         type="date" name="date" id="date"
-        value="<?= strip_tags($data["postDueDate"]); ?>"
+        value=""
         placeholder="Введите дату в формате ДД.ММ.ГГГГ">
       <?php if ($data["dueDateIvalidMessage"]): ?>
         <p class="form__message">

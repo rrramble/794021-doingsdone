@@ -28,8 +28,6 @@ $taskTitleIvalidMessage = '';
 
 $postProjectId = null;
 
-$postDueDateReadable = null;
-$postDueDateInInputType = null;
 $dueDateIvalidMessage = '';
 
 
@@ -52,8 +50,6 @@ if ($form->isMethodPost()) {
 
     $postProjectId = $form->getValuePublic('projectId');
 
-    $postDueDateReadable = $form->getValuePublic('dueDate');
-    $postDueDateInInputType = convertDateReadableToHtmlFormInput($postDueDateReadable);
     $dueDateIvalidMessage = $form->getFieldValidity('dueDate') ?
         '' :
         $FormMessage['DATE_MUST_BE_TODAY_OR_FUTURE'];
@@ -71,7 +67,6 @@ $layoutData = [
 
         "postProjectId" => (integer)$postProjectId,
 
-        "postDueDate" => $postDueDateInInputType,
         "dueDateIvalidMessage" => $dueDateIvalidMessage,
 
         "formOverallErrorMessage" => $FormMessage['OVERALL_ERROR'],
