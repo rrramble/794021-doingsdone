@@ -167,9 +167,9 @@ class DbApi
         return $result;
     }
 
-    function getTasks($currentUserId)
+    function getTasks()
     {
-        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$currentUserId);
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
         $query  = "SELECT * FROM tasks WHERE author_user_id = '$userIdEscaped'";
 
         $result = mysqli_query($this->handler, $query);

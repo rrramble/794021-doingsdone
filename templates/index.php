@@ -51,7 +51,7 @@ $HtmlClasses = [
     </div>
 
     <table class="tasks">
-        <?php foreach($tasks as $task): ?>
+        <?php foreach($filteredTasks as $task): ?>
             <?php
                 if (
                     ($data["showCompleteTasks"] || !$task["isDone"]) &&

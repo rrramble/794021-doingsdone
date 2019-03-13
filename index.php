@@ -25,11 +25,11 @@
         $taskFilterId = (integer)$session->getCustomProp("filter");
     };
 
-    if (isset($_GET['id'])) {
+    if (isset($_GET["id"])) {
         $projectId = (integer)$_GET["id"];
-        $session->setCustomProp("showCompleted", $projectId);
+        $session->setCustomProp("projectId", $projectId);
     } else {
-        $projectId = (integer)$session->getCustomProp("id");
+        $projectId = (integer)$session->getCustomProp("projectId");
     };
     
     $layoutData = [
@@ -39,16 +39,12 @@
             "user" => $session->getUserData(),
             "tasksFilterId" => $taskFilterId,
             "projectId" => $projectId,
+            "tasks" => getAdaptedTasks($db->getTasks()),
             ]
     ];
 
-    $layoutData["data"]["tasks"] = isset($layoutData["data"]["user"]["id"]) ?
-        getAdaptedTasks($db->getTasks($layoutData["data"]["user"]["id"]), $taskFilterId) :
-        NULL;
-
-    $layoutData["data"]["projects"] = isset($layoutData["data"]["user"]["id"]) ?
-        getAdaptedProjects($db->getProjects()) :
-        NULL;
+    $layoutData["data"]["filteredTasks"] = getAdaptedTasks($db->getTasks(), $taskFilterId);
+    $layoutData["data"]["projects"] = getAdaptedProjects($db->getProjects());
 
     $layoutData["data"]["components"] = [
         "main" => include_template("index.php", $layoutData["data"]),
