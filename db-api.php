@@ -240,7 +240,7 @@ class DbApi
 
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            return NULL;
+            return [];
         };
         return $result;
     }
