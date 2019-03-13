@@ -13,19 +13,22 @@ const SELECTED_ITEM_CLASS = "main-navigation__list-item--active";
         <ul class="main-navigation__list">
 
             <?php foreach ($data["projects"] as $project): ?>
+
                 <?php
-                    $url = getProjectUrl($project['id']);
-                    $title = strip_tags($project['title']);
+                    $cssClass = isset($data["isSelected"]) && $data["isSelected"] ? SELECTED_ITEM_CLASS : "";
+                    $url = isset($project['id']) ? getProjectUrl($project['id']) : "";
+                    $title = isset($project['title']) ? strip_tags($project['title']) : "";
                     $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
                 ?>
+
                 <li class="main-navigation__list-item">
-                    <a  
-                        class="main-navigation__list-item-link <?= (isset($data["isSelected"]) && $data["isSelected"] ? SELECTED_ITEM_CLASS : "") ; ?>"
-                        href="<?= $url; ?>">
-                        <?= $title ?>
+                    <a
+                        class="main-navigation__list-item-link <?= strip_tags($cssClass); ?>"
+                        href="<?= strip_tags($url); ?>">
+                        <?= strip_tags($title); ?>
                     </a>
                     <span class="main-navigation__list-item-count">
-                        <?= $count ?>
+                        <?= strip_tags($count); ?>
                     </span>
                 </li>
             <?php endforeach; ?>
