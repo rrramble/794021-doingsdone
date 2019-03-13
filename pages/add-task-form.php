@@ -1,144 +1,62 @@
 <?php
+include_once('../abstract-form.php');
 
-class AddForm {
-    private $State = [
-        'isMethodPost' => null
-    ];
-
-    private $Field = [
-        'title' => [
-            'formTagName' => 'name',
-            'value' => null,
-            'isValid' => false
-        ],
-        'projectId' => [
-            'formTagName' => 'project',
-            'value' => null,
-            'isValid' => false
-        ],
-        'dueDate' => [
-            'formTagName' => 'date',
-            'value' => null,
-            'isValid' => false
-        ],
-        'file' => [
-            'formTagName' => 'preview',
-            'value' => null,
-            'isValid' => false
-            ]
-    ];
-
+class AddForm extends AbstractForm {
     function __construct()
     {
-        $this->State['isMethodPost'] = $this->isMethodPost();
-        if (!$this->State['isMethodPost']) {
-            return;
-        }
-        $this->getFormFields();
-        $this->Field['title']['isValid'] = $this->isTitleValid();
-        $this->Field['projectId']['isValid'] = $this->isProjectIdValid();
-        $this->Field['dueDate']['isValid'] = $this->isDueDateValid();
-        $this->Field['file']['isValid'] = true;
-    }
+        $this->Field['title'] = [
+            'formTagName' => 'name',
+            'value' => null,
+            'isPublic' => true,
+            'validationCb' => function() {
+                $value = $this->getValue("title");
+                return (boolean)mb_strlen($value) > 0;
+            },
+        ];
 
-    private function isProjectIdValid()
-    {
-        $value = $this->Field['projectId']['value'];
-        return ($value === (string)(integer)$value || (integer)$value > 0);
-    }
+        $this->Field['projectId'] = [
+            'formTagName' => 'project',
+            'value' => null,
+            'isPublic' => true,
+            'validationCb' => function() {
+                $value = (integer)$this->getValue('projectId');
+                return is_int($value) && $value >= 0;
+            }
+        ];
 
-    public function getDueDateValidity()
-    {
-        return $this->Field['dueDate']['isValid'];
-    }
+        $this->Field['dueDate'] = [
+            'formTagName' => 'date',
+            'value' => null,
+            'isPublic' => true,
+            'validationCb' => function() {
+                $value = $this->getValue('dueDate');
+                if (mb_strlen($value) <= 0) {
+                    return true;
+                };
+        
+                $dueDateUnixTime = strtotime($value);
+                if (!$dueDateUnixTime) {
+                    return false;
+                };
+                $todayUnixTime = strtotime(date("d.m.Y"));
+                return $dueDateUnixTime >= $todayUnixTime;
+            },
+        ];
 
-    public function getDueDateReadable()
-    {
-        return $this->Field['dueDate']['value'];
-    }
+        $this->Field['savedFileName'] = [
+            'isPublic' => true,
+        ];
 
-    private function getFormField($formTagName)
-    {
-        if (!isset($_POST[$formTagName])) {
-            return null;
-        };
-        return trim($_POST[$formTagName]) ?? null;
-    }
-
-    private function getFormFields()
-    {
-        foreach($this->Field as &$field) {
-            $field['value'] = $this->getFormField($field['formTagName']);
-        };
-        unset($field);
-    }
-
-    /**
-    * @return integer
-    */
-    public function getProjectId()
-    {
-        return (integer)$this->Field['projectId']['value'];
-    }
-
-    /**
-    * @return boolean
-    */
-    public function getProjectIdValidity()
-    {
-        return $this->Field['projectId']['isValid'];
-    }
-
-    public function getTitle()
-    {
-        return $this->Field['title']['value'];
-    }
-
-    public function getTitleValidity()
-    {
-        return $this->Field['title']['isValid'];
-    }
-
-    private function isDueDateValid()
-    {
-        $value = $this->Field['dueDate']['value'];
-        if (mb_strlen($value) <= 0) {
-            return true;
-        };
-
-        $date = strtotime($value);
-        if (!$date) {
-            return false;
-        };
-        return $date > strtotime('now');
-    }
-
-    public function isMethodPost()
-    {
-        if ($this->State['isMethodPost'] === null) {
-            $this->State['isMethodPost'] = ($_SERVER['REQUEST_METHOD'] === 'POST');
-        };
-        return $this->State['isMethodPost'];
-    }
-
-    private function isTitleValid()
-    {
-        $value = $this->Field['title']['value'];
-        return mb_strlen($value) > 0;
-    }
-
-    public function getValues()
-    {
-        $item = array();
-        $item['projectId'] = $this->Field['projectId']['value'];
-        $item['title'] = $this->Field['title']['value'];
-        $item['dueDate'] = $this->Field['dueDate']['value'];
+        $this->Field['originalFileName'] = [
+            'isPublic' => true,
+        ];
 
         if (isset($_FILES['preview'])) {
-            $item['savedFileName'] = $_FILES['preview']['tmp_name'];
-            $item['originalFilePathName'] = $_FILES['preview']['name'];
+            $this->Field['savedFileName']['value'] = $_FILES['preview']['tmp_name'] ?? null;
+            $this->Field['originalFileName']['value'] = $_FILES['preview']['name'] ?? null;
         };
-        return $item;
+
+        parent::__construct();
     }
 
-} // class Form
+} // class AddTaskForm

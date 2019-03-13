@@ -10,6 +10,13 @@
     $db = new DbApi($session->getUserId());
 
     $db->setTaskIsDone(getToggledTaskState());
+
+    if (empty($_GET)) {
+        $session->setCustomProp("showCompleted");
+        $session->setCustomProp("filter");
+        $session->setCustomProp("projectId");
+    };
+
     if (isset($_GET["show_completed"])) {
         $showCompleteTasks = (integer)($_GET["show_completed"]);
         $session->setCustomProp("showCompleted", $showCompleteTasks);
@@ -18,33 +25,32 @@
     };
     
     if (isset($_GET["filter"])) {
-        $taskFilter = (integer)($_GET["filter"]);
-        $session->setCustomProp("filter", $taskFilter);
+        $taskFilterId = (integer)($_GET["filter"]);
+        $session->setCustomProp("filter", $taskFilterId);
     } else {
-        $taskFilter = (integer)$session->getCustomProp("filter");
+        $taskFilterId = (integer)$session->getCustomProp("filter");
     };
 
+    if (isset($_GET["id"])) {
+        $projectId = (integer)$_GET["id"];
+        $session->setCustomProp("projectId", $projectId);
+    } else {
+        $projectId = (integer)$session->getCustomProp("projectId");
+    };
     
     $layoutData = [
         "data" => [
             "pageTitle" => WEBPAGE_TITLE,
             "showCompleteTasks" => $showCompleteTasks,
             "user" => $session->getUserData(),
-            "tasksFilter" => $taskFilter,
-        ]
+            "tasksFilterId" => $taskFilterId,
+            "projectId" => $projectId,
+            "tasks" => getAdaptedTasks($db->getTasks()),
+            ]
     ];
 
-    $layoutData["data"]["tasks"] = isset($layoutData["data"]["user"]["id"]) ?
-        getAdaptedTasks($db->getTasks($layoutData["data"]["user"]["id"]), $taskFilter) :
-        NULL;
-
-    $layoutData["data"]["projects"] = isset($layoutData["data"]["user"]["id"]) ?
-        getAdaptedProjects($db->getProjects()) :
-        NULL;
-
-    $layoutData["data"]["currentProjectId"] = isset($_GET['id']) ?
-        $_GET['id'] :
-        NULL;
+    $layoutData["data"]["filteredTasks"] = getAdaptedTasks($db->getTasks(), $taskFilterId);
+    $layoutData["data"]["projects"] = getAdaptedProjects($db->getProjects());
 
     $layoutData["data"]["components"] = [
         "main" => include_template("index.php", $layoutData["data"]),

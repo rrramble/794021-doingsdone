@@ -20,7 +20,7 @@ $form = new AddProjectForm();
 $user = $session->getUserData();
 
 $projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks($user["id"]));
+$tasks = getAdaptedTasks($db->getTasks());
 
 $isTitleValid = true;
 $postTaskTitle = '';
@@ -30,7 +30,7 @@ if ($form->isMethodPost()) {
     $isTitleValid = $form->isValid() && !isTitleExist($form->getValuePublic("title"), $projects);
     if ($isTitleValid) {
         $values = $form->getFieldsPublic();
-        $values['authorId'] = (integer)$user['id'];
+        $values['authorId'] = (integer)($user['id'] ?? 0);
         if ($db->addProject($values)) {
             header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
             die();

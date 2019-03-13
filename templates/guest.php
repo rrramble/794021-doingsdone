@@ -1,3 +1,9 @@
+<?php
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+?>
 <section class="welcome">
     <h2 class="welcome__heading">«Дела в порядке»</h2>
 

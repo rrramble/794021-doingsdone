@@ -3,17 +3,19 @@ include_once('functions.php');
 
 class DbApi
 {
-    private $FILE_PUB_FOLDER = DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR;
-    private $URL_FILE_FOLDER = '/pub/';
+    const FOLDER_NAME = 'pub';
+    const FILE_PUB_FOLDER = DIRECTORY_SEPARATOR . self::FOLDER_NAME . DIRECTORY_SEPARATOR;
+    const URL_FILE_FOLDER = '/' . self::FOLDER_NAME . '/';
 
-    private $DbSettings = [
+    const DbSettings = [
         'HOST' => '127.0.0.1',
         'USERNAME' => 'root',
         'PASSWORD' => '',
         'DB_NAME' => '794021_doingsdone',
         'ENCODING' => 'utf8'
     ];
-    private $SqlQuerySTMT = [
+
+    const SqlQuerySTMT = [
         'ADD_TASK' => 'INSERT INTO tasks ' .
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
@@ -24,19 +26,19 @@ class DbApi
           '(email, name, password_hash)' .
           'VALUES(?, ?, ?)',
         'TASK_DONE' => 'UPDATE tasks ' .
-          'SET state_id = ? ' .
+          'SET state_id = ?, date_completed = ? ' .
           'WHERE id = ?',
         ];
 
-    protected $handler;
+    private $handler = null;
 
-    function __construct($userId)
+    function __construct($userId = 0)
     {
         $this->handler = mysqli_connect(
-            $this->DbSettings['HOST'],
-            $this->DbSettings['USERNAME'],
-            $this->DbSettings['PASSWORD'],
-            $this->DbSettings['DB_NAME']
+            self::DbSettings['HOST'],
+            self::DbSettings['USERNAME'],
+            self::DbSettings['PASSWORD'],
+            self::DbSettings['DB_NAME']
         );
 
         if (!$this->isConnected()) {
@@ -44,19 +46,34 @@ class DbApi
         };
 
         if ($this->handler) {
-            mysqli_set_charset($this->handler, $this->DbSettings['ENCODING']);
+            mysqli_set_charset($this->handler, self::DbSettings['ENCODING']);
         };
 
         $this->userId = $userId;
-
     }
 
+
+    /**
+     * addProject
+     *
+     * @param  array $values
+     *
+     * @return boolean
+     */
     public function addProject($values)
     {
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_PROJECT']);
-        if (!$stmt) {
-            $this->throwDbException();
+        if (
+            !isset($values["title"]) ||
+            !isset($values["authorId"])
+        ) {
+            return false;
         };
+
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_PROJECT']);
+        if (!$stmt) {
+            return false;
+        };
+
         $title = $values["title"];
         $authorId = $values["authorId"];
 
@@ -65,87 +82,142 @@ class DbApi
           $authorId
         );
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
-
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
+
         mysqli_stmt_close($stmt);
         return true;
     }
 
+
+    /**
+     * addTask
+     *
+     * @param  array $values
+     *
+     * @return boolean
+     */
     public function addTask($values)
     {
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_TASK']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
-        $result = mysqli_stmt_bind_param($stmt, 'issis',
-          $projectId,
-          $title,
-          $dueDate,
-          $authorUserId,
-          $savedFileUrlPath
-        );
-        if (!$result) {
-            $this->throwDbException();
+
+        if (
+            !isset($values["projectId"]) ||
+            !isset($values["title"]) ||
+            !isset($values["dueDate"]) ||
+            !isset($values["userId"]) ||
+            !isset($values["savedFileName"]) ||
+            !isset($values["originalFileName"])
+        ) {
+            return false;
         };
 
         $projectId = (integer)$values['projectId'];
         $title = $values['title'];
         $dueDate = convertDateReadableToHtmlFormInput($values['dueDate']);
-        $authorUserId = (integer)$values['id'];
-        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFilePathName']);
+        $authorUserId = (integer)$values['userId'];
+        $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFileName']);
+
+        $result = mysqli_stmt_bind_param($stmt, 'issis',
+            $projectId,
+            $title,
+            $dueDate,
+            $authorUserId,
+            $savedFileUrlPath
+        );
+        if (!$result) {
+            return false;
+        };
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
+
         mysqli_stmt_close($stmt);
         return true;
     }
 
+
+    /**
+     * addUser
+     *
+     * @param  array $user
+     *
+     * @return boolean
+     */
     public function addUser($user)
     {
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_USER']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
-        $result = mysqli_stmt_bind_param($stmt, 'sss',
-          $email,
-          $userName,
-          $passwordHash
-        );
-        if (!$result) {
-            $this->throwDbException();
+
+        if (
+            !isset($user["email"]) ||
+            !isset($user["userName"]) ||
+            !isset($user["passwordHash"])
+        ) {
+            return false;
         };
 
         $email = $user['email'];
         $userName = $user['userName'];
         $passwordHash = $user['passwordHash'];
 
+        $result = mysqli_stmt_bind_param($stmt, 'sss',
+            $email,
+            $userName,
+            $passwordHash
+        );
+        if (!$result) {
+            return false;
+        };
+
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
+
         mysqli_stmt_close($stmt);
     }
 
+
+    /**
+     * getUserPasswordHash
+     *
+     * @param  string $email
+     *
+     * @return string|null
+     */
     function getUserPasswordHash($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query  = "SELECT password_hash FROM users WHERE email = '$emailEscaped'";
+
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            return NULL;
+            return null;
         };
+
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return $result ? $result[0]['password_hash'] : null;
     }
 
+
+    /**
+     * getProjects
+     *
+     * @return array
+     */
     function getProjects()
     {
         $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
@@ -157,39 +229,53 @@ class DbApi
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
-    function getProjectTitles()
-    {
-        $projects = $this->getProjects();
-        $result = array_map(function($project) {
-            return $project['title'];
-        }, $projects);
-        return $result;
-    }
 
-    function getTasks($currentUserId)
+    /**
+     * getTasks
+     *
+     * @return array
+     */
+    function getTasks()
     {
-        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$currentUserId);
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
         $query  = "SELECT * FROM tasks WHERE author_user_id = '$userIdEscaped'";
 
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            return NULL;
+            return [];
         };
         return $result;
     }
 
+
+    /**
+     * getUserDataByEmail
+     *
+     * @param  string $email
+     *
+     * @return array
+     */
     function getUserDataByEmail($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query = "SELECT id, name, email FROM users WHERE email = '$emailEscaped'";
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
-            $this->throwDbException();
+            return null;
         };
 
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if (count($rows) <= 0) {
-            $this->throwDbException();
+            return null;
+        };
+
+        if (
+            !isset($rows[0]) ||
+            !isset($rows[0]["id"]) ||
+            !isset($rows[0]["email"]) ||
+            !isset($rows[0]["name"])
+        ) {
+            return null;
         };
 
         return [
@@ -199,29 +285,62 @@ class DbApi
         ];
     }
 
+
+    /**
+     * isConnected
+     *
+     * @return boolean
+     */
     function isConnected()
     {
         return (boolean)$this->handler;
     }
 
+
+    /**
+     * isValidUserCredential
+     *
+     * @param  string $email
+     * @param  string $password
+     *
+     * @return boolean
+     */
     function isValidUserCredential($email, $password)
     {
         $dbPasswordHash = $this->getUserPasswordHash($email);
         return password_verify($password, $dbPasswordHash);
     }
 
-    function isProjectIdExists($id)
+
+    /**
+     * isProjectIdExistForCurrentUser
+     *
+     * @param  integer $projectId
+     *
+     * @return boolean
+     */
+    function isProjectIdExistForCurrentUser($projectId)
     {
-        if ($id === NULL) {
+        if ($projectId === NULL) {
             return true;
         }
-        $idEscaped = mysqli_real_escape_string($this->handler, (string)$id);
-        $query = "SELECT id FROM projects WHERE id = '$idEscaped'";
+        $projectIdEscaped = mysqli_real_escape_string($this->handler, (string)$projectId);
+        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
+
+        $query = "SELECT id FROM projects WHERE id = '$projectIdEscaped' AND author_user_id = '$userIdEscaped'";
         $result = mysqli_query($this->handler, $query);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return count($rows) > 0;
     }
 
+
+    /**
+     * isTaskStateExist
+     *
+     * @param  integer $stateId
+     *
+     * @return boolean
+     */
     public function isTaskStateExist($stateId)
     {
         $stateIdEscaped = mysqli_real_escape_string($this->handler, (string)$stateId);
@@ -231,6 +350,14 @@ class DbApi
         return count($rows) > 0;
     }
 
+
+    /**
+     * isUserEmailExist
+     *
+     * @param  string $email
+     *
+     * @return boolean
+     */
     public function isUserEmailExist($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
@@ -240,15 +367,15 @@ class DbApi
         return count($rows) > 0;
     }
 
-    private function isUserIdExist($userId)
-    {
-        $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$userId);
-        $query = "SELECT id FROM users WHERE id = '$userIdEscaped'";
-        $result = mysqli_query($this->handler, $query);
-        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        return count($rows) > 0;
-    }
 
+    /**
+     * saveFileFromTempFolder
+     *
+     * @param  string $tempFileNamePath
+     * @param  string $originalFileNamePath
+     *
+     * @return string|null
+     */
     private function saveFileFromTempFolder($tempFileNamePath, $originalFileNamePath)
     {
         if (!isset($tempFileNamePath) || strlen($tempFileNamePath) <= 0) {
@@ -258,47 +385,70 @@ class DbApi
         $fileExtension = $fileExtension ? '.' . $fileExtension : '';
         $filename = uniqid() . $fileExtension;
 
-        $newFilePathName = __DIR__ . $this->FILE_PUB_FOLDER . $filename;
+        $newFilePathName = __DIR__ . self::FILE_PUB_FOLDER . $filename;
         $isSaved = move_uploaded_file($tempFileNamePath, $newFilePathName);
         if (!$isSaved) {
-            return '';
+            return null;
         };
 
-        $url = $this->URL_FILE_FOLDER . $filename;
+        $url = self::URL_FILE_FOLDER . $filename;
         return $url;
     }
 
+
+    /**
+     * setTaskIsDone
+     *
+     * @param  array $taskState
+     *
+     * @return boolean
+     */
     public function setTaskIsDone($taskState)
     {
-        if (!$taskState) {
+        if (
+            !isset($taskState["isDone"]) ||
+            !isset($taskState["id"])
+        ) {
             return false;
         };
 
         $taskIsDoneState = (integer)$taskState["isDone"];
+        $dateCompleted = $taskIsDoneState ? date("Y-m-d") : NULL;
         $taskId = (integer)$taskState["id"];
 
         if (!$this->isTaskStateExist($taskIsDoneState)) {
             return false;
         };
 
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['TASK_DONE']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['TASK_DONE']);
         if (!$stmt) {
-            $this->throwDbException();
+            return false;
         };
 
-        $result = mysqli_stmt_bind_param($stmt, 'ii',
+        $result = mysqli_stmt_bind_param($stmt, 'isi',
             $taskIsDoneState,
+            $dateCompleted,
             $taskId
         );
         if (!$result) {
-            $this->throwDbException();
+            return false;
         };
 
         $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            return false;
+        };
+
         mysqli_stmt_close($stmt);
         return true;
     }
 
+
+    /**
+     * throwDbException
+     *
+     * @return void
+     */
     function throwDbException()
     {
         throw new Exception(mysqli_connect_error());

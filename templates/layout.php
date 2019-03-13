@@ -1,7 +1,12 @@
 <?php
-    if (!isset($data["user"])) {
-        $data["user"] = null;
-    };
+if (!isset($data)) {
+    header("Location: /");
+    die();
+};
+
+if (!isset($data["user"])) {
+    $data["user"] = null;
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -108,7 +113,7 @@
             <span class="visually-hidden">Разработано:</span>
 
             <a href="https://htmlacademy.ru/intensive/php">
-                <img src="img/htmlacademy.svg" alt="HTML Academy" width="118" height="40">
+                <img src="/img/htmlacademy.svg" alt="HTML Academy" width="118" height="40">
             </a>
         </div>
     </div>

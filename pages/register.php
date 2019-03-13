@@ -3,11 +3,9 @@ include_once('../functions.php');
 include_once('../db-api.php');
 include_once('register-form.php');
 
-const NOT_EXISTED_USER_ID = 0;
-$WEBPAGE_TITLE = 'Регистрация пользователя';
-$SCRIPT_NAME_IF_SUCCESS = '/index.php';
-$SCRIPT_NAME_IF_FAILURE = 'register.php';
-$FormMessage = [
+const WEBPAGE_TITLE = 'Регистрация пользователя';
+const SCRIPT_NAME_IF_SUCCESS = '/pages/auth.php';
+const FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'EMAIL_IS_EMPTY' => 'Указать электронную почту',
     'PASSWORD_IS_EMPTY' => 'Указать пароль',
@@ -18,20 +16,20 @@ $FormMessage = [
 
 $layoutData = [
     'data' => [
-        'pageTitle' => $WEBPAGE_TITLE,
+        'pageTitle' => WEBPAGE_TITLE,
         'isShowTemplateEvenUnauthorised' => true,
     ],
 ];
 
-$db = new DbApi(NOT_EXISTED_USER_ID);
+$db = new DbApi();
 $form = new RegisterForm();
 
 if ($form->isMethodPost()) {
     $postEmail = $form->getValuePublic('email');
 
-    if (isOverallFormValid($form, $db)) {
+    if ($form->isValid() && !$db->isUserEmailExist($postEmail)) {
         $db->addUser($form->getFieldsPublic());
-        header('Location: ' . $SCRIPT_NAME_IF_SUCCESS);
+        header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
         die();
     };
 
@@ -42,32 +40,22 @@ if ($form->isMethodPost()) {
     $layoutData['data']['passwordErrorMessage'] = '';
 
     if (mb_strlen($postEmail) <= 0) {
-        $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_EMPTY'];
+        $layoutData['data']['emailErrorMessage'] = FormMessage['EMAIL_IS_EMPTY'];
     } elseif (!$form->isFieldValid('email')) {
-        $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_IS_WRONG'];
+        $layoutData['data']['emailErrorMessage'] = FormMessage['EMAIL_IS_WRONG'];
     } elseif ($db->isUserEmailExist($postEmail)) {
-        $layoutData['data']['emailErrorMessage'] = $FormMessage['EMAIL_ALREADY_EXISTS'];
+        $layoutData['data']['emailErrorMessage'] = FormMessage['EMAIL_ALREADY_EXISTS'];
     };
 
     if (!$form->isFieldValid('password')) {
-        $layoutData['data']['passwordErrorMessage'] = $FormMessage['PASSWORD_IS_EMPTY'];
+        $layoutData['data']['passwordErrorMessage'] = FormMessage['PASSWORD_IS_EMPTY'];
     };
 
     $layoutData['data']['userNameErrorMessage'] = !$form->isFieldValid('userName') ?
-        $FormMessage['USERNAME_IS_WRONG'] :
+        FormMessage['USERNAME_IS_WRONG'] :
         '';
 };
 
 $layoutData['data']['components']['main'] = include_template('register.php', $layoutData);
 
 echo include_template('layout.php', $layoutData);
-die();
-
-
-function isOverallFormValid($form, $db)
-{
-    return
-        $form->isValid() &&
-        !$db->isUserEmailExist($form->getValuePublic('email'))
-    ;
-}
