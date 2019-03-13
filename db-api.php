@@ -32,7 +32,7 @@ class DbApi
 
     private $handler = null;
 
-    function __construct($userId)
+    function __construct($userId = 0)
     {
         $this->handler = mysqli_connect(
             self::DbSettings['HOST'],
