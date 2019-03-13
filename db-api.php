@@ -265,6 +265,7 @@ class DbApi
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if (count($rows) <= 0) {
             return null;
+        };
 
         if (
             !isset($rows[0]) ||
