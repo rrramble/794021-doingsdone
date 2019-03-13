@@ -6,13 +6,11 @@ if (!isset($data)) {
 
 $currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
 
-?>
-<?php
-    $HtmlClasses = [
-        "TASK_COMPLETED" => "task--completed",
-        "TASK_IMPORTANT" => "task--important",
-        "FILTER_ACTIVE" => "tasks-switch__item--active",
-    ];
+$HtmlClasses = [
+    "TASK_COMPLETED" => "task--completed",
+    "TASK_IMPORTANT" => "task--important",
+    "FILTER_ACTIVE" => "tasks-switch__item--active",
+];
 ?>
     <h2 class="content__main-heading">Список задач</h2>
 
