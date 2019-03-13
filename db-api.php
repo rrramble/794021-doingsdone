@@ -3,17 +3,19 @@ include_once('functions.php');
 
 class DbApi
 {
-    private $FILE_PUB_FOLDER = DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR;
-    private $URL_FILE_FOLDER = '/pub/';
+    const FOLDER_NAME = 'pub';
+    const FILE_PUB_FOLDER = DIRECTORY_SEPARATOR . self::FOLDER_NAME . DIRECTORY_SEPARATOR;
+    const URL_FILE_FOLDER = '/' . self::FOLDER_NAME . '/';
 
-    private $DbSettings = [
+    const DbSettings = [
         'HOST' => '127.0.0.1',
         'USERNAME' => 'root',
         'PASSWORD' => '',
         'DB_NAME' => '794021_doingsdone',
         'ENCODING' => 'utf8'
     ];
-    private $SqlQuerySTMT = [
+
+    const SqlQuerySTMT = [
         'ADD_TASK' => 'INSERT INTO tasks ' .
           '(project_id, title, due_date, author_user_id, file_path)' .
           'VALUES(?, ?, ?, ?, ?)',
@@ -33,10 +35,10 @@ class DbApi
     function __construct($userId)
     {
         $this->handler = mysqli_connect(
-            $this->DbSettings['HOST'],
-            $this->DbSettings['USERNAME'],
-            $this->DbSettings['PASSWORD'],
-            $this->DbSettings['DB_NAME']
+            self::DbSettings['HOST'],
+            self::DbSettings['USERNAME'],
+            self::DbSettings['PASSWORD'],
+            self::DbSettings['DB_NAME']
         );
 
         if (!$this->isConnected()) {
@@ -44,7 +46,7 @@ class DbApi
         };
 
         if ($this->handler) {
-            mysqli_set_charset($this->handler, $this->DbSettings['ENCODING']);
+            mysqli_set_charset($this->handler, self::DbSettings['ENCODING']);
         };
 
         $this->userId = $userId;
@@ -53,7 +55,7 @@ class DbApi
 
     public function addProject($values)
     {
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_PROJECT']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_PROJECT']);
         if (!$stmt) {
             $this->throwDbException();
         };
@@ -79,7 +81,7 @@ class DbApi
 
     public function addTask($values)
     {
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_TASK']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
         if (!$stmt) {
             $this->throwDbException();
         };
@@ -109,7 +111,7 @@ class DbApi
 
     public function addUser($user)
     {
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['ADD_USER']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
         if (!$stmt) {
             $this->throwDbException();
         };
@@ -259,13 +261,13 @@ class DbApi
         $fileExtension = $fileExtension ? '.' . $fileExtension : '';
         $filename = uniqid() . $fileExtension;
 
-        $newFilePathName = __DIR__ . $this->FILE_PUB_FOLDER . $filename;
+        $newFilePathName = __DIR__ . self::FILE_PUB_FOLDER . $filename;
         $isSaved = move_uploaded_file($tempFileNamePath, $newFilePathName);
         if (!$isSaved) {
             return '';
         };
 
-        $url = $this->URL_FILE_FOLDER . $filename;
+        $url = self::URL_FILE_FOLDER . $filename;
         return $url;
     }
 
@@ -283,7 +285,7 @@ class DbApi
             return false;
         };
 
-        $stmt = mysqli_prepare($this->handler, $this->SqlQuerySTMT['TASK_DONE']);
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['TASK_DONE']);
         if (!$stmt) {
             $this->throwDbException();
         };
