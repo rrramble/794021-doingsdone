@@ -7,7 +7,6 @@ include_once('../session.php');
 const WEBPAGE_TITLE = 'Авторизация на сайте';
 const PAGE_IF_ALREADY_LOGGED_IN = "/index.php";
 const SCRIPT_NAME_IF_SUCCESS = '/index.php';
-$SCRIPT_NAME_IF_FAILURE = 'auth.php';
 const FormMessage = [
     'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'AUTH_ERROR' => 'Вы ввели неверный email/пароль',
