@@ -4,6 +4,14 @@ if (!isset($data)) {
   die();
 };
 
+if (!isset($data["projects"])) {
+    $data["projects"] = [];
+};
+
+if (!isset($data["postProjectId"])) {
+  $data["postProjectId"] = null;
+};
+
 $CLASS_INPUT_ERROR = 'form__input--error';
 ?>
   <h2 class="content__main-heading">Добавление задачи</h2>
@@ -14,16 +22,16 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
       <input
           class="form__input
-            <?= $data["taskTitleIvalidMessage"] ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
+            <?= isset($data["taskTitleIvalidMessage"]) ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
 
             type="text" name="name" id="name"
-            value="<?= strip_tags($data["postTaskTitle"]); ?>"
+            value="<?= isset($data["postTaskTitle"]) ? strip_tags($data["postTaskTitle"]) : ""; ?>"
 
             placeholder="Введите название">
 
       <?php if($data["taskTitleIvalidMessage"]): ?>
         <p class="form__message">
-          <?= strip_tags($data["taskTitleIvalidMessage"]); ?>
+          <?= isset($data["taskTitleIvalidMessage"]) ? strip_tags($data["taskTitleIvalidMessage"]) : ""; ?>
         </p>
       <?php endif; ?>
 
@@ -34,11 +42,16 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
         <select class="form__input form__input--select" name="project" id="project">
         <?php foreach($data["projects"] as $project): ?>
+          <?php 
+            if (!isset($project["id"]) || !isset($project["title"])) {
+              continue;
+            };
+          ?>
           <option
             value="<?= strip_tags($project['id']); ?>"
             <?= $project['id'] === $data["postProjectId"] ? "selected" : ""; ?>
-            >
-              <?= strip_tags($project['title']); ?>
+          >
+            <?= strip_tags($project['title']); ?>
           </option>
           <?php endforeach; ?>
         </select>
