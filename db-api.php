@@ -85,7 +85,6 @@ class DbApi
             return false;
         };
 
-
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
             return false;
@@ -157,6 +156,11 @@ class DbApi
      */
     public function addUser($user)
     {
+        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
+        if (!$stmt) {
+            return false;
+        };
+
         if (
             !isset($user["email"]) ||
             !isset($user["userName"]) ||
@@ -165,10 +169,9 @@ class DbApi
             return false;
         };
 
-        $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
-        if (!$stmt) {
-            return false;
-        };
+        $email = $user['email'];
+        $userName = $user['userName'];
+        $passwordHash = $user['passwordHash'];
 
         $result = mysqli_stmt_bind_param($stmt, 'sss',
             $email,
@@ -178,10 +181,6 @@ class DbApi
         if (!$result) {
             return false;
         };
-
-        $email = $user['email'];
-        $userName = $user['userName'];
-        $passwordHash = $user['passwordHash'];
 
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
