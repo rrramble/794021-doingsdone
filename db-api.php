@@ -113,6 +113,7 @@ class DbApi
         ) {
             return false;
         };
+
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_TASK']);
         if (!$stmt) {
             return false;
@@ -133,10 +134,12 @@ class DbApi
         $dueDate = convertDateReadableToHtmlFormInput($values['dueDate']);
         $authorUserId = (integer)$values['id'];
         $savedFileUrlPath = $this->saveFileFromTempFolder($values['savedFileName'], $values['originalFileName']);
+
         $result = mysqli_stmt_execute($stmt);
         if (!$result) {
             return false;
         };
+
         mysqli_stmt_close($stmt);
         return true;
     }
@@ -158,14 +161,16 @@ class DbApi
         ) {
             return false;
         };
+
         $stmt = mysqli_prepare($this->handler, self::SqlQuerySTMT['ADD_USER']);
         if (!$stmt) {
             return false;
         };
+
         $result = mysqli_stmt_bind_param($stmt, 'sss',
-          $email,
-          $userName,
-          $passwordHash
+            $email,
+            $userName,
+            $passwordHash
         );
         if (!$result) {
             return false;
@@ -179,6 +184,7 @@ class DbApi
         if (!$result) {
             return false;
         };
+
         mysqli_stmt_close($stmt);
     }
 
@@ -194,10 +200,12 @@ class DbApi
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query  = "SELECT password_hash FROM users WHERE email = '$emailEscaped'";
+
         $result = mysqli_query($this->handler, $query);
         if (!$result) {
             return NULL;
         };
+
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return $result ? $result[0]['password_hash'] : null;
     }
@@ -272,6 +280,7 @@ class DbApi
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if (count($rows) <= 0) {
             return null;
+
         if (
             !isset($rows[0]) ||
             !isset($rows[0]["id"]) ||
