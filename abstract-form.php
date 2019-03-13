@@ -7,6 +7,7 @@ class AbstractForm {
 
     protected $Field = [];
 
+
     function __construct()
     {
         if (!$this->isMethodPost()) {
@@ -16,6 +17,7 @@ class AbstractForm {
         $this->saveFieldsFromForm();
         $this->checkAndSaveFieldsValidity();
     }
+
 
     /**
      * @return void
@@ -28,6 +30,7 @@ class AbstractForm {
             };
         };
     }
+
 
     /**
      * @return boolean
@@ -85,6 +88,7 @@ class AbstractForm {
         return $result;
     }
 
+
     /**
      * @param string $fieldName
      * @return string
@@ -98,6 +102,7 @@ class AbstractForm {
         };
         return $this->Field[$fieldName]['value'];
     }
+
 
     /**
      * @param string $fieldName
@@ -115,6 +120,7 @@ class AbstractForm {
         return $this->getValue($fieldName);
     }
 
+
     /**
      * @return void
      */
@@ -126,6 +132,7 @@ class AbstractForm {
             };
         };
     }
+
 
     /**
      * @return boolean
