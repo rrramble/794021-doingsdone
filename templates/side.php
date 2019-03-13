@@ -3,6 +3,8 @@ if (!isset($data)) {
     header("Location: /");
     die();
 };
+
+const SELECTED_ITEM_CLASS = "main-navigation__list-item--active";
 ?>
 <section class="content__side">
     <h2 class="content__side-heading">Проекты</h2>
@@ -17,7 +19,9 @@ if (!isset($data)) {
                     $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
                 ?>
                 <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="<?= $url; ?>">
+                    <a  
+                        class="main-navigation__list-item-link <?= (isset($data["isSelected"]) && $data["isSelected"] ? SELECTED_ITEM_CLASS : "") ; ?>"
+                        href="<?= $url; ?>">
                         <?= $title ?>
                     </a>
                     <span class="main-navigation__list-item-count">
