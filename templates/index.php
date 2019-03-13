@@ -5,7 +5,6 @@ if (!isset($data)) {
 };
 
 $currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
-var_dump($currentProjectId);
 
 ?>
 <?php
