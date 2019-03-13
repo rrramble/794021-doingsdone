@@ -11,7 +11,8 @@ class AbstractForm {
     {
         if (!$this->isMethodPost()) {
             return;
-        }
+        };
+
         $this->saveFieldsFromForm();
         $this->checkAndSaveFieldsValidity();
     }
@@ -52,7 +53,7 @@ class AbstractForm {
     public function getFieldValidity($fieldName)
     {
         if (!isset($this->Field[$fieldName])) {
-            throw new Exception('No such field in form class: ' . $fieldName);
+            throw new Exception("No such field in form class: '" . $fieldName . "'");
         };
 
         if (!isset($this->Field[$fieldName]['isValid'])) {
@@ -69,12 +70,9 @@ class AbstractForm {
      */
     protected function getFormField($formTagName)
     {
-        if (!isset($_POST[$formTagName])) {
-            throw new Exception('No such field in HTML form: ' . $formTagName);
-        };
-        return trim($_POST[$formTagName]);
+        $value = $_POST[$formTagName] ?? null;
+        return trim($value);
     }
-
 
     public function getFieldsPublic()
     {
