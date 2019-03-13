@@ -30,7 +30,7 @@ class DbApi
           'WHERE id = ?',
         ];
 
-    protected $handler;
+    private $handler;
 
     function __construct($userId)
     {
