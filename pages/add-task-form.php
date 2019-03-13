@@ -34,11 +34,12 @@ class AddForm extends AbstractForm {
                     return true;
                 };
         
-                $date = strtotime($value);
-                if (!$date) {
+                $dueDateUnixTime = strtotime($value);
+                if (!$dueDateUnixTime) {
                     return false;
                 };
-                return $date > strtotime('now');
+                $todayUnixTime = strtotime(date("d.m.Y"));
+                return $dueDateUnixTime >= $todayUnixTime;
             },
         ];
 
