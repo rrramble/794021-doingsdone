@@ -229,21 +229,6 @@ class DbApi
 
 
     /**
-     * getProjectTitles
-     *
-     * @return array
-     */
-    function getProjectTitles()
-    {
-        $projects = $this->getProjects();
-        $result = array_map(function($project) {
-            return $project['title'];
-        }, $projects);
-        return $result;
-    }
-
-
-    /**
      * getTasks
      *
      * @return array
