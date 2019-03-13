@@ -24,7 +24,7 @@ class DbApi
           '(email, name, password_hash)' .
           'VALUES(?, ?, ?)',
         'TASK_DONE' => 'UPDATE tasks ' .
-          'SET state_id = ? ' .
+          'SET state_id = ?, date_completed = ? ' .
           'WHERE id = ?',
         ];
 
@@ -276,6 +276,7 @@ class DbApi
         };
 
         $taskIsDoneState = (integer)$taskState["isDone"];
+        $dateCompleted = $taskIsDoneState ? date("Y-m-d") : NULL;
         $taskId = (integer)$taskState["id"];
 
         if (!$this->isTaskStateExist($taskIsDoneState)) {
@@ -287,8 +288,9 @@ class DbApi
             $this->throwDbException();
         };
 
-        $result = mysqli_stmt_bind_param($stmt, 'ii',
+        $result = mysqli_stmt_bind_param($stmt, 'isi',
             $taskIsDoneState,
+            $dateCompleted,
             $taskId
         );
         if (!$result) {
