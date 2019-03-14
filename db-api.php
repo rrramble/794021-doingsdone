@@ -395,6 +395,22 @@ class DbApi
         return $url;
     }
 
+    /**
+     * @param  string $text
+     * @return array
+     */
+    public function searchTasks($text)
+    {
+        $textEscaped = mysqli_real_escape_string($this->handler, (string)$text);
+        $query = "SELECT * FROM tasks WHERE MATCH (title) AGAINST ('$textEscaped');";
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            return [];
+        };
+
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $rows;
+    }
 
     /**
      * setTaskIsDone
