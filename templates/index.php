@@ -59,7 +59,7 @@ $HtmlClasses = [
         <?php foreach($filteredTasks as $task): ?>
             <?php
                 if (
-                    ($data["showCompleteTasks"] || !$task["isDone"]) &&
+                    ($showCompleteTasks || !$task["isDone"]) &&
                     ($currentProjectId === 0 || $task["projectId"] === $currentProjectId)
                 ):
             ?>
