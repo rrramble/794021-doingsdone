@@ -3,6 +3,9 @@ if (!isset($data)) {
     header("Location: /");
     die();
 };
+
+$userName = $data["user"]["userName"] ?? "";
+
 ?>
 <header class="main-header">
     <a href="/">
@@ -18,8 +21,7 @@ if (!isset($data)) {
             </div>
 
             <div class="user-menu__data">
-                <p><?= strip_tags($data["user"]["userName"]); ?></p>
-
+                <p><?= strip_tags($userName); ?></p>
                 <a href="/pages/logout.php">Выйти</a>
             </div>
         </div>
