@@ -27,21 +27,15 @@ $mainComponent = $data["components"]["main"] ?? "";
 <div class="page-wrapper">
     <div class="container container--with-sidebar">
 
-        <?php
-        if ($user) {
-            echo include_template("header.php", $data);
-        } else {
-            echo include_template("header-guest.php", $data);
-        };
+        <?= $user ?
+            include_template("header.php", $data) :
+            include_template("header-guest.php", $data);
         ?>
 
         <div class="content">
-            <?php
-                if(!$user) {
-                    echo include_template("side-guest.php", $data);
-                } else {
-                    echo include_template("side.php", $data);
-                };
+            <?= $user ?
+                include_template("side.php", $data) :
+                include_template("side-guest.php", $data);
             ?>
 
             <main class="content__main">
