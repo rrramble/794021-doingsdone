@@ -65,6 +65,7 @@ $HtmlClasses = [
                 $classTaskImportant = isDeadlineNear($taskDueDate) ? $HtmlClasses["TASK_IMPORTANT"] : "";
                 $taskId = (integer)($task["id"] ?? 0);
                 $taskTitle = $task["title"] ?? "";
+                $taskFilePath = $task["filePath"] ?? "";
                 if (
                     ($showCompleteTasks || !$isTaskDone) &&
                     ($currentProjectId === 0 || $taskProjectId === $currentProjectId)
@@ -82,8 +83,8 @@ $HtmlClasses = [
                     </td>
 
                     <td class="task__file">
-                        <?php if(isset($task["filePath"]) && $task["filePath"]): ?>
-                        <a class="download-link" href="<?= strip_tags($task["filePath"]); ?>">Файл</a>
+                        <?php if($taskFilePath): ?>
+                        <a class="download-link" href="<?= strip_tags($taskFilePath); ?>">Файл</a>
                         <?php endif; ?>
                     </td>
 
