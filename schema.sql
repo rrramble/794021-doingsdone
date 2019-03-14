@@ -21,8 +21,9 @@ CREATE TABLE tasks (
     file_path VARCHAR(1024) NULL,
     due_date DATETIME NULL,
     author_user_id INT NULL,
-    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-  )
+    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FULLTEXT (title)
+  ) ENGINE = MyISAM
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
