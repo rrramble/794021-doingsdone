@@ -7,6 +7,7 @@ if (!isset($data)) {
 $user = $data["user"] ?? null;
 $pageTitle = $data["pageTitle"] ?? "";
 $showTemplateEvenUnathorised = (boolean)($data["isShowTemplateEvenUnauthorised"] ?? false);
+$mainComponent = $data["components"]["main"] ?? "";
 
 ?>
 <!DOCTYPE html>
@@ -47,13 +48,13 @@ $showTemplateEvenUnathorised = (boolean)($data["isShowTemplateEvenUnauthorised"]
                 <?php
                 if(!$user) {
                     if ($showTemplateEvenUnathorised) {
-                        echo $data["components"]["main"];
+                        echo $mainComponent;
                     } else {
                         echo include_template("guest.php", $data);
                     };
 
                 } else {
-                    echo $data["components"]["main"];
+                    echo $mainComponent;
                 };
                 ?>
             </main>
