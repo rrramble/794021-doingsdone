@@ -360,23 +360,6 @@ class DbApi
 
 
     /**
-     * isUserEmailExist
-     *
-     * @param  string $email
-     *
-     * @return boolean
-     */
-    public function isUserEmailExist($email)
-    {
-        $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
-        $query = "SELECT email FROM users WHERE email = '$emailEscaped'";
-        $result = mysqli_query($this->handler, $query);
-        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        return count($rows) > 0;
-    }
-
-
-    /**
      * saveFileFromTempFolder
      *
      * @param  string $tempFileNamePath
