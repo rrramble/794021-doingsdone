@@ -2,6 +2,9 @@
 
 class Session {
 
+    /**
+     * @return self
+     */
     public function __construct()
     {
         session_start();
