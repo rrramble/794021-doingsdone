@@ -39,12 +39,9 @@ $mainComponent = $data["components"]["main"] ?? "";
             ?>
 
             <main class="content__main">
-                <?php
-                if ($user || $showTemplateEvenUnathorised) {
-                    echo $mainComponent;
-                } else {
-                    echo include_template("guest.php", $data);
-                };
+                <?= $user || $showTemplateEvenUnathorised ?
+                    $mainComponent :
+                    include_template("guest.php", $data);
                 ?>
             </main>
         </div>
