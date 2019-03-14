@@ -4,7 +4,7 @@ if (!isset($data)) {
     die();
 };
 
-$currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
+$currentProjectId = (integer)($data["projectId"] ?? 0);
 $tasksFilterId = $data["tasksFilterId"] ?? 0;
 $postTitle = $data["postTitle"] ?? "";
 $showCompleteTasks = (boolean)($data["showCompleteTasks"] ?? false);
