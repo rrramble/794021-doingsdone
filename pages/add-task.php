@@ -30,7 +30,6 @@ $postProjectId = 0;
 
 $dueDateIvalidMessage = '';
 
-
 if ($form->isMethodPost()) {
     if ($form->isValid()) {
         $taskData = $form->getFieldsPublic();
@@ -53,7 +52,7 @@ if ($form->isMethodPost()) {
     $dueDateIvalidMessage = $form->getFieldValidity('dueDate') ?
         '' :
         FormMessage['DATE_MUST_BE_TODAY_OR_FUTURE'];
-}
+};
 
 $layoutData = [
     "data" => [
