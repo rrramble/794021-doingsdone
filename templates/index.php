@@ -5,6 +5,7 @@ if (!isset($data)) {
 };
 
 $currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
+$tasksFilterId = $data["tasksFilterId"] ?? 0;
 
 $HtmlClasses = [
     "TASK_COMPLETED" => "task--completed",
@@ -25,19 +26,19 @@ $HtmlClasses = [
     <div class="tasks-controls">
         <nav class="tasks-switch">
             <a href="/?filter=0" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 0 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
+                <?= $tasksFilterId === 0 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Все задачи
             </a>
             <a href="/?filter=1" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 1 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
+                <?= $tasksFilterId === 1 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Повестка дня
             </a>
             <a href="/?filter=2" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 2 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
+                <?= $tasksFilterId === 2 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Завтра
             </a>
             <a href="/?filter=3" class="tasks-switch__item
-                <?= $data["tasksFilterId"] === 3 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
+                <?= $tasksFilterId === 3 ? strip_tags($HtmlClasses["FILTER_ACTIVE"]) : ""; ?>">
                 Просроченные
             </a>
         </nav>
