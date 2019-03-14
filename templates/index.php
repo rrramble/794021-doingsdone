@@ -47,9 +47,7 @@ $HtmlClasses = [
 
         <label class="checkbox">
             <input class="checkbox__input visually-hidden show_completed" type="checkbox"
-                <?php if ($showCompleteTasks): ?>
-                checked
-                <?php endif; ?>
+                <?= $showCompleteTasks ? "checked" : ""; ?>
             >
             <span class="checkbox__text">Показывать выполненные</span>
         </label>
