@@ -60,9 +60,10 @@ $HtmlClasses = [
             <?php
                 $isTaskDone = (boolean)($task["isDone"] ?? false);
                 $taskDueDate = $task["dueDate"] ?? "";
+                $taskProjectId = (integer)($task["projectId"] ?? 0);
                 if (
                     ($showCompleteTasks || !$isTaskDone) &&
-                    ($currentProjectId === 0 || $task["projectId"] === $currentProjectId)
+                    ($currentProjectId === 0 || $taskProjectId === $currentProjectId)
                 ):
             ?>
                 <?php
