@@ -11,7 +11,6 @@ CREATE TABLE projects (
   )
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
-;
 
 CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,7 +25,6 @@ CREATE TABLE tasks (
   )
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
-;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,7 +35,6 @@ CREATE TABLE users (
   )
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
-;
 
 /*  About email length
     Although name part may be up to 64 and domain's up to 255,
@@ -63,4 +60,3 @@ CREATE TABLE task_states (
   )
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
-;
