@@ -16,7 +16,7 @@ const FormMessage = [
 
 $session = new Session();
 $db = new DbApi($session->getUserId());
-$form = new AddForm();
+$form = new AddTaskForm();
 
 $user = $session->getUserData();
 
