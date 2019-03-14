@@ -7,6 +7,7 @@ if (!isset($data)) {
 $currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
 $tasksFilterId = $data["tasksFilterId"] ?? 0;
 $postTitle = $data["postTitle"] ?? "";
+$showCompleteTasks = (boolean)($data["showCompleteTasks"] ?? false);
 
 $HtmlClasses = [
     "TASK_COMPLETED" => "task--completed",
@@ -46,7 +47,7 @@ $HtmlClasses = [
 
         <label class="checkbox">
             <input class="checkbox__input visually-hidden show_completed" type="checkbox"
-                <?php if ($data["showCompleteTasks"]): ?>
+                <?php if ($showCompleteTasks): ?>
                 checked
                 <?php endif; ?>
             >
