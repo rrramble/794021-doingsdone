@@ -68,7 +68,7 @@ $layoutData = [
 
         "dueDateIvalidMessage" => $dueDateIvalidMessage,
 
-        "formOverallErrorMessage" => FormMessage['OVERALL_ERROR'],
+        "formOverallErrorMessage" => !$form->isValid() ? FormMessage['OVERALL_ERROR'] : "",
     ],
 ];
 

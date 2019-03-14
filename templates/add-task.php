@@ -22,7 +22,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
       <input
           class="form__input
-            <?= isset($data["taskTitleIvalidMessage"]) ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
+            <?= isset($data["taskTitleIvalidMessage"]) && $data["taskTitleIvalidMessage"] ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
 
             type="text" name="name" id="name"
             value="<?= isset($data["postTaskTitle"]) ? strip_tags($data["postTaskTitle"]) : ""; ?>"
@@ -90,7 +90,7 @@ $CLASS_INPUT_ERROR = 'form__input--error';
       <input class="button" type="submit" name="" value="Добавить">
     </div>
 
-    <?php if ($data["formOverallErrorMessage"]): ?>
+    <?php if (isset($data["formOverallErrorMessage"]) && $data["formOverallErrorMessage"]): ?>
       <p class="form__message">
         <?= strip_tags($data["formOverallErrorMessage"]); ?>
       </p>
