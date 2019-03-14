@@ -8,7 +8,7 @@ class AbstractForm {
     protected $Field = [];
 
 
-    function __construct()
+    public function __construct()
     {
         if (!$this->isMethodPost()) {
             return;
