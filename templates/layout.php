@@ -40,15 +40,10 @@ $mainComponent = $data["components"]["main"] ?? "";
 
             <main class="content__main">
                 <?php
-                if(!$user) {
-                    if ($showTemplateEvenUnathorised) {
-                        echo $mainComponent;
-                    } else {
-                        echo include_template("guest.php", $data);
-                    };
-
-                } else {
+                if ($user || $showTemplateEvenUnathorised) {
                     echo $mainComponent;
+                } else {
+                    echo include_template("guest.php", $data);
                 };
                 ?>
             </main>
