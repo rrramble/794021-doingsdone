@@ -4,7 +4,7 @@ if (!isset($data)) {
     die();
 };
 
-$CLASS_INPUT_ERROR = 'form__input--error';
+const CLASS_INPUT_ERROR = 'form__input--error';
 
 $postTaskTitle = $data["postTaskTitle"] ?? "";
 $taskTitleInvalidMessage = $data["taskTitleIvalidMessage"] ?? "";
@@ -18,7 +18,7 @@ $isTitleValid = (boolean)($data['isTitleValid'] ?? true);
         <label class="form__label" for="project_name">Название <sup>*</sup></label>
 
         <input
-            class="form__input <?= !$isTitleValid ? $CLASS_INPUT_ERROR : ""; ?>"
+            class="form__input <?= !$isTitleValid ? CLASS_INPUT_ERROR : ""; ?>"
             type="text" name="name" id="project_name"
             value="<?= strip_tags($postTaskTitle); ?>"
             placeholder="Введите название проекта">
