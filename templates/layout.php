@@ -28,10 +28,10 @@ $mainComponent = $data["components"]["main"] ?? "";
     <div class="container container--with-sidebar">
 
         <?php
-        if (!$user) {
-            echo include_template("header-guest.php", $data);
-        } else {
+        if ($user) {
             echo include_template("header.php", $data);
+        } else {
+            echo include_template("header-guest.php", $data);
         };
         ?>
 
