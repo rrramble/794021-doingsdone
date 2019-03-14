@@ -170,6 +170,7 @@ function getAdaptedProjects($dbProjects)
     return $results;
 };
 
+
 /**
  * @param string $isoDateString
  *
