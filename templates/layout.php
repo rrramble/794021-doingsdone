@@ -4,9 +4,8 @@ if (!isset($data)) {
     die();
 };
 
-if (!isset($data["user"])) {
-    $data["user"] = null;
-};
+$user = $data["user"] ?? null;
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -26,7 +25,7 @@ if (!isset($data["user"])) {
     <div class="container container--with-sidebar">
 
         <?php
-        if (!$data["user"]) {
+        if (!$user) {
             echo include_template("header-guest.php", $data);
         } else {
             echo include_template("header.php", $data);
@@ -35,7 +34,7 @@ if (!isset($data["user"])) {
 
         <div class="content">
             <?php
-                if(!$data["user"]) {
+                if(!$user) {
                     echo include_template("side-guest.php", $data);
                 } else {
                     echo include_template("side.php", $data);
@@ -44,7 +43,7 @@ if (!isset($data["user"])) {
 
             <main class="content__main">
                 <?php
-                if(!$data["user"]) {
+                if(!$user) {
                     if (isset($data["isShowTemplateEvenUnauthorised"])) {
                         echo $data["components"]["main"];
                     } else {
