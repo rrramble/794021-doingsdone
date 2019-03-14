@@ -30,7 +30,7 @@ class DbApi
           'WHERE id = ?',
         ];
 
-    private $handler = null;
+    private $handler;
 
 
     /**
