@@ -55,7 +55,9 @@ $userNameCssClass = $userNameErrorMessage ? 'form__input--error' : '';
   </div>
 
   <div class="form__row form__row--controls">
-    <p class="error-message">Пожалуйста, исправьте ошибки в форме</p>
+    <?php if ($emailErrorMessage || $userNameErrorMessage || $passwordErrorMessage): ?>
+      <p class="error-message">Пожалуйста, исправьте ошибки в форме</p>
+    <?php endif; ?>
     <input class="button" type="submit" name="" value="Зарегистрироваться">
   </div>
 </form>
