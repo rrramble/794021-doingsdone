@@ -8,6 +8,7 @@ if (!isset($data)) {
     $emailErrorMessage = $data['emailErrorMessage'] ?? '';
     $emailErrorCssClass = $emailErrorMessage ? 'form__input--error' : '';
     $formErrorMessage = $data['formErrorMessage'] ?? '';
+
 ?>
 <h2 class="content__main-heading">Вход на сайт</h2>
 
