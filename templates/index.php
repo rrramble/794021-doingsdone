@@ -6,6 +6,7 @@ if (!isset($data)) {
 
 $currentProjectId = isset($data["projectId"]) ? (integer)$data["projectId"] : 0;
 $tasksFilterId = $data["tasksFilterId"] ?? 0;
+$postTitle = $data["postTitle"] ?? "";
 
 $HtmlClasses = [
     "TASK_COMPLETED" => "task--completed",
@@ -17,7 +18,7 @@ $HtmlClasses = [
 
     <form class="search-form" action="index.php" method="post">
         <input class="search-form__input" type="text" name="task-search"
-            value="<?= isset($data["postTitle"]) ? strip_tags($data["postTitle"]) : ""; ?>" placeholder="Поиск по задачам"
+            value="<?= strip_tags($postTitle); ?>" placeholder="Поиск по задачам"
         >
 
         <input class="search-form__submit" type="submit" name="" value="Искать">
