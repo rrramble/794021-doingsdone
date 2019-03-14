@@ -58,14 +58,16 @@ $HtmlClasses = [
     <table class="tasks">
         <?php foreach($filteredTasks as $task): ?>
             <?php
+                $isTaskDone = (boolean)($task["isDone"] ?? false);
+                $taskDueDate = $task["dueDate"] ?? "";
                 if (
-                    ($showCompleteTasks || !$task["isDone"]) &&
+                    ($showCompleteTasks || !$isTaskDone) &&
                     ($currentProjectId === 0 || $task["projectId"] === $currentProjectId)
                 ):
             ?>
                 <?php
-                    $classTaskCompleted = $task["isDone"] ? $HtmlClasses["TASK_COMPLETED"] : "";
-                    $classTaskImportant = isDeadlineNear($task["dueDate"]) ? $HtmlClasses["TASK_IMPORTANT"] : "";
+                    $classTaskCompleted = $isTaskDone ? $HtmlClasses["TASK_COMPLETED"] : "";
+                    $classTaskImportant = isDeadlineNear($taskDueDate) ? $HtmlClasses["TASK_IMPORTANT"] : "";
                 ?>
                 <tr class="tasks__item task <?= strip_tags($classTaskCompleted); ?> <?= strip_tags($classTaskImportant); ?>">
                     <td class="task__select">
@@ -85,7 +87,7 @@ $HtmlClasses = [
                     </td>
 
                     <td class="task__date">
-                        <?= strip_tags($task["dueDate"]); ?>
+                        <?= strip_tags($taskDueDate); ?>
                     </td>
                 </tr>
             <?php endif; ?>
