@@ -63,6 +63,7 @@ $HtmlClasses = [
                 $taskProjectId = (integer)($task["projectId"] ?? 0);
                 $classTaskCompleted = $isTaskDone ? $HtmlClasses["TASK_COMPLETED"] : "";
                 $classTaskImportant = isDeadlineNear($taskDueDate) ? $HtmlClasses["TASK_IMPORTANT"] : "";
+                $taskId = (integer)($task["id"] ?? 0);
                 if (
                     ($showCompleteTasks || !$isTaskDone) &&
                     ($currentProjectId === 0 || $taskProjectId === $currentProjectId)
@@ -72,7 +73,7 @@ $HtmlClasses = [
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
                             <input class="checkbox__input visually-hidden task__checkbox" type="checkbox"
-                              value="<?= strip_tags($task["id"]); ?>"
+                              value="<?= strip_tags($taskId); ?>"
                               <?= $classTaskCompleted ? "checked" : ""; ?>
                             >
                             <span class="checkbox__text"><?= strip_tags($task["title"]); ?></span>
