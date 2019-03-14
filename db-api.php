@@ -206,7 +206,7 @@ class DbApi
      *
      * @return string|null
      */
-    function getUserPasswordHash($email)
+    private function getUserPasswordHash($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query  = "SELECT password_hash FROM users WHERE email = '$emailEscaped'";
@@ -226,7 +226,7 @@ class DbApi
      *
      * @return array
      */
-    function getProjects()
+    public function getProjects()
     {
         $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
         $query  = "SELECT * FROM projects WHERE author_user_id = '$userIdEscaped'";
@@ -243,7 +243,7 @@ class DbApi
      *
      * @return array
      */
-    function getTasks()
+    public function getTasks()
     {
         $userIdEscaped = mysqli_real_escape_string($this->handler, (string)$this->userId);
         $query  = "SELECT * FROM tasks WHERE author_user_id = '$userIdEscaped'";
@@ -263,7 +263,7 @@ class DbApi
      *
      * @return array
      */
-    function getUserDataByEmail($email)
+    public function getUserDataByEmail($email)
     {
         $emailEscaped = mysqli_real_escape_string($this->handler, (string)$email);
         $query = "SELECT id, name, email FROM users WHERE email = '$emailEscaped'";
@@ -299,7 +299,7 @@ class DbApi
      *
      * @return boolean
      */
-    function isConnected()
+    private function isConnected()
     {
         return (boolean)$this->handler;
     }
@@ -313,7 +313,7 @@ class DbApi
      *
      * @return boolean
      */
-    function isValidUserCredential($email, $password)
+    public function isValidUserCredential($email, $password)
     {
         $dbPasswordHash = $this->getUserPasswordHash($email);
         return password_verify($password, $dbPasswordHash);
@@ -327,7 +327,7 @@ class DbApi
      *
      * @return boolean
      */
-    function isProjectIdExistForCurrentUser($projectId)
+    public function isProjectIdExistForCurrentUser($projectId)
     {
         if ($projectId === NULL) {
             return true;
@@ -349,7 +349,7 @@ class DbApi
      *
      * @return boolean
      */
-    public function isTaskStateExist($stateId)
+    private function isTaskStateExist($stateId)
     {
         $stateIdEscaped = mysqli_real_escape_string($this->handler, (string)$stateId);
         $query = "SELECT id FROM task_states WHERE id = '$stateIdEscaped'";
@@ -473,7 +473,7 @@ class DbApi
      *
      * @return void
      */
-    function throwDbException()
+    private function throwDbException()
     {
         throw new Exception(mysqli_connect_error());
     }
