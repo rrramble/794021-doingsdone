@@ -1,7 +1,7 @@
 <?php
 include_once('../abstract-form.php');
 
-class AddForm extends AbstractForm {
+class AddTaskForm extends AbstractForm {
     function __construct()
     {
         $this->Field['title'] = [
