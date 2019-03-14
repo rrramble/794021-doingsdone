@@ -61,15 +61,13 @@ $HtmlClasses = [
                 $isTaskDone = (boolean)($task["isDone"] ?? false);
                 $taskDueDate = $task["dueDate"] ?? "";
                 $taskProjectId = (integer)($task["projectId"] ?? 0);
+                $classTaskCompleted = $isTaskDone ? $HtmlClasses["TASK_COMPLETED"] : "";
+                $classTaskImportant = isDeadlineNear($taskDueDate) ? $HtmlClasses["TASK_IMPORTANT"] : "";
                 if (
                     ($showCompleteTasks || !$isTaskDone) &&
                     ($currentProjectId === 0 || $taskProjectId === $currentProjectId)
                 ):
             ?>
-                <?php
-                    $classTaskCompleted = $isTaskDone ? $HtmlClasses["TASK_COMPLETED"] : "";
-                    $classTaskImportant = isDeadlineNear($taskDueDate) ? $HtmlClasses["TASK_IMPORTANT"] : "";
-                ?>
                 <tr class="tasks__item task <?= strip_tags($classTaskCompleted); ?> <?= strip_tags($classTaskImportant); ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
