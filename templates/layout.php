@@ -5,6 +5,8 @@ if (!isset($data)) {
 };
 
 $user = $data["user"] ?? null;
+$pageTitle = $data["pageTitle"] ?? "";
+$showTemplateEvenUnathorised = (boolean)($data["isShowTemplateEvenUnauthorised"] ?? false);
 
 ?>
 <!DOCTYPE html>
@@ -12,7 +14,7 @@ $user = $data["user"] ?? null;
 
 <head>
     <meta charset="UTF-8">
-    <title><?= strip_tags($data["pageTitle"]); ?></title>
+    <title><?= strip_tags($pageTitle); ?></title>
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/flatpickr.min.css">
@@ -44,7 +46,7 @@ $user = $data["user"] ?? null;
             <main class="content__main">
                 <?php
                 if(!$user) {
-                    if (isset($data["isShowTemplateEvenUnauthorised"])) {
+                    if ($showTemplateEvenUnathorised) {
                         echo $data["components"]["main"];
                     } else {
                         echo include_template("guest.php", $data);
