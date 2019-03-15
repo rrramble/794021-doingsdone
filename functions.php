@@ -217,7 +217,7 @@ function getUniqueUserIdsOfTasks($tasks)
  * @return array
  */
 function getToggledTaskState()
-{//!
+{
     if (!isset($_GET["task_id"]) || !isset($_GET["check"])) {
         return null;
     };
@@ -235,7 +235,7 @@ function getToggledTaskState()
  * @return string
  */
 function getProjectUrl($projectId)
-{ //!
+{
     return '/index.php?id=' . $projectId;
 }
 
