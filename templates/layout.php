@@ -4,16 +4,18 @@ if (!isset($data)) {
     die();
 };
 
-if (!isset($data["user"])) {
-    $data["user"] = null;
-};
+$user = $data["user"] ?? null;
+$pageTitle = $data["pageTitle"] ?? "";
+$showTemplateEvenUnathorised = (boolean)($data["isShowTemplateEvenUnauthorised"] ?? false);
+$mainComponent = $data["components"]["main"] ?? "";
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title><?= strip_tags($data["pageTitle"]); ?></title>
+    <title><?= strip_tags($pageTitle); ?></title>
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/flatpickr.min.css">
@@ -25,35 +27,21 @@ if (!isset($data["user"])) {
 <div class="page-wrapper">
     <div class="container container--with-sidebar">
 
-        <?php
-        if (!$data["user"]) {
-            echo include_template("header-guest.php", $data);
-        } else {
-            echo include_template("header.php", $data);
-        };
+        <?= $user ?
+            include_template("header.php", $data) :
+            include_template("header-guest.php", $data);
         ?>
 
         <div class="content">
-            <?php
-                if(!$data["user"]) {
-                    echo include_template("side-guest.php", $data);
-                } else {
-                    echo include_template("side.php", $data);
-                };
+            <?= $user ?
+                include_template("side.php", $data) :
+                include_template("side-guest.php", $data);
             ?>
 
             <main class="content__main">
-                <?php
-                if(!$data["user"]) {
-                    if (isset($data["isShowTemplateEvenUnauthorised"])) {
-                        echo $data["components"]["main"];
-                    } else {
-                        echo include_template("guest.php", $data);
-                    };
-
-                } else {
-                    echo $data["components"]["main"];
-                };
+                <?= $user || $showTemplateEvenUnathorised ?
+                    $mainComponent :
+                    include_template("guest.php", $data);
                 ?>
             </main>
         </div>

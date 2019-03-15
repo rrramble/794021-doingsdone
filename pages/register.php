@@ -6,7 +6,6 @@ include_once('register-form.php');
 const WEBPAGE_TITLE = 'Регистрация пользователя';
 const SCRIPT_NAME_IF_SUCCESS = '/pages/auth.php';
 const FormMessage = [
-    'OVERALL_ERROR' => 'Пожалуйста, исправьте ошибки в форме',
     'EMAIL_IS_EMPTY' => 'Указать электронную почту',
     'PASSWORD_IS_EMPTY' => 'Указать пароль',
     'EMAIL_IS_WRONG' => 'Неверный формат электронной почты',

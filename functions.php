@@ -170,6 +170,7 @@ function getAdaptedProjects($dbProjects)
     return $results;
 };
 
+
 /**
  * @param string $isoDateString
  *
@@ -187,6 +188,28 @@ function getIntFromIsoDateTime($isoDateString)
     };
 
     return (integer)$year * 10000 + (integer)$month * 100 + (integer)$day;
+}
+
+
+/**
+ * @param  array $tasks
+ *
+ * @return array
+ */
+function getUniqueUserIdsOfTasks($tasks)
+{
+    if (!$tasks) {
+        return [];
+    };
+
+    $users = array_reduce($tasks, function($accu, $task) {
+        if (isset($task["authorUserId"]) && $task["authorUserId"] !== null) {
+            array_push($accu, $task["authorUserId"]);
+        };
+        return $accu;
+    }, []);
+
+    return array_unique($users);
 }
 
 

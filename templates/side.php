@@ -4,6 +4,11 @@ if (!isset($data)) {
     die();
 };
 
+$selectedProjectId = (integer)($data["projectId"] ?? 0);
+$userId = (integer)($data['user']['id'] ?? 0);
+$projects = $data["projects"] ?? [];
+$tasks = $data["tasks"] ?? [];
+
 const SELECTED_ITEM_CLASS = "main-navigation__list-item--active";
 ?>
 <section class="content__side">
@@ -15,10 +20,11 @@ const SELECTED_ITEM_CLASS = "main-navigation__list-item--active";
             <?php foreach ($data["projects"] as $project): ?>
 
                 <?php
-                    $cssClass = isset($data["projectId"]) && isset($project["id"]) && $project["id"] === $data["projectId"] ? SELECTED_ITEM_CLASS : "";
-                    $url = isset($project['id']) ? getProjectUrl($project['id']) : "";
-                    $title = isset($project['title']) ? strip_tags($project['title']) : "";
-                    $count = getTasksCount($project['id'], $data['user']['id'], $data["tasks"]);
+                    $projectId = (integer)($project['id'] ?? 0);
+                    $cssClass = $projectId === $selectedProjectId ? SELECTED_ITEM_CLASS : "";
+                    $url = $projectId ? getProjectUrl($projectId) : "";
+                    $title = $project['title'] ?? "";
+                    $count = getTasksCount($projectId, $userId, $tasks);
                 ?>
 
                 <li class="main-navigation__list-item">

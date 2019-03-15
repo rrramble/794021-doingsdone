@@ -4,13 +4,10 @@ if (!isset($data)) {
   die();
 };
 
-if (!isset($data["projects"])) {
-    $data["projects"] = [];
-};
-
-if (!isset($data["postProjectId"])) {
-  $data["postProjectId"] = 0;
-};
+$projects = $data["projects"] ?? [];
+$taskTitleInvalidMessage = $data["taskTitleIvalidMessage"] ?? "";
+$postTaskTitle = $data["postTaskTitle"] ?? "";
+$postProjectId = (integer)($data["postProjectId"] ?? 0);
 
 $CLASS_INPUT_ERROR = 'form__input--error';
 ?>
@@ -22,16 +19,14 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
       <input
           class="form__input
-            <?= isset($data["taskTitleIvalidMessage"]) && $data["taskTitleIvalidMessage"] ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
-
+            <?= $taskTitleInvalidMessage ? strip_tags($CLASS_INPUT_ERROR) : ""; ?>"
             type="text" name="name" id="name"
-            value="<?= isset($data["postTaskTitle"]) ? strip_tags($data["postTaskTitle"]) : ""; ?>"
-
+            value="<?= strip_tags($postTaskTitle); ?>"
             placeholder="Введите название">
 
-      <?php if($data["taskTitleIvalidMessage"]): ?>
+      <?php if ($taskTitleInvalidMessage): ?>
         <p class="form__message">
-          <?= isset($data["taskTitleIvalidMessage"]) ? strip_tags($data["taskTitleIvalidMessage"]) : ""; ?>
+          <?= strip_tags($taskTitleInvalidMessage); ?>
         </p>
       <?php endif; ?>
 
@@ -42,20 +37,21 @@ $CLASS_INPUT_ERROR = 'form__input--error';
 
         <select class="form__input form__input--select" name="project" id="project">
           <option value="0"
-            <?= $data["postProjectId"] === 0 ? " selected " : ""; ?>
+            <?= $postProjectId === 0 ? " selected " : ""; ?>
           ></option>
 
-          <?php foreach($data["projects"] as $project): ?>
+          <?php foreach($projects as $project): ?>
             <?php
-              if (!isset($project["id"]) || !isset($project["title"])) {
+              $projectTitle = $project["title"] ?? "";
+              if (!isset($project["id"])) {
                 continue;
               };
             ?>
             <option
               value="<?= strip_tags($project['id']); ?>"
-              <?= $project['id'] === $data["postProjectId"] ? "selected" : ""; ?>
+              <?= $project['id'] === $postProjectId ? "selected" : ""; ?>
             >
-              <?= strip_tags($project['title']); ?>
+              <?= strip_tags($projectTitle); ?>
             </option>
             <?php endforeach; ?>
         </select>
