@@ -255,6 +255,26 @@ class DbApi
         return $result;
     }
 
+    /**
+     * getTasksOfAllUsers
+     *
+     * @param string|null $exactDate
+     * 
+     * @return array
+     */
+    public function getTasksOfAllUsers($exactDate = "")
+    {
+        $exactDateEscaped = mysqli_real_escape_string($this->handler, (string)$exactDate);
+        $query  = "SELECT * FROM tasks WHERE DATE(due_date) = DATE('$exactDateEscaped') ORDER BY author_user_id DESC";
+
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            return [];
+        };
+        return $result;
+    }
+
+
 
     /**
      * getUserDataByEmail
