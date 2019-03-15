@@ -192,6 +192,28 @@ function getIntFromIsoDateTime($isoDateString)
 
 
 /**
+ * @param  array $tasks
+ *
+ * @return array
+ */
+function getUniqueUsersOfTasks($tasks)
+{
+    if (!$tasks) {
+        return [];
+    };
+
+    $users = array_reduce($tasks, function($accu, $task) {
+        if (isset($task["authorUserId"]) && $task["authorUserId"] !== null) {
+            array_push($accu, $task["authorUserId"]);
+        };
+        return $accu;
+    }, []);
+
+    return array_unique($users);
+}
+
+
+/**
  * @return array
  */
 function getToggledTaskState()
