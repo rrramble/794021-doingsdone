@@ -196,7 +196,7 @@ function getIntFromIsoDateTime($isoDateString)
  *
  * @return array
  */
-function getUniqueUsersOfTasks($tasks)
+function getUniqueUserIdsOfTasks($tasks)
 {
     if (!$tasks) {
         return [];
