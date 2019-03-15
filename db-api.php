@@ -259,7 +259,7 @@ class DbApi
      * getTasksOfAllUsers
      *
      * @param string|null $exactDate
-     * 
+     *
      * @return array
      */
     public function getTasksOfAllUsers($exactDate = "")
@@ -311,6 +311,67 @@ class DbApi
             "email" => $rows[0]["email"],
             "userName" => $rows[0]["name"],
         ];
+    }
+
+    /**
+     * getUserDataById
+     *
+     * @param  integer $id
+     *
+     * @return mixed
+     */
+    public function getUserDataById($id)
+    {
+        $idEscaped = mysqli_real_escape_string($this->handler, (string)$id);
+        $query = "SELECT * FROM users WHERE id = '$idEscaped'";
+        $result = mysqli_query($this->handler, $query);
+        if (!$result) {
+            return null;
+        };
+
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        if (count($rows) <= 0) {
+            return null;
+        };
+
+        if (
+            !isset($rows[0]) ||
+            !isset($rows[0]["id"]) ||
+            !isset($rows[0]["email"]) ||
+            !isset($rows[0]["name"])
+        ) {
+            return null;
+        };
+
+        return [
+            "id" => (integer)$rows[0]["id"],
+            "email" => $rows[0]["email"],
+            "userName" => $rows[0]["name"],
+        ];
+    }
+
+    /**
+     * getUsersDataByIds
+     *
+     * @param  array $ids
+     *
+     * @return array
+     */
+    public function getUsersDataByIds($ids)
+    {
+        if (!$ids || count($ids) <= 0) {
+            return [];
+        };
+
+        $result = array_reduce($ids, function($accu, $id) {
+            $result = $this->getUserDataById($id);
+            if ($result !== null) {
+                $accu[] = $result;
+            };
+            return $accu;
+        }, []);
+
+        return $result;
     }
 
 
