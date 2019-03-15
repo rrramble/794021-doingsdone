@@ -17,7 +17,7 @@ $userName = $user["userName"] ?? "";
 
 <table border="1">
     <tr>
-        <th>Название:</th>
+        <th width="65%">Название:</th>
         <th>Дата/время:</th>
     </tr>
 
