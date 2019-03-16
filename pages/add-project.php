@@ -16,21 +16,13 @@ const FormMessage = [
 $session = new Session();
 $db = new DbApi($session->getUserId());
 $form = new AddProjectForm();
-
-$user = $session->getUserData();
-
 $projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks());
-
-$isTitleValid = true;
-$postTaskTitle = '';
-$taskTitleIvalidMessage = '';
 
 if ($form->isMethodPost()) {
     $isTitleValid = $form->isValid() && !isTitleExist($form->getValuePublic("title"), $projects);
     if ($isTitleValid) {
         $values = $form->getFieldsPublic();
-        $values['authorId'] = (integer)($user['id'] ?? 0);
+        $values['authorId'] = $session->getUserId();
         if ($db->addProject($values)) {
             header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
             die();
@@ -50,14 +42,16 @@ $layoutData = [
     "data" => [
         "pageTitle" => WEBPAGE_TITLE,
         "projects" => $projects,
-        "tasks" => $tasks,
+        "tasks" => getAdaptedTasks($db->getTasks()),
         
-        "isTitleValid" => $isTitleValid,
-        "currentUser" => $user,
-        "postTaskTitle" => $postTaskTitle,
-        "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
+        "isTitleValid" => $isTitleValid ?? true,
+        "user" => [
+            "id" => $session->getUserId(),
+            "userName" => $session->getUserName(),
+        ],
+        "postTaskTitle" => $postTaskTitle ?? "",
+        "taskTitleIvalidMessage"=> $taskTitleIvalidMessage ?? "",
         "formOverallErrorMessage" => FormMessage['OVERALL_ERROR'],
-        "user" => $session->getUserData(),
     ],
 ];
 

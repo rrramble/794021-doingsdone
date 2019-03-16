@@ -1,115 +1,42 @@
 <?php
 
-class Session {
+include_once("class/abstract-session.php");
 
-    /**
-     * @return self
-     */
-    public function __construct()
-    {
-        session_start();
-    }
-
-
-    /**
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getCustomProp($name)
-    {
-        if (!$name || !isset($_SESSION[$name])) {
-            return null;
-        };
-        return $_SESSION[$name];
-    }
-
-
-    /**
-     * @return array|null
-     */
-    public function getUserData()
-    {
-        if (!$this->isAuthenticated()) {
-            return null;
-        };
-
-        if (
-            !isset($_SESSION["user"]) ||
-            !isset($_SESSION["user"]["userName"]) ||
-            !isset($_SESSION["user"]["id"])
-        ) {
-            return null;
-        };
-
-        $result["userName"] = $_SESSION["user"]["userName"];
-        $result["id"] = $_SESSION["user"]["id"];
-        return $result;
-    }
-
+class Session extends AbstractSession{
 
     /**
      * @return integer|null
      */
     public function getUserId()
     {
-        if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["id"])) {
-            return null;
-        };
-        return (integer)$_SESSION["user"]["id"];
+        return $this->getProp("userId");
     }
 
 
     /**
-     * @return boolean
+     * @return string|null
      */
-    private function isAuthenticated()
+    public function getUserName()
     {
-        return isset($_SESSION["user"]);
-    }
-
-
-    /**
-     * @return void
-     */
-    public function setCustomProp($name, $value = null)
-    {
-        if (!$name) {
-            return;
-        };
-
-        $_SESSION[(string)$name] = (string)$value;
-    }
-
-
-    /**
-     * @param array $props
-     *
-     * @return void
-     */
-    public function setUserData($props)
-    {
-        if (
-            !$props ||
-            !isset($props["userName"]) ||
-            !isset($props["id"])
-        ) {
-            return;
-        };
-
-        $_SESSION["user"]["userName"] = $props["userName"] ?? null;
-        $_SESSION["user"]["id"] = $props["id"] ?? null;
+        $this->getProp("userId");
     }
 
 
     /**
      * @return void
      */
-    public function logout()
+    public function setUserId($value)
     {
-        if (isset($_SESSION["user"])) {
-            unset($_SESSION["user"]);
-        };
+        $this->setProp("userId", $value);
+    }
+
+
+    /**
+     * @return void
+     */
+    public function setUserName($value)
+    {
+        $this->setProp("userName", $value);
     }
 
 } // class Session

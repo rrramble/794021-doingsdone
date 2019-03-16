@@ -18,22 +18,11 @@ $session = new Session();
 $db = new DbApi($session->getUserId());
 $form = new AddTaskForm();
 
-$user = $session->getUserData();
-
-$projects = getAdaptedProjects($db->getProjects());
-$tasks = getAdaptedTasks($db->getTasks());
-
-$postTaskTitle = '';
-$taskTitleIvalidMessage = '';
-
-$postProjectId = 0;
-
-$dueDateIvalidMessage = '';
-
 if ($form->isMethodPost()) {
     if ($form->isValid()) {
         $taskData = $form->getFieldsPublic();
         $taskData['userId'] = $session->getUserId();
+
         $isAddedCorrectly = $db->addTask($taskData);
         if ($isAddedCorrectly) {
             header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
@@ -57,17 +46,18 @@ if ($form->isMethodPost()) {
 $layoutData = [
     "data" => [
         "pageTitle" => WEBPAGE_TITLE,
-        "projects" => $projects,
-        "tasks" => $tasks,
-        "user" => $session->getUserData(),
+        "projects" => getAdaptedProjects($db->getProjects()),
+        "tasks" => getAdaptedTasks($db->getTasks()),
+        "user" => [
+            "id" => $session->getUserId(),
+            "userName" => $session->getUserName(),
+        ],
 
-        "postTaskTitle" => $postTaskTitle,
-        "taskTitleIvalidMessage"=> $taskTitleIvalidMessage,
+        "postTaskTitle" => $postTaskTitle ?? "",
+        "taskTitleIvalidMessage"=> $taskTitleIvalidMessage ?? "",
 
-        "postProjectId" => (integer)$postProjectId,
-
-        "dueDateIvalidMessage" => $dueDateIvalidMessage,
-
+        "postProjectId" => (integer)($postProjectId ?? 0),
+        "dueDateIvalidMessage" => $dueDateIvalidMessage ?? "",
         "formOverallErrorMessage" => !$form->isValid() ? FormMessage['OVERALL_ERROR'] : "",
     ],
 ];

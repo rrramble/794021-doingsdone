@@ -5,7 +5,6 @@ include_once("db-api.php");
 include_once('session.php');
 include_once('pages/search-task-form.php');
 
-const SHOW_COMPLETE_TASKS_CSS_ATTRIBUTE = "checked";
 const WEBPAGE_TITLE = "Дела в порядке";
 
 $session = new Session();
@@ -15,59 +14,50 @@ $searchForm = new SearchTaskForm();
 $db->setTaskIsDone(getToggledTaskState());
 
 if (isset($_GET["show_completed"])) {
-    $showCompleteTasks = (integer)($_GET["show_completed"]);
-    $session->setCustomProp("showCompleted", $showCompleteTasks);
-} else {
-    $showCompleteTasks = (integer)$session->getCustomProp("showCompleted");
+    $session->setProp("showCompleted", (integer)$_GET["show_completed"]);
 };
 
 if (isset($_GET["id"])) {
-    $projectId = (integer)$_GET["id"];
-    $session->setCustomProp("projectId", $projectId);
-} else {
-    $projectId = (integer)$session->getCustomProp("projectId");
+    $session->setProp("projectId", (integer)$_GET["id"]);
 };
 
 if (isset($_GET["filter"])) {
-    $taskFilterId = (integer)($_GET["filter"]);
-    $session->setCustomProp("filter", $taskFilterId);
-} else {
-    $taskFilterId = (integer)$session->getCustomProp("filter");
+    $session->setProp("filterId", (integer)$_GET["filter"]);
 };
 
 if (empty($_GET) || $searchForm->isMethodPost()) {
-    $session->setCustomProp("showCompleted");
-    $session->setCustomProp("filter");
-    $session->setCustomProp("projectId");
-    $showCompleteTasks = null;
-    $projectId = null;
-    $taskFilterId = null;
+    $session->setProp("showCompleted");
+    $session->setProp("filterId");
+    $session->setProp("projectId");
 };
 
-$postTitle = null;
 if ($searchForm->isMethodPost() && $searchForm->isValid()) {
-    $postTitle = $searchForm->getValuePublic("title");
+    $searchText = $searchForm->getValuePublic("title");
+    $session->setProp("searchText", $searchText);
 };
 
 $tasks = getAdaptedTasks($db->getTasks());
 $layoutData = [
     "data" => [
         "pageTitle" => WEBPAGE_TITLE,
-        "user" => $session->getUserData(),
-        "tasks" => $tasks,
+        "user" => [
+            "name" => $session->getUserName(),
+            "id" => $session->getUserId(),
+        ],
         "projects" => getAdaptedProjects($db->getProjects()),
 
-        "projectId" => $projectId,
-        "showCompleteTasks" => $showCompleteTasks,
-        "tasksFilterId" => $taskFilterId,
+        "tasks" => $tasks,
+        "filteredTasks" => $session->getProp("searchText") !== null ?
+            getAdaptedTasks($db->searchTasks($session->getProp("searchText"))) :
+            getAdaptedTasks($db->getTasks(), $session->getProp("filterId")),
 
-        "postTitle" => $postTitle ?? null,
+        "projectId" => $session->getProp("projectId"),
+        "showCompleteTasks" => $session->getProp("showCompleted"),
+        "tasksFilterId" => $session->getProp("filterId"),
+
+        "postTitle" => $session->setProp("postTitle"),
         ]
 ];
-
-$layoutData["data"]["filteredTasks"] = $postTitle ?
-    getAdaptedTasks($db->searchTasks($postTitle)) :
-    getAdaptedTasks($db->getTasks(), $taskFilterId);
 
 $layoutData["data"]["components"] = [
     "main" => include_template("index.php", $layoutData["data"]),

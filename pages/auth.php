@@ -37,10 +37,8 @@ if ($form->isMethodPost()) {
     $db = new DbApi();
     if ($form->isValid() && $db->isValidUserCredential($email, $password)) {
         $userData = $db->getUserDataByEmail($email);
-        $session->setUserData([
-            "userName" => $userData["userName"] ?? null,
-            "id" => $userData["id"] ?? 0,
-        ]);
+        $session->setUserId($userData["id"] ?? 0);
+        $session->setUserName($userData["userName"] ?? null);
 
         header('Location: ' . SCRIPT_NAME_IF_SUCCESS);
         die();
